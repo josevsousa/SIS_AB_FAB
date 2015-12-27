@@ -7,13 +7,12 @@ $(document).ready(function(){
 	      var valorTotal = $('#subTotal').text().replace('R$','').trim();
 	      var desconto = $('.vermelho').text().replace('R$','').trim();
 	      var representante = "{{=session.representante}}";
-	      var codigo_venda = "{{=session.codigo_venda}}"
 	      
-	      var enviarEmail = 'N';//buscar estado do check do checkbox enviar email
-
-	      $("#transitory").val(tipoVenda+";"+valorTotal+";"+desconto+";"+representante+";"+enviarEmail);
+	      // var enviarEmail = 'N';//buscar estado do check do checkbox enviar email
+	      // $("#transitory").val(tipoVenda+";"+valorTotal+";"+desconto+";"+representante+";"+enviarEmail);
+	      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante);
 	      ajax('fecharVenda',['transitory']);
-		  $(location).attr('href',"historico?menu=caixa");//redireciona a pagina
+	      $(location).attr('href',"historico?menu=caixa");//redireciona a pagina
 	    });	
 
 		$("#btCancelarCaixa").on('click',function(){

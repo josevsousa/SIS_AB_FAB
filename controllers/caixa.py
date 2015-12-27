@@ -113,17 +113,16 @@ def fecharVenda():
     index = index.split(";")
     # dados a gravar no db
     codigoVenda = session.codigo_venda
-
     email = db(db.clientes.nome == session.cliente).select('email')[0].email
+   
     
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
     representante = index[3]
-    enviarEmail = index[4]
+    enviarEmail = 'N'
 
-    #---- ENVIAR PARCELAMENTO PARA O DB  
-    # Parcela, DataVencimento, Valor
+     # Parcela, DataVencimento, Valor
     if session.parceladaDB:
         for iten in session.parceladaDB:
             valor = "%.2f"%float(iten['valor'])
@@ -136,15 +135,13 @@ def fecharVenda():
         valorDesconto = '0.00'
         pass
     
-    #---- GUARDAR VENDA NO DB
     db.historicoVendas.insert(codigoVenda = codigoVenda,clienteEmail = email,tipoVenda = tipoVenda,valorVenda = valorVenda,valorDesconto = valorDesconto,  vendedor = vendedor, representante = representante ) 
   
     viewDesc = "";
     if valorDesconto != "0.00":
         valorT = (float(valorVenda) + float(valorDesconto))
         viewDesc = "<h3><b>Total</b> : R$ %.2f - <b>Desconto</b> : <span>R$ %.2f</span></h3>"%(valorT, float(valorDesconto))
-  
-    # enviar email 
+
     if enviarEmail == 'S':
         enviarEmail(codigoVenda)    
 
@@ -152,6 +149,7 @@ def fecharVenda():
     session.__delitem__('codigo_venda')
     session.__delitem__('cliente')
     session.__delitem__('representante')
+#--------------------------------    
 
 def reenviarEmail():
     cod = request.vars.transitory
