@@ -27,6 +27,7 @@
 	    td, th{
 			padding: 2px 8px !important;
 		}
+		#printLink{display:none;}
 	}
 	#parcelado{
 		width: 360px;
@@ -45,7 +46,9 @@
 	<div id='retornoCliente'>
 		<ul class='list-group'>
 			{{link = db(Clientes.email == historico_venda[0].clienteEmail).select('id')[0].id}}
-			<li class='list-group-item'><strong>Cliente: </strong><a href="{{=URL('clientes','select/%s'%link)}}">{{=historico_venda[0].clienteEmail}} </a></li>
+			<li class='list-group-item'><strong>Cliente: </strong>
+			{{=historico_venda[0].clienteEmail}}
+			</li>
 			
 		</ul>
 	</div>
