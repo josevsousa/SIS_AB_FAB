@@ -114,8 +114,7 @@ def fecharVenda():
     # dados a gravar no db
     codigoVenda = session.codigo_venda
     email = db(db.clientes.nome == session.cliente).select('email')[0].email
-   
-    
+       
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
@@ -210,7 +209,18 @@ def enviar_email(codigo):
 @auth.requires_membership('admin')
 def historico():
     response.flash = XML("<b>Duplo clique</b> mostrar registro")
-    return dict(formListar=db(db.historicoVendas.id>0).select())
+    if request.vars.transitory:
+        index = request.vars.transitory
+        index = index.split(';')
+        #pegas as datas para consulta
+
+    # pegar data atual (ano e mes) e montar a tabela
+    from datetime import datetime
+    hoje = datetime.now()
+    hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
+    formListar = db(db.historicoVendas.dataVenda.like(hoje+'%')).select()#busca pelo ano e mes atual
+
+    return dict(formListar=formListar)
 
 def historico_print():
     # codigo da venda
