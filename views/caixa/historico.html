@@ -1,4 +1,9 @@
 {{extend 'layoutLojinha.html'}}
+<link rel="stylesheet" href="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.css')}}">
+<script src="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.js')}}"></script>
+ 
+
+
 <script>
 	$(document).ready(function(){
         $('#minhaTabela').DataTable({
@@ -32,30 +37,53 @@
 			$(location).attr('href',"historico_print?menu=caixa&cod="+cod);//redireciona a pagina
 		});
 
-// ** DATA **
-  var data = new Date();
-  var mes = (data.getMonth()+1).toString(); // 0-11 (zero=janeiro)
-  if (mes<10 && mes>0) {
-    mes = "0"+mes;
-  }
-  var ano4    = data.getFullYear(); // 4 dígitos     
-// FIM DATA
+		// ** DATA **
+		  var data = new Date();
+		  var mes = (data.getMonth()+1).toString(); // 0-11 (zero=janeiro)
+		  if (mes<10 && mes>0) {
+		    mes = "0"+mes;
+		  }
+		  var ano4    = data.getFullYear(); // 4 dígitos     
+		// FIM DATA
 
-$(function(){
-  $("#mesHistoricoErros button").text(mes);
-  $("#anoHistoricoErros button").text(ano4);
+		$(function(){
+		  $("#mesHistoricoErros button").text(mes);
+		  $("#anoHistoricoErros button").text(ano4);
 
-  $("#mesHistoricoErros ul li a").on('click', function(event) {
-    $("#mesHistoricoErros button").text($(this).text().substring(0,2));
-  });
-  $("#anoHistoricoErros ul li a").on('click', function(event) {
-    $("#anoHistoricoErros button").text($(this).text());
-  });
-});
+		  $("#mesHistoricoErros ul li a").on('click', function(event) {
+		    $("#mesHistoricoErros button").text($(this).text().substring(0,2));
+		  });
+		  $("#anoHistoricoErros ul li a").on('click', function(event) {
+		    $("#anoHistoricoErros button").text($(this).text());
+		  });
+		});
 
-
+		$('#buscar').on('click',function(){
+			var i = $('.busc input');
+			$('#transitory').val((i[0].value)+";"+(i[1].value));
+			ajax('historico',['transitory'])
+		});	
 	    
-	})
+	});
+	$(function() {
+		$( "#from" ).datepicker({
+		  defaultDate: "+1w",
+		  changeMonth: true,
+		  numberOfMonths: 3,
+		  onClose: function( selectedDate ) {
+		    $( "#to" ).datepicker( "option", "minDate", selectedDate );
+		  }
+		});
+		$( "#to" ).datepicker({
+		  defaultDate: "+1w",
+		  changeMonth: true,
+		  numberOfMonths: 3,
+		  onClose: function( selectedDate ) {
+		    $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+		  }
+		});
+	});
+  </script>
 </script>
 <style>
 	.no-select {
@@ -81,56 +109,30 @@ $(function(){
 	#minhaTabela tbody tr:first-child{
 		background-color: #E9FFEA;
 	}
+	input.form-control {
+	    width: 200px;
+	    float: left;
+	    margin-right: 5px;
+	}
 
-#mesHistoricoErros{
-    display: block;
-    
-}
-#mesHistoricoErros button{
-    border-radius: 3px 0px 0px 3px !important;
-    margin-right: 0px;
-}
-#anoHistoricoErros button{
-    border-radius: 0px 3px 3px 0px !important;
-    border-left: none;
-}
 </style>
 
-<input type="text" id="transitory" name="transitory">
 <div class="animated fadeInDown">
+
+<input type="text" id="transitory" name="transitory">
 <div class="row">
 	
 </div>
-<h2>Histórico das vendas <small> em destaque o ultimo resgistro!</small></h2>
+<h2>Histórico das vendas <small> referente o mês atual! {{=mesAtual}}</small></h2>
 <hr>
- <div class="btn-group" id="mesHistoricoErros" >
-            <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">01 - Janeiro</a></li>
-              <li><a href="#">02 - Fevereiro</a></li>
-              <li><a href="#">03 - Março</a></li>
-              <li><a href="#">04 - Abril</a></li>
-              <li><a href="#">05 - Maio</a></li>
-              <li><a href="#">06 - Junho</a></li>
-              <li><a href="#">07 - Julho</a></li>
-              <li><a href="#">08 - Agosto</a></li>
-              <li><a href="#">09 - Setembro</a></li>
-              <li><a href="#">10 - Outubro</a></li>
-              <li><a href="#">11 - Novembro</a></li>
-              <li><a href="#">12 - Desembro</a></li>
-            </ul>
-    </div>
-    <div class="btn-group" id="anoHistoricoErros">
-        <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-        <ul class="dropdown-menu">
-          <li><a href="#">2015</a></li>
-          <li><a href="#">2014</a></li>
-        </ul>
-    </div>
-    <button type="button" class="btn btn-info btn-lg" aria-label="Left Align">
+<div class="busc">		
+	<input type="text" id="from" name="from" class="form-control">
+ 	<input type="text" id="to" name="to" class="form-control">
+    <button type="button" id="buscar" class="btn" aria-label="Left Align">
         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
     </button>
-
+    <span>Escolha estre as datas!</span>
+</div>
 <hr>
 <!-- table -->
 <table id="minhaTabela" class="table hover" cellspacing="0" width="100%" >

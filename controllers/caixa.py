@@ -208,19 +208,31 @@ def enviar_email(codigo):
 
 @auth.requires_membership('admin')
 def historico():
+    from datetime import datetime
+    hoje = datetime.now()
+    mesAno = hoje.strftime('%m/%Y')
+    hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
+
     response.flash = XML("<b>Duplo clique</b> mostrar registro")
+    index = ''
+    # existe datas para consulta?
     if request.vars.transitory:
         index = request.vars.transitory
         index = index.split(';')
+        data1 = index[0].split('/')
+        data1 = "%s-%s-%s"%(data1[2], data1[0], data1[1])
+        data2 = index[1].split('/')
+        data2 = "%s-%s-%s"%(data2[2], data2[0], data2[1])
         #pegas as datas para consulta
+        formListar = db((db.historicoVendas.dataVenda>=('2015-11-29')) and (db.historicoVendas.dataVenda<=('2015-12-29')).select('dataVenda');
 
-    # pegar data atual (ano e mes) e montar a tabela
-    from datetime import datetime
-    hoje = datetime.now()
-    hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
-    formListar = db(db.historicoVendas.dataVenda.like(hoje+'%')).select()#busca pelo ano e mes atual
+        print '%s :: %s'%(data1,data2)
 
-    return dict(formListar=formListar)
+    else:
+        formListar = db(db.historicoVendas.dataVenda.like(hoje+'%')).select()#busca pelo ano e mes atual    
+
+    
+    return dict(formListar=formListar, mesAtual=mesAno)
 
 def historico_print():
     # codigo da venda
