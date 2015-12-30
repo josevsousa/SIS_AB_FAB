@@ -58,28 +58,24 @@
 		  });
 		});
 
-		$('#buscar').on('click',function(){
-			var i = $('.busc input');
-			$('#transitory').val((i[0].value)+";"+(i[1].value));
-			ajax('historico',['transitory'])
-		});	
+		$('form input').addClass('form-control')
 	    
 	});
 	$(function() {
-		$( "#from" ).datepicker({
-		  defaultDate: "+1w",
+		$( "#no_table_date_initial" ).datepicker({
+		  // defaultDate: "+1w",
 		  changeMonth: true,
-		  numberOfMonths: 3,
+		  numberOfMonths: 2,
 		  onClose: function( selectedDate ) {
-		    $( "#to" ).datepicker( "option", "minDate", selectedDate );
+		    $( "#no_table_date_final" ).datepicker( "option", "minDate", selectedDate );
 		  }
 		});
-		$( "#to" ).datepicker({
-		  defaultDate: "+1w",
+		$( "#no_table_date_final" ).datepicker({
+		  // defaultDate: "+1w",
 		  changeMonth: true,
-		  numberOfMonths: 3,
+		  numberOfMonths: 2,
 		  onClose: function( selectedDate ) {
-		    $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+		    $( "#no_table_date_initial" ).datepicker( "option", "maxDate", selectedDate );
 		  }
 		});
 	});
@@ -115,9 +111,15 @@
 	    margin-right: 5px;
 	}
 
+	form label{display:none;}
+	
+	.error_wrapper {
+	    width: 127px;
+	    float: left;
+	}
 </style>
 
-<div class="animated fadeInDown">
+<div class="animated fadeIn">
 
 <input type="text" id="transitory" name="transitory">
 <div class="row">
@@ -125,14 +127,11 @@
 </div>
 <h2>Histórico das vendas <small> referente o mês atual! {{=mesAtual}}</small></h2>
 <hr>
-<div class="busc">		
-	<input type="text" id="from" name="from" class="form-control">
- 	<input type="text" id="to" name="to" class="form-control">
-    <button type="button" id="buscar" class="btn" aria-label="Left Align">
-        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-    </button>
-    <span>Escolha estre as datas!</span>
-</div>
+	<!-- ===================== -->
+	<div class="procurar">
+		{{=form}}
+		<span>Escolha estre as datas!</span>
+	</div>
 <hr>
 <!-- table -->
 <table id="minhaTabela" class="table hover" cellspacing="0" width="100%" >

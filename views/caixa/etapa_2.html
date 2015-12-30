@@ -61,7 +61,8 @@
 
           $("#addItem").on('click',function(){
             $(this).text("Registr...").attr('disabled',true);
-            ajax('produto',['codigo','qtde','produto'],location.reload());
+            ajax('produto',['codigo','qtde','produto']);
+            $(location).attr('href',"etapa_2?menu=caixa");//redireciona a pagina
           })
       //------------------------- fim popula codigo    
       

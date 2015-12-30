@@ -47,6 +47,7 @@ def produto():
     valorUn = (db(db.produtos.codigo_produto == codigo).select('preco_produto_lojinha'))[0].preco_produto_lojinha
     valorTotal = int(qtde)*float(valorUn)
     Itens.insert(codigoVenda=session.codigo_venda,codigoIten=codigo,produto=produto,quantidade=qtde,valorUnidade=valorUn,valorTotal=valorTotal)
+    redirect(URL('etapa_2?menu=caixa')) 
  
 def delItem():
     index = request.vars.transitory
@@ -213,26 +214,31 @@ def historico():
     mesAno = hoje.strftime('%m/%Y')
     hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
 
-    response.flash = XML("<b>Duplo clique</b> mostrar registro")
-    index = ''
-    # existe datas para consulta?
-    if request.vars.transitory:
-        index = request.vars.transitory
-        index = index.split(';')
-        data1 = index[0].split('/')
-        data1 = "%s-%s-%s"%(data1[2], data1[0], data1[1])
-        data2 = index[1].split('/')
-        data2 = "%s-%s-%s"%(data2[2], data2[0], data2[1])
-        #pegas as datas para consulta
-        formListar = db((db.historicoVendas.dataVenda>=('2015-11-29')) and (db.historicoVendas.dataVenda<=('2015-12-29')).select('dataVenda');
+    # The search form created with .factory
+    form = SQLFORM.factory(
+        Field("date_initial", requires=IS_NOT_EMPTY(error_message="Campo vazio")),
+        Field("date_final", requires=IS_NOT_EMPTY(error_message="Campo vazio")),
+        formstyle='divs',
+        submit_button="Search",
+        )
 
-        print '%s :: %s'%(data1,data2)
+    if form.process().accepted:
+        # gathering form submitted values
+        date_initial = form.vars.date_initial 
+        date_initial = date_initial.split('/')
+        date_initial = "%s-%s-%s"%(date_initial[2],date_initial[0],date_initial[1])
 
+        date_final = form.vars.date_final 
+        date_final = date_final.split('/')
+        data_final = "%s-%s-%s"%(date_final[2],date_final[0],date_final[1])
+
+        print data_final
+        formListar = db((db.historicoVendas.dataVenda >= date_initial) & (db.historicoVendas.dataVenda <= data_final)).select()      
     else:
+        print 'saiu do else'
         formListar = db(db.historicoVendas.dataVenda.like(hoje+'%')).select()#busca pelo ano e mes atual    
-
     
-    return dict(formListar=formListar, mesAtual=mesAno)
+    return dict(formListar=formListar, mesAtual=mesAno, form=form)
 
 def historico_print():
     # codigo da venda
