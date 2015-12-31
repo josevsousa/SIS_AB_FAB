@@ -178,6 +178,7 @@ Clientes = db.define_table('clientes',
     Field('foto_cliente','upload', label='Foto'),
     migrate = "clientes.table"
     )
+db.clientes.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.clientes.nome.requires = IS_NOT_IN_DB(db, db.clientes.nome, error_message = 'Usuario invalido')
 db.clientes.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
 db.clientes.operadora.requires = IS_IN_SET(OPERADORA, error_message="Operadora invalida!!!")
@@ -202,6 +203,8 @@ Funcionarios = db.define_table('funcionarios',
     Field('foto_funcionario','upload', label='Foto'),
     migrate = "funcionarios.table"
     )
+
+db.funcionarios.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.funcionarios.nome.requires = IS_NOT_IN_DB(db, db.funcionarios.nome, error_message = 'Usuario invalido')
 db.funcionarios.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
 db.funcionarios.operadora.requires = IS_IN_SET(OPERADORA, error_message="Operadora invalida!!!")
@@ -236,7 +239,7 @@ Representantes = db.define_table('representantes',
     Field('cep', label='CEP'),
     Field('endereco', label='Endereço'),
     Field('numero' ,label='Número'),
-    Field('uf', label='UF', default=' - '),
+    Field('uf', label='UF'),
     Field('cidade', label='Cidade'),
     Field('bairro', label='Bairro'),
     Field('apelido', label='Apelido'),
@@ -244,6 +247,8 @@ Representantes = db.define_table('representantes',
     Field('foto_representante','upload', label='Foto'),
     migrate = "representante.table"
     )
+
+db.representantes.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.representantes.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
 db.representantes.nome.requires = IS_NOT_EMPTY(error_message="Nome obrigatório")
 db.representantes.email.requires = IS_NOT_EMPTY(error_message="E-mail obrigatório")

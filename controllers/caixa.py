@@ -232,10 +232,8 @@ def historico():
         date_final = date_final.split('/')
         data_final = "%s-%s-%s"%(date_final[2],date_final[0],date_final[1])
 
-        print data_final
         formListar = db((db.historicoVendas.dataVenda >= date_initial) & (db.historicoVendas.dataVenda <= data_final)).select()      
     else:
-        print 'saiu do else'
         formListar = db(db.historicoVendas.dataVenda.like(hoje+'%')).select()#busca pelo ano e mes atual    
     
     return dict(formListar=formListar, mesAtual=mesAno, form=form)

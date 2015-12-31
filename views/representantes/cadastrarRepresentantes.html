@@ -1,7 +1,16 @@
 {{extend 'layoutLojinha.html'}}
+
+<script src="{{=URL('static','js/jquery.mask.js')}}"></script>
 <script>
 	$(document).ready(function(){                   //({ prefix:'R$ ',
 		$("#produtos_preco_produto_lojinha").maskMoney({ allowNegative: true, thousands:'', decimal:'.'});
+
+		$('#representantes_celular').mask("(99) 99999-9999");
+		$('#representantes_fixo').mask("(99) 9999-9999");
+		$('#representantes_cpf').mask('000.000.000-00');
+		$('#representantes_cnpj').mask('00.000.000/0000-00');
+		$('#representantes_insc').mask('000.000.000');
+		$('#representantes_cpf').mask('00000.000');
 
 		// auto
 		$('input[type=text]').addClass('form-control ip_text');

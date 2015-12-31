@@ -1,7 +1,6 @@
 {{extend 'layoutLojinha.html'}}
 <link rel="stylesheet" href="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.css')}}">
 <script src="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.js')}}"></script>
- 
 
 
 <script>
@@ -61,11 +60,13 @@
 		$('form input').addClass('form-control')
 	    
 	});
+
+	// datepicker
 	$(function() {
 		$( "#no_table_date_initial" ).datepicker({
 		  // defaultDate: "+1w",
 		  changeMonth: true,
-		  numberOfMonths: 2,
+		  // numberOfMonths: 2,
 		  onClose: function( selectedDate ) {
 		    $( "#no_table_date_final" ).datepicker( "option", "minDate", selectedDate );
 		  }
@@ -73,7 +74,7 @@
 		$( "#no_table_date_final" ).datepicker({
 		  // defaultDate: "+1w",
 		  changeMonth: true,
-		  numberOfMonths: 2,
+		  // numberOfMonths: 2,
 		  onClose: function( selectedDate ) {
 		    $( "#no_table_date_initial" ).datepicker( "option", "maxDate", selectedDate );
 		  }
@@ -105,17 +106,21 @@
 	#minhaTabela tbody tr:first-child{
 		background-color: #E9FFEA;
 	}
-	input.form-control {
-	    width: 200px;
-	    float: left;
-	    margin-right: 5px;
-	}
 
 	form label{display:none;}
 	
-	.error_wrapper {
-	    width: 127px;
+	#submit_record__row .w2p_fw input{
+		width: 70px;
+	}
+	.w2p_fw input{
+		float: left;
+		width: 77px;
+	}
+
+	input.form-control {
+	    width: 157px;
 	    float: left;
+	    margin-right: 5px;
 	}
 </style>
 

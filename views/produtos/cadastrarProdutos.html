@@ -1,4 +1,5 @@
 {{extend 'layoutLojinha.html'}}
+<script src="{{=URL('static','js/jquery.maskMoney.js')}}"></script>
 <script>
 	$(document).ready(function(){                   //({ prefix:'R$ ',
 		$("#produtos_preco_produto_lojinha").maskMoney({ allowNegative: true, thousands:'', decimal:'.'});

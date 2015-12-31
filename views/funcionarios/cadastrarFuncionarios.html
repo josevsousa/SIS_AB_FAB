@@ -1,8 +1,15 @@
 {{extend 'layoutLojinha.html'}}
+
+<script src="{{=URL('static','js/jquery.mask.js')}}"></script>
 <script>
 	$(document).ready(function(){
-		$('#clientes_celular').mask("(99) 99999-9999");
 
+		$('#funcionarios_celular').mask("(99) 99999-9999");
+		$('#funcionarios_fixo').mask("(99) 9999-9999");
+		$('#funcionarios_cpf').mask('000.000.000-00');
+		$('#funcionarios_cnpj').mask('00.000.000/0000-00');
+		$('#funcionarios_insc').mask('000.000.000');
+		$('#funcionarios_cep').mask('00000.000');
 		// auto
 		$('input[type=text]').addClass('form-control ip_text');
 		$('form').addClass('formEditar');
