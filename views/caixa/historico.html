@@ -5,6 +5,7 @@
 
 <script>
 	$(document).ready(function(){
+
         $('#minhaTabela').DataTable({
             "scrollX": true,
             "order": [ 6, 'desc' ],
@@ -58,7 +59,6 @@
 		});
 
 		$('form input').addClass('form-control')
-	    
 	});
 
 	// datepicker
@@ -79,6 +79,8 @@
 		    $( "#no_table_date_initial" ).datepicker( "option", "maxDate", selectedDate );
 		  }
 		});
+
+	    $('fieldset').append('<span class="glyphicon glyphicon-calendar dt1"></span> <span class="glyphicon glyphicon-calendar dt2"></span>')
 	});
   </script>
 </script>
@@ -110,7 +112,7 @@
 	form label{display:none;}
 	
 	#submit_record__row .w2p_fw input{
-		width: 70px;
+		width: 121px;
 	}
 	.w2p_fw input{
 		float: left;
@@ -121,6 +123,34 @@
 	    width: 157px;
 	    float: left;
 	    margin-right: 5px;
+	}
+
+	.dt2 {
+	    right: 171px !important;
+	    top: 8px;
+	    color: #C7C7C7;
+	}
+	span.glyphicon.glyphicon-calendar.dt1 {
+    	right: 315px !important;
+    	top: 9px !important;
+    	color: #C7C7C7;
+	}
+	div.error_wrapper {
+    	float: left;
+	}
+	.procurar {
+    	width: 696px;
+    	position: relative;
+	}
+	div#date_initial__error {
+	    position: absolute;
+	    left: 27px;
+	    top: -26px;
+	}
+	#no_table_date_final__row .error_wrapper {
+	    position: absolute;
+	    left: 192px;
+	    top: -26px;
 	}
 </style>
 
