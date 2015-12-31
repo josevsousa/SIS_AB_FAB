@@ -209,12 +209,13 @@ def enviar_email(codigo):
 
 @auth.requires_membership('admin')
 def historico():
+    # data atual
     from datetime import datetime
     hoje = datetime.now()
     mesAno = hoje.strftime('%m/%Y')
     hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
 
-    # The search form created with .factory
+    # formulario de busca entre datas
     form = SQLFORM.factory(
         Field("date_initial", requires=IS_NOT_EMPTY(error_message="Campo vazio")),
         Field("date_final", requires=IS_NOT_EMPTY(error_message="Campo vazio")),
@@ -222,18 +223,20 @@ def historico():
         submit_button="Search",
         )
 
+    # formulario aceito
     if form.process().accepted:
-        # gathering form submitted values
+        # pegando as datas escolhidas 
         date_initial = form.vars.date_initial 
         date_initial = date_initial.split('/')
         date_initial = "%s-%s-%s"%(date_initial[2],date_initial[0],date_initial[1])
-
         date_final = form.vars.date_final 
         date_final = date_final.split('/')
         data_final = "%s-%s-%s"%(date_final[2],date_final[0],date_final[1])
 
+        # fazendo consulta entre as datas ecolhidas
         formListar = db((db.historicoVendas.dataVenda >= date_initial) & (db.historicoVendas.dataVenda <= data_final)).select()      
     else:
+        #buscar registro do mes e ano atual
         formListar = db(db.historicoVendas.dataVenda.like(hoje+'%')).select()#busca pelo ano e mes atual    
     
     return dict(formListar=formListar, mesAtual=mesAno, form=form)
