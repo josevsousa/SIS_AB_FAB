@@ -15,11 +15,75 @@
         left: 192px;
         top: -26px;
     }
+        .check{
+        padding: 3px;       
+    }
+    .check div{
+        width: 25px;
+        height: 29px;
+        cursor:pointer;
+        margin:0 auto;
+        margin-top: 4px;
+    }
+    .check div.check_False{
+        background:url('{{=URL('static','images/checkBOX.png')}}') center 4px no-repeat;   
+    }
+    .check div.check_True{
+        background:url('{{=URL('static','images/checkBOX.png')}}') center -20px no-repeat;                               
+    }
+    .obs_iten{
+        padding: 2px !important;
+    }
+    .obs_iten input{
+        margin: 0 auto;
+        width: 95%;
+    }
     </style>
  <script>
-    $(document).ready(function(){
-           
 
+    //esperando a funcao ser chamada no ajax
+    function checkOk(){
+        console.log('ddddddd');
+        $('.check div').on('click',function(){
+            statusAtual = $(this).attr('class');//status do check 
+            cod  = $(this).parent().parent().children()[0];//id do row do check
+            cod = cod.textContent;
+            console.log(statusAtual);
+            if (statusAtual == "check_True") {
+                //mudar par check_False
+                $(this).removeClass('check_True').addClass('check_False');
+                //passar o False para o Itens.status
+                // updateStatus(cod,'False');
+            }else{
+                //mudar para check_True
+                $(this).removeClass('check_False').addClass('check_True');
+                //passar o True para o Itens.status
+                // updateStatus(cod,'True');
+            };
+        });   
+    };
+
+    $(document).ready(function(){
+
+        $('.check div').on('click',function(){
+            console.log('ok');
+            statusAtual = $(this).attr('class');//status do check 
+            cod  = $(this).parent().parent().children()[0];//id do row do check
+            cod = cod.textContent;
+            console.log(cod);
+            if (statusAtual == "check_True") {
+                //mudar par check_False
+                $(this).removeClass('check_True').addClass('check_False');
+                //passar o False para o Itens.status
+                // updateStatus(cod,'False');
+            }else{
+                //mudar para check_True
+                $(this).removeClass('check_False').addClass('check_True');
+                //passar o True para o Itens.status
+                // updateStatus(cod,'True');
+            };
+        });          
+        
 
             $(".cheques_boletos").on('click', function() {
                 // enviar data para pesquisa
@@ -201,6 +265,7 @@
                     <th>Valor</th>
                     <th>Cliente</th>  
                     <th>Representante</th>
+                    <th>Status</th>
                 </thead>  
                 <tbody id="grid"></tbody>
             </table> 

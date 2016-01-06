@@ -41,9 +41,9 @@ def cheques_boletos():
     
     itens = ''
     for i in query:
-        itens = itens+"<tr><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><tr>"%(i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante)
+        itens = itens+"<tr><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante, i.statusPagamento)
         pass
-    table = XML("%s"%itens)  
+    table = XML("%s %s"%(itens,'<script>window.onload = checkOk();</script>')) # carregar funcao no DOM  
     # table = query   
                                   
     return table

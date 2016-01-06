@@ -2,23 +2,6 @@
 <script>
 	$(document).ready(function(){
 
-		$('#check div').on('click',function(){
-			statusAtual = $(this).attr('class');//status do check 
-			cod  = $(this).parent().parent().children()[0];//id do row do check
-			cod = cod.textContent;
-			if (statusAtual == "check_True") {
-				//mudar par check_False
-				$(this).removeClass('check_True').addClass('check_False');
-				//passar o False para o Itens.status
-				updateStatus(cod,'False');
-			}else{
-				//mudar para check_True
-				$(this).removeClass('check_False').addClass('check_True');
-				//passar o True para o Itens.status
-				updateStatus(cod,'True');
-			};
-		});
-
 		$('.obs_iten input').on('keyup',function(){
 			id  = $(this).parent().parent().children()[0];//id do row do check
 			id = id.textContent;
