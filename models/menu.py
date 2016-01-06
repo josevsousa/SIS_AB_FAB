@@ -84,7 +84,7 @@ if 'auth' in globals():
                   (T('Representantes'), False, URL('representantes', 'listarRepresentantes?menu=representantes'), []),
                   
                   (T('Operacional'),False, None, [
-                    (T('Separar'), False, URL('pedidos', 'abertos?menu=operacional'), [])
+                    (T('Separar itens venda'), False, URL('pedidos', 'abertos?menu=operacional'), [])
                   ]),
 
                   # (T('Produtos'), False, None, [
@@ -95,7 +95,7 @@ if 'auth' in globals():
         if auth.has_membership('operacional_A'):
             response.menu = [
                 (T('Operacional'),False, None, [
-                    (T('Separar'), False, URL('pedidos', 'abertos?menu=operacional'), [])
+                    (T('Separar itens venda'), False, URL('pedidos', 'abertos?menu=operacional'), [])
                   ]),
 
                   # (T('Produtos'), False, None, [

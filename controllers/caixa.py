@@ -303,7 +303,7 @@ def parcelado():
                 "<th>Valor</th>"+   
             "</thead>"+
             "<tbody>"+
-            "<tr>%s</tr>"%itens+
+            "%s"%itens+
             "</tbody>"+
         "</table>"
         )

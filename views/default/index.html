@@ -1,9 +1,225 @@
-{{extend 'layoutLojinha.html'}}
+	{{extend 'layoutLojinha.html'}}
+    <link rel="stylesheet" href="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.css')}}">
+    <script src="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.js')}}"></script>
+	<script src="{{=URL('static','js/highcharts.js')}}"></script>
+	<script src="{{=URL('static','js/exporting.js')}}"></script>
+    <style>
+    .debito{color: red;}
+    div#date_initial__error {
+        position: absolute;
+        left: 27px;
+        top: -26px;
+    }
+    #no_table_date_final__row .error_wrapper {
+        position: absolute;
+        left: 192px;
+        top: -26px;
+    }
+    </style>
+ <script>
+    $(document).ready(function(){
+           
 
-<h2>Seja bem vindo ao sistema de contre de venda!</h2>
 
-{{=user}}
+            $(".cheques_boletos").on('click', function() {
+                // enviar data para pesquisa
+                var data = new Date();
+                var ano = data.getFullYear()
+                var mes = (data.getMonth()+1).toString(); // 0-11 (zero=janeiro)
+                if (mes<10 && mes>0) {
+                    mes = "0"+mes;
+                };
+                var busca = ano+"-"+mes;
+                $('#transitory').val(busca);
+                ajax('cheques_boletos',['transitory'],'grid');
+                /* Act on the event */
+            });   
 
-<h3>Teste em produção com pull</h3>
+            // datepicker
+            $(function() {
+                $( "#no_table_date_initial" ).datepicker({
+                  // defaultDate: "+1w",
+                  changeMonth: true,
+                  // numberOfMonths: 2,
+                  onClose: function( selectedDate ) {
+                    $( "#no_table_date_final" ).datepicker( "option", "minDate", selectedDate );
+                  }
+                });
+                $( "#no_table_date_final" ).datepicker({
+                  // defaultDate: "+1w",
+                  changeMonth: true,
+                  // numberOfMonths: 2,
+                  onClose: function( selectedDate ) {
+                    $( "#no_table_date_initial" ).datepicker( "option", "maxDate", selectedDate );
+                  }
+                });
+                $('fieldset').append('<span class="glyphicon glyphicon-calendar dt1"></span> <span class="glyphicon glyphicon-calendar dt2"></span>')
+            });
+ 
 
+            // $('#tabela_creditos').DataTable({
+            //     "scrollX": true,
+            //     // "order": [ 6, 'desc' ],
+            //     "language": {
+            //     "url": "{{=URL('static','js/tradutorTable.json')}}"
+            //     }
+            // }); 
+
+            for (var i = $('.ui-datepicker-calendar td a').length - 1; i >= 0; i--) {
+                var dia = $('.ui-datepicker-calendar td a')[i].text;
+                // if (dia == 7) {
+                //     var md = $('.ui-datepicker-calendar td a')[i];
+                //     console.log( md.style.color = "red" )
+                // };
+                console.log($('.ui-datepicker-calendar'))
+            };
+
+
+            // $('.ui-datepicker-calendar td a').map(function(item){
+            //     if ((item) == 5) {
+            //         console.log('jose')
+            //     }else{
+            //         console.log(item.parent
+            //     };
+            // })
+            
+            // console.log( $('.ui-datepicker-calendar td a').length ) 
+            // $("#datepicker").datepicker( "setDate", "10/12/2012" );
+
+                $('#container').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Receita tre anual'
+                    },
+                    // subtitle: {
+                    //     text: 'Source: WorldClimate.com'
+                    // },
+                    xAxis: {
+                        categories: [
+                            'Jan',
+                            'Fev',
+                            'Mar',
+                            'Abr',
+                            'Mai',
+                            'Jun',
+                            'Jul',
+                            'Ago',
+                            'Set',
+                            'Out',
+                            'Nov',
+                            'Des'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Valor  (R$)'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>R$ {point.y:.1f} reais</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: ([{
+                        name: {{=dadosgraf[0][0]}},
+                        data: {{=dadosgraf[0][1]}}
+
+                    },{
+                        name: {{=dadosgraf[1][0]}},
+                        data: {{=dadosgraf[1][1]}}
+
+                    },{
+                        name: {{=dadosgraf[2][0]}},
+                        data: {{=dadosgraf[2][1]}}
+
+                    }])
+                });
+        });//fim jquary ready
+    </script>
+
+    <input type="text" id="transitory" name="transitory" style='display:none'>
+	<h2>Sistema de controle gerencial da ArtesanalBaby!</h2>
+    
+
+	<!-- <h3>Teste em produção com pull</h3> -->
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingOne">
+	      <h4 class="panel-title">
+	        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+	          Receitas Anual
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+	      <div class="panel-body">
+	        <!-- grafico -->
+	       	<div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+
+	      </div>
+	    </div>
+	  </div>
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingTwo">
+	      <h4 class="panel-title">
+	        <a class="collapsed cheques_boletos" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+	          Vencimentos de cheques e Boletos!
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+	      <div class="panel-body">
+          <!-- <div id="grid"></div> -->
+            <form class="form-inline">
+                  <div class="form-group">
+                   <input class="form-control" id="no_table_date_initial" name="date_initial" type="text" value="" placeholder="Data inicial">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="no_table_date_final" placeholder="Data final">
+                  </div>
+                  <button type="submit" class="btn btn-default">Buscar</button>
+            </form>
+            <hr>
+	        <table id="tabela_creditos" class="table hover" >
+                <thead>
+                    <th>Tipo crédito</th>
+                    <th>Data Vencimento</th>
+                    <th>Parcela</th> 
+                    <th>Valor</th>
+                    <th>Cliente</th>  
+                    <th>Representante</th>
+                </thead>  
+                <tbody id="grid"></tbody>
+            </table> 
+	      </div>
+	    </div>
+	  </div>
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingThree">
+	      <h4 class="panel-title">
+	        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+	          Collapsible Group Item #3
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+	      <div class="panel-body">
+	        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
