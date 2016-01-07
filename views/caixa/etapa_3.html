@@ -7,7 +7,7 @@ $(document).ready(function(){
 	      var valorTotal = $('#subTotal').text().replace('R$','').trim();
 	      var desconto = $('.vermelho').text().replace('R$','').trim();
 	      var representante = "{{=session.representante}}";
-	      
+
 	      // var enviarEmail = 'N';//buscar estado do check do checkbox enviar email
 	      // $("#transitory").val(tipoVenda+";"+valorTotal+";"+desconto+";"+representante+";"+enviarEmail);
 	      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante);
@@ -28,33 +28,33 @@ $(document).ready(function(){
 	    //select tipo venda
 	    $('.tpv').on('change',function(){
 	      var valor = $(this).val();
+	      console.log(valor);
 	      if (valor == "aVista"){
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
 	        parcelar(false);
 	        $('#comprovantePagSeg').hide(400);
-	        $('#parcelado').hide(400)
+	        $('#parcelado').hide(400);
 	      }else if(valor == "credito" || valor == "debito" ){
+	        parcelar(false);
 	        $('#comprovantePagSeg').show(400);
 	        zerarDesconto();
 	        $("#btFecharCaixa").attr('disabled',false);
 	        $("#calcDesc").hide(400);
 	        $(".d").hide(400);
-	        parcelar(false);
 	      }else if(valor == "cheque" || valor == "boleto" ){
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
 	        parcelar(true);
 	        $('#comprovantePagSeg').hide(400)
 	      }else{
-	        zerarDesconto();
+	        zerarDesconto();	        
 	        parcelar(false);
 	        $("#btFecharCaixa").removeClass('btF');
 	        $("#btFecharCaixa").attr('disabled',true);
 	        $("#calcDesc").hide(400);
 	        $(".d").hide(400);
 	        $('#comprovantePagSeg').hide(400)
-
 	      }
 	    }); 
 		
@@ -151,8 +151,9 @@ $(document).ready(function(){
     function gerarGridParcela(n, total){
       var tipoVenda = $('.tpv').prop('value');
       $("#transitory").val(n+";"+total+";"+tipoVenda);
-      ajax('parcelado',['transitory'],'parcelado');
-    }
+          ajax('parcelado',['transitory'],'parcelado'); //chama a funcao que manda para o db
+        
+      }
     function zerarDesconto(){
       var vv = $(".verde").text();
       if (vv != '') {

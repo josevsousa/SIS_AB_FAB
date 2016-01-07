@@ -30,85 +30,85 @@
       console.log($('#ret').text())
     };
 
-    $('.tpv').on('change',function(){
-      var valor = $(this).val();
-      if (valor == "aVista"){
-        $("#din, #por, #btFecharCaixa").attr('disabled',false);
-        $(".d").show(400);
-        parcelar(false);
-        $('#comprovantePagSeg').hide(400);
-        $('#parcelado').hide(400)
-      }else if(valor == "credito" || valor == "debito" ){
-        $('#comprovantePagSeg').show(400);
-        zerarDesconto();
-        $("#btFecharCaixa").attr('disabled',false);
-        $("#calcDesc").hide(400);
-        $(".d").hide(400);
-        parcelar(false);
-      }else if(valor == "cheque" || valor == "boleto" ){
-        $("#din, #por, #btFecharCaixa").attr('disabled',false);
-        $(".d").show(400);
-        parcelar(true);
-        $('#comprovantePagSeg').hide(400)
-      }else{
-        zerarDesconto();
-        parcelar(false);
-        $("#btFecharCaixa").removeClass('btF');
-        $("#btFecharCaixa").attr('disabled',true);
-        $("#calcDesc").hide(400);
-        $(".d").hide(400);
-        $('#comprovantePagSeg').hide(400)
+    // $('.tpv').on('change',function(){
+    //   var valor = $(this).val();
+    //   if (valor == "aVista"){
+    //     $("#din, #por, #btFecharCaixa").attr('disabled',false);
+    //     $(".d").show(400);
+    //     parcelar(false);
+    //     $('#comprovantePagSeg').hide(400);
+    //     $('#parcelado').hide(400)
+    //   }else if(valor == "credito" || valor == "debito" ){
+    //     $('#comprovantePagSeg').show(400);
+    //     zerarDesconto();
+    //     $("#btFecharCaixa").attr('disabled',false);
+    //     $("#calcDesc").hide(400);
+    //     $(".d").hide(400);
+    //     parcelar(false);
+    //   }else if(valor == "cheque" || valor == "boleto" ){
+    //     $("#din, #por, #btFecharCaixa").attr('disabled',false);
+    //     $(".d").show(400);
+    //     parcelar(true);
+    //     $('#comprovantePagSeg').hide(400)
+    //   }else{
+    //     zerarDesconto();
+    //     parcelar(false);
+    //     $("#btFecharCaixa").removeClass('btF');
+    //     $("#btFecharCaixa").attr('disabled',true);
+    //     $("#calcDesc").hide(400);
+    //     $(".d").hide(400);
+    //     $('#comprovantePagSeg').hide(400)
 
-      }
+    //   }
 
-    });
+    // });
 
     var totall = parseFloat($("#subTotal").text().replace('R$','').trim());
 
-    $("#din").on('keyup',function(){
-      var d = $(this).val(); //dinheiro
-      var p = $('#por').val();//porcentage
-      if (p == '' && d == '') {
-        vizor(d,p);
-        $("#calcDesc").hide(400);//esconder
-        $('#subTotal').text($(".verde").text());
-        var porcC = $('.parcelarC').val();
-        if (porcC != '0' && porcC != '') {
-          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))   
-        };
-      }else{
-        vizor(d,p);
-        var porcC = $('.parcelarC').val();
-        if (porcC != '0' && porcC != '') {
-          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))
-        }else{
+    // $("#din").on('keyup',function(){
+    //   var d = $(this).val(); //dinheiro
+    //   var p = $('#por').val();//porcentage
+    //   if (p == '' && d == '') {
+    //     vizor(d,p);
+    //     $("#calcDesc").hide(400);//esconder
+    //     $('#subTotal').text($(".verde").text());
+    //     var porcC = $('.parcelarC').val();
+    //     if (porcC != '0' && porcC != '') {
+    //       gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))   
+    //     };
+    //   }else{
+    //     vizor(d,p);
+    //     var porcC = $('.parcelarC').val();
+    //     if (porcC != '0' && porcC != '') {
+    //       gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))
+    //     }else{
 
-        };
-      };
+    //     };
+    //   };
         
-    });
+    // });
 
-    $("#por").on('keyup',function(){
-      var p = $(this).val();
-      var d = $('#din').val();
-      if (p == '' && d == '') {
-        vizor(d,p);
-        $("#calcDesc").hide(400);//esconder
-        $('#subTotal').text($(".verde").text());
-        var porcC = $('.parcelarC').val();
-        if (porcC != '0' && porcC != '') {
-          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))   
-        };
-      }else{
-        vizor(d,p);
-        var porcC = $('.parcelarC').val();
-        if (porcC != '0' && porcC != '') {
-          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))
-        }else{
+    // $("#por").on('keyup',function(){
+    //   var p = $(this).val();
+    //   var d = $('#din').val();
+    //   if (p == '' && d == '') {
+    //     vizor(d,p);
+    //     $("#calcDesc").hide(400);//esconder
+    //     $('#subTotal').text($(".verde").text());
+    //     var porcC = $('.parcelarC').val();
+    //     if (porcC != '0' && porcC != '') {
+    //       gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))   
+    //     };
+    //   }else{
+    //     vizor(d,p);
+    //     var porcC = $('.parcelarC').val();
+    //     if (porcC != '0' && porcC != '') {
+    //       gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))
+    //     }else{
 
-        };
-      };
-    });
+    //     };
+    //   };
+    // });
 
     function vizor(din, por){
       if (din == '' && por == '') {
@@ -141,32 +141,36 @@
     }//fim vizor
 
     // ---- parcelar compra ------
-    function parcelar(e){
-      if(e == true){
-        $('.p').show(400);
+    // function parcelar(e){
+    //   if(e == true){
+    //     $('.p').show(400);
 
-      }else{
-        $('.p').hide(400)
-        $('.parcelarC').prop('selectedIndex',0);
-      }
-    }
-    $('.parcelarC').on('change', function(){
-      var p = $(this).val(); 
-      if (p != '' && p != '0' ) {
-        gerarGridParcela(p,parseFloat($("#subTotal").text().replace('R$','').trim())); 
-        $('#parcelado').show(400); 
-      }else if(p == '0'){
-        $('#parcelado').hide(400); 
-      }; 
+    //   }else{
+    //     $('.p').hide(400)
+    //     $('.parcelarC').prop('selectedIndex',0);
+    //   }
+    // }
+    // $('.parcelarC').on('change', function(){
+    //   console.log('joooooooooo');
+    //   var p = $(this).val(); 
+    //   if (p != '' && p != '0' ) {
+    //     // gerarGridParcela(p,parseFloat($("#subTotal").text().replace('R$','').trim())); 
+    //     $('#parcelado').show(400); 
+    //   }else if(p == '0'){
+    //     $('#parcelado').hide(400); 
+    //   }; 
         
-    });     
+    // });     
     
-    function gerarGridParcela(n, total){
-      var tipoVenda = $('.tpv').prop('value'); //cheque ou boleto
-      $("#transitory").val(n+";"+total+";"+tipoVenda); //5, 600, cheque
-      
-      ajax('parcelado',['transitory'],'parcelado'); //chama a funcao que manda para o db
-    }
+    // function gerarGridParcela(n, total){
+    //   var tipoVenda = $('.tpv').prop('value'); //cheque ou boleto
+    //   console.log("kkkk "+tipoVenda+" kkk");
+    //   $("#transitory").val(n+";"+total+";"+tipoVenda); //5, 600, cheque
+    //     if (tipoVenda == 'cheque' || tipoVenda == 'boleto') {
+    //       console.log('boleto ou cheque')
+    //       // ajax('parcelado',['transitory'],'parcelado'); //chama a funcao que manda para o db
+    //     };
+    //   }
     // ---- fim parcelar compra ------
 
     function zerarDesconto(){

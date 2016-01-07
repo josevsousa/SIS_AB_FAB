@@ -123,7 +123,7 @@ def fecharVenda():
     enviarEmail = 'N'
 
      # Parcela, DataVencimento, Valor
-    if session.parceladaDB:
+    if tipoVenda == 'boleto' or tipoVenda == 'cheque':
         for iten in session.parceladaDB:
             valor = "%.2f"%float(iten['valor'])
             Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=email, representante=representante, parcela=iten['iten'], dataVencimento=iten['data'], valor=valor)
