@@ -43,7 +43,7 @@
 <input type="text" id="cod" name="cod">
 <div id="minhaTabela" class="container animated fadeInDown">
 
-{{if auth.has_membership('admin'):}}
+{{if auth.has_membership('administrador'):}}
 	<a class="btn btn-default" href="/{{=request.application}}/representantes/cadastrarRepresentantes?menu=representantes"><span class="glyphicon glyphicon-plus"></span> Novo Representante</a>
 {{else:}}
 	<a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-plus"></span> Novo representante</a>

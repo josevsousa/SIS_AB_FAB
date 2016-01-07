@@ -8,7 +8,11 @@
 ## - download is for downloading files uploaded in the db (does streaming)
 #########################################################################
 
+@auth.requires_membership('admin')
 def index():
+    if auth.has_membership('operacional_A'):
+        redirect(URL('pedidos','abertos?menu=caixa')) 
+
     from datetime import datetime, timedelta
     meses = 1
     dias_por_mes = 30
