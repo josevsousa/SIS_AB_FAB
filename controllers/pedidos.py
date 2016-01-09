@@ -1,5 +1,10 @@
 # -*- conding: utf-8 -*-
 @auth.requires(auth.has_membership('operacional_A') or auth.has_membership('admin'))
+
+def index():
+	titulo = H3('Seja bem vindo')
+	return locals()
+
 def abertos():
 	from datetime import datetime
 	pedidos = db(db.historicoVendas.id>0 and db.historicoVendas.status_venda!='Finalizada').select()
@@ -13,7 +18,6 @@ def iten():
 	data = request.vars.dataSolicitacao
 	grid = db(Itens.codigoVenda == cod).select()
 	head = H3("COD: [ %s ]  aberto em %s"%(cod, data))
-
 
 	#pegar lista do historicoVendas.itensVendaPendente e jogar na tela 
 	return dict(head=head,grid=grid,cod=cod)

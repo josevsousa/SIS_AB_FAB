@@ -278,6 +278,8 @@ Parcelados = db.define_table('parcelados',
     Field('dataPagamento', 'datetime')
     )
 
+
+
 Itens = db.define_table('itens',
     Field('codigoVenda', readable=False),
     Field('codigoIten',label="Código"),

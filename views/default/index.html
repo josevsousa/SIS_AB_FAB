@@ -51,20 +51,28 @@
                 //mudar par check_False
                 $(this).removeClass('check_True').addClass('check_False');
                 //passar o False para o Itens.status
-                updateStatus(cod,'False');
+                updateStat(cod,'False');
             }else{
                 //mudar para check_True
                 $(this).removeClass('check_False').addClass('check_True');
                 //passar o True para o Itens.status
-                updateStatus(cod,'True');
+                updateStat(cod,'True');
             };
+            function updateStat(cod, status){
+                d = new Date();
+                dataGrav = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDay()+' '+ d.getHours()+':'+d.getMinutes()+':'+ d.getSeconds(); 
+                $('#transitory').val(cod +';'+ status +';'+ dataGrav);
+                ajax('updateSt',['transitory']);    
+            };
+
         });
 
-        function updateStatus(cod, status){
-            console.log(cod + " : " + status)       
-        };   
-    };
+  
 
+        //alinha a pagina no scroll
+        // $('html, body').animate({scrollTop:83}, 1040);
+    };
+        
     $(document).ready(function(){
         
             $(".cheques_boletos").on('click', function() {
@@ -196,7 +204,7 @@
         });//fim jquary ready
     </script>
 
-    <input type="text" id="transitory" name="transitory" style='display:none'>
+    <input type="text" id="transitory" name="transitory" style='display:block'>
 	<h2>Sistema de controle gerencial da ArtesanalBaby!</h2>
     
 

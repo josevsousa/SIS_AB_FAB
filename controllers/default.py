@@ -8,10 +8,15 @@
 ## - download is for downloading files uploaded in the db (does streaming)
 #########################################################################
 
-@auth.requires_membership('admin')
+# @auth.requires_membership('admin')
+
+# @auth.requires_login()
+
+
 def index():
+    #redireciona para outra pagina se o usuario for do grupo operacional_A
     if auth.has_membership('operacional_A'):
-        redirect(URL('pedidos','abertos?menu=caixa')) 
+        redirect(URL('pedidos','abertos?menu=operacional')) 
 
     from datetime import datetime, timedelta
     meses = 1
@@ -29,13 +34,13 @@ def index():
     
     # mandar as datas dos debitos pendentes
 
-
     # response.flash = T("Seja bem vindo!  %s !"%(hoje.strftime('%d/%m/%Y')))
     return locals()
 
-def updateStatus(cod, status):
-    print cod + " -- " + status
-
+def updateSt():
+    index = request.vars.transitory  
+    index = index.split(';')
+    db(db.parcelados.id == index[0]).update(statusPagamento=index[1], dataPagamento=index[2])
 
 def cheques_boletos():
     from datetime import datetime, timedelta

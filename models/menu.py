@@ -95,6 +95,7 @@ if 'auth' in globals():
         if auth.has_membership('operacional_A'):
             response.menu = [
                 (T('Operacional'),False, None, [
+                    # (T('Separar itens venda'), False, URL('pedidos', 'abertos?menu=operacional'), []),
                     (T('Separar itens venda'), False, URL('pedidos', 'abertos?menu=operacional'), [])
                   ]),
 
