@@ -5,6 +5,7 @@ def index():
 	titulo = H3('Seja bem vindo')
 	return locals()
 
+@auth.requires_login()
 def abertos():
 	from datetime import datetime
 	pedidos = db(db.historicoVendas.id>0 and db.historicoVendas.status_venda!='Finalizada').select()

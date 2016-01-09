@@ -15,7 +15,7 @@
         left: 192px;
         top: -26px;
     }
-        .check{
+    .check{
         padding: 3px;       
     }
     .check div{
@@ -38,6 +38,11 @@
         margin: 0 auto;
         width: 95%;
     }
+    span.ee {
+        padding-left: 2px;
+        color: red;
+        display: none;
+    }
     </style>
  <script>
 
@@ -45,6 +50,7 @@
     function checkOk(){
         $('.check div').on('click',function(){
             statusAtual = $(this).attr('class');//status do check 
+            console.log(statusAtual);
             cod  = $(this).parent().parent().children()[0];//id do row do check
             cod = cod.textContent;
             if (statusAtual == "check_True") {
@@ -58,24 +64,37 @@
                 //passar o True para o Itens.status
                 updateStat(cod,'True');
             };
-            function updateStat(cod, status){
-                d = new Date();
-                dataGrav = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDay()+' '+ d.getHours()+':'+d.getMinutes()+':'+ d.getSeconds(); 
-                $('#transitory').val(cod +';'+ status +';'+ dataGrav);
-                ajax('updateSt',['transitory']);    
-            };
 
         });
-
-  
-
         //alinha a pagina no scroll
         // $('html, body').animate({scrollTop:83}, 1040);
     };
-        
+    // var b = document.querySelector('#buscarCq');
+    
+    function updateStat(cod, status){
+        d = new Date();
+        dataGrav = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDay()+' '+ d.getHours()+':'+d.getMinutes()+':'+ d.getSeconds(); 
+        $('#transitory').val(cod +';'+ status +';'+ dataGrav);
+        ajax('updateSt',['transitory']);    
+    };    
+
     $(document).ready(function(){
-        
+            
+            $('#buscarCq').on('click',function(){
+                var d1 = $('#no_table_date_initial').val();
+                var d2 = $('#no_table_date_final').val();
+                if (d1 != '' && d2 != '') {
+                    $('#transitory').val(d1+';'+d2);
+                    ajax('cheques_boletos_buscar',['transitory'], 'grid');
+                    $('.ee').hide(400)
+                } else{
+                    $('.ee').show();
+                };
+            });
+
             $(".cheques_boletos").on('click', function() {
+
+                $('#no_table_date_initial, #no_table_date_final').val('');
                 // enviar data para pesquisa
                 var data = new Date();
                 var ano = data.getFullYear()
@@ -204,7 +223,7 @@
         });//fim jquary ready
     </script>
 
-    <input type="text" id="transitory" name="transitory" style='display:block'>
+    <input type="text" id="transitory" name="transitory" style='display:none'>
 	<h2>Sistema de controle gerencial da ArtesanalBaby!</h2>
     
 
@@ -237,14 +256,15 @@
 	    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
           <div class="panel-body">
            <!-- <div id="grid"></div> -->
-            <form class="form-inline">
+            <span class="ee"> Os dois campos obrigatórios</span>
+            <form class="form-inline" action='#'>
                   <div class="form-group">
                    <input class="form-control" id="no_table_date_initial" name="date_initial" type="text" value="" placeholder="Data inicial">
                   </div>
                   <div class="form-group">
                     <input type="text" class="form-control" id="no_table_date_final" placeholder="Data final">
                   </div>
-                  <button type="submit" class="btn btn-default">Buscar</button>
+                  <a type="text" id="buscarCq" class="btn btn-default">Buscar</a>
             </form>
             <hr>
             <table id="tabela_creditos" class="table hover" >

@@ -32,7 +32,12 @@ def index():
         #burcar dados do grafico
         dadosgraf.append([ano+i,[49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]])
     
-    # mandar as datas dos debitos pendentes
+    form = SQLFORM.factory(
+        Field("date_initial", requires=IS_NOT_EMPTY(error_message="Campo vazio")),
+        Field("date_final", requires=IS_NOT_EMPTY(error_message="Campo vazio")),
+        formstyle='divs',
+        submit_button="Search",
+        )
 
     # response.flash = T("Seja bem vindo!  %s !"%(hoje.strftime('%d/%m/%Y')))
     return locals()
@@ -60,6 +65,28 @@ def cheques_boletos():
     # table = query   
                                   
     return table
+
+def cheques_boletos_buscar():
+    index = request.vars.transitory
+    index = index.split(';')
+    date_initial = index[0] 
+    date_initial = date_initial.split('/')
+    date_initial = "%s-%s-%s"%(date_initial[2],date_initial[0],date_initial[1])
+    date_final = index[1] 
+    date_final = date_final.split('/')
+    data_final = "%s-%s-%s"%(date_final[2],date_final[0],date_final[1])
+    
+
+    # # fazendo consulta entre as datas ecolhidas
+    query = db((db.parcelados.dataVencimento >= date_initial) & (db.parcelados.dataVencimento <= data_final)).select()      
+   
+    itens = ''
+    for i in query:
+        itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante, i.statusPagamento)
+        pass
+
+    table = XML("%s %s"%(itens,'<script>window.onload = checkOk();</script>')) # carregar funcao no DOM 
+    return table   
 
 def user():
     """
