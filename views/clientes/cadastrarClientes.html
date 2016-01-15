@@ -6,9 +6,9 @@
 		$('#clientes_celular').mask("(99) 99999-9999");
 		$('#clientes_fixo').mask("(99) 9999-9999");
 		$('#clientes_cpf').mask('000.000.000-00');
-		$('#clientes_cnpj').mask('00.000.000/0000-00');
+		$('#clientes_cnpj_cpf').mask('00000000000000');
 		$('#clientes_insc').mask('000.000.000');
-		$('#clientes_cpf').mask('00000.000');
+		$('#clientes_cep').mask('00000.000');
 
 		// auto
 		$('input[type=text]').addClass('form-control ip_text');
@@ -19,8 +19,7 @@
 
 		$("#SelectItensTipoPagamento").on('change',function(e){
 			console.log(e)
-		})
-
+		});
 	});
 </script>
 <style>
@@ -58,4 +57,3 @@
 		
 	</div>
 </div>
-

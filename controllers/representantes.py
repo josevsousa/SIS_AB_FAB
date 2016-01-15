@@ -12,7 +12,7 @@ def listarRepresentantes():
 	class Virtual(object):
 		def botoes(self):
 			#admin
-			if auth.has_membership('administrador'):   #URL('representantes','deletar',args=[self.representantes.id])
+			if auth.has_membership('admin'):   #URL('representantes','deletar',args=[self.representantes.id])
 				bts = DIV(XML(A(SPAN(_class='glyphicon glyphicon-eye-open'),_href=URL('representantes','select',args=[self.representantes.id]),_class='btn btn-default f Jview btn-xs')),XML(A(SPAN(_class='glyphicon glyphicon-pencil'),_href=URL('representantes','update',args=[self.representantes.id]),_class='btn btn-default Jview btn-xs')),XML(A(SPAN(_class='glyphicon glyphicon-remove'),_href='#',_class='btn btn-default fechar Jview btn-xs')),_class='btn-group JpositionA')
 			#user qualquer
 			else:

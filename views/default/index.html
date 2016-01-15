@@ -50,7 +50,7 @@
     function checkOk(){
         $('.check div').on('click',function(){
             statusAtual = $(this).attr('class');//status do check 
-            console.log(statusAtual);
+            // console.log(statusAtual);
             cod  = $(this).parent().parent().children()[0];//id do row do check
             cod = cod.textContent;
             if (statusAtual == "check_True") {
@@ -66,6 +66,7 @@
             };
 
         });
+
         //alinha a pagina no scroll
         // $('html, body').animate({scrollTop:83}, 1040);
     };
@@ -220,6 +221,7 @@
 
                     }])
                 });
+
         });//fim jquary ready
     </script>
 
@@ -267,8 +269,9 @@
                   <a type="text" id="buscarCq" class="btn btn-default">Buscar</a>
             </form>
             <hr>
-            <table id="tabela_creditos" class="table hover" >
+            <table id="tabela_creditos" class="table hover"  >
                 <thead>
+                    <th>Código venda</th>
                     <th>Tipo crédito</th>
                     <th>Data Vencimento</th>
                     <th>Parcela</th> 

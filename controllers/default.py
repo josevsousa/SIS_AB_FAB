@@ -10,9 +10,7 @@
 
 # @auth.requires_membership('admin')
 
-# @auth.requires_login()
-
-
+@auth.requires_login()
 def index():
     #redireciona para outra pagina se o usuario for do grupo operacional_A
     if auth.has_membership('operacional_A'):
@@ -55,11 +53,11 @@ def cheques_boletos():
     dt_futura = hoje + timedelta(dias_por_mes*meses)
 
     pattern = '%' + request.vars.transitory + '%' #primeira letra maiusculo
-    query = db(db.parcelados.id>0 and db.parcelados.statusPagamento != True and db.parcelados.dataVencimento.like(pattern) ).select()
+    query = db(db.parcelados.id>0 and db.parcelados.statusPagamento != True and db.parcelados.excluido != True and db.parcelados.dataVencimento.like(pattern) ).select()
     
     itens = ''
     for i in query:
-        itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante, i.statusPagamento)
+        itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante, i.statusPagamento)
         pass
     table = XML("%s %s"%(itens,'<script>window.onload = checkOk();</script>')) # carregar funcao no DOM  
     # table = query   
@@ -78,11 +76,11 @@ def cheques_boletos_buscar():
     
 
     # # fazendo consulta entre as datas ecolhidas
-    query = db((db.parcelados.dataVencimento >= date_initial) & (db.parcelados.dataVencimento <= data_final)).select()      
+    query = db((db.parcelados.dataVencimento >= date_initial) and (db.parcelados.dataVencimento <= data_final) and db.parcelados.excluido != True ).select()      
    
     itens = ''
     for i in query:
-        itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante, i.statusPagamento)
+        itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante, i.statusPagamento)
         pass
 
     table = XML("%s %s"%(itens,'<script>window.onload = checkOk();</script>')) # carregar funcao no DOM 

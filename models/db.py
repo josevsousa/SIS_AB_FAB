@@ -63,7 +63,7 @@ crud = Crud(db)
 ## create all tables needed by auth if not custom tables
 auth.define_tables(username=False, signature=False)
 
-## configure email: 'logging' or
+# ## configure email: 'logging' or    o codigo esta no  models/e_mail.py
 mail = auth.settings.mailer
 mail.settings.server = 'logging' or 'mail.seusite.com.br:587'
 mail.settings.sender = 'user'
@@ -165,8 +165,8 @@ Clientes = db.define_table('clientes',
     Field('operadora', default=' - '),
     Field('fixo', label='Tel.'),
     Field('email',label='E-mail'),
-    Field('cnpj', label='CNPJ'),
-    Field('cpf', label='CPF'),
+    Field('cnpj_cpf', label='CNPJ/CPF'),
+    # Field('cpf', label='CPF'),
     Field('insc', label='INSC'),
     Field('cep', label='CEP'),
     Field('endereco', label='Endereço'),
@@ -178,6 +178,8 @@ Clientes = db.define_table('clientes',
     Field('foto_cliente','upload', label='Foto'),
     migrate = "clientes.table"
     )
+# db.clientes.cpf.requires = IS_CPF(), IS_NOT_IN_DB(db, db.clientes.cpf, error_message="CEP já existe") 
+db.clientes.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.clientes.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
 db.clientes.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.clientes.nome.requires = IS_NOT_IN_DB(db, db.clientes.nome, error_message = 'Usuario invalido')
 db.clientes.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
@@ -187,12 +189,13 @@ db.clientes.tipo.requires = IS_IN_SET(TIPO, error_message="Tipo inválido!!!")
 Funcionarios = db.define_table('funcionarios',
     Field('matricula', label='Matrícula'),
     Field('nome',label='Nome'), 
-    Field('celular', label='Celulares'),
+    Field('celular', label='Celular'),
     # Field('Cel',"list:string"),
     Field('operadora', default=' - '),
     Field('fixo', label='Tel:..'),
     Field('email',label='E-mail'),
-    Field('cpf', label='CPF', default=' - '),
+    # Field('cpf', label='CPF', default=' - '),
+    Field('cnpj_cpf', label='CNPJ/CPF'),
     Field('cep', label='CEP'),
     Field('endereco', label='Endereço'),
     Field('numero' ,label='Número'),
@@ -204,6 +207,7 @@ Funcionarios = db.define_table('funcionarios',
     migrate = "funcionarios.table"
     )
 
+db.funcionarios.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.funcionarios.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
 db.funcionarios.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.funcionarios.nome.requires = IS_NOT_IN_DB(db, db.funcionarios.nome, error_message = 'Usuario invalido')
 db.funcionarios.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
@@ -233,8 +237,7 @@ Representantes = db.define_table('representantes',
     # Field('Cel',"list:string"),
     Field('fixo', label='Tel:..'),
     Field('email',label='E-mail'),
-    Field('cnpj', label='CNPJ'),
-    Field('cpf', label='CPF'),
+    Field('cnpj_cpf', label='CNPJ/CPF'),
     Field('insc', label='INSC'),
     Field('cep', label='CEP'),
     Field('endereco', label='Endereço'),
@@ -247,7 +250,7 @@ Representantes = db.define_table('representantes',
     Field('foto_representante','upload', label='Foto'),
     migrate = "representante.table"
     )
-
+db.representantes.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.representantes.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
 db.representantes.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.representantes.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
 db.representantes.nome.requires = IS_NOT_EMPTY(error_message="Nome obrigatório")
@@ -275,7 +278,8 @@ Parcelados = db.define_table('parcelados',
     Field('dataVencimento', 'datetime', label='Vencimento'),
     Field('valor', label='Valor'),
     Field('statusPagamento', 'boolean', default=False),
-    Field('dataPagamento', 'datetime')
+    Field('dataPagamento', 'datetime'),
+    Field('excluido', 'boolean', default=False)
     )
 
 

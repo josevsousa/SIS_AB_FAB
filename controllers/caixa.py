@@ -268,8 +268,10 @@ def cancelarVenda():
     
 
 def excluirVendaRegistrada():
-    db(db.historicoVendas.codigoVenda == request.vars.transitory).update(deletado=True)
-    db(db.pendentes.codigo == request.vars.transitory).update(status='Finalizado')
+    codigo = request.vars.transitory
+    db(db.historicoVendas.codigoVenda == codigo).update(deletado=True)
+    db(db.pendentes.codigo == codigo).update(status='Finalizado')
+    db(db.parcelados.codigo == codigo).update(excluido=True)
     return ''
 
 def parcelado():

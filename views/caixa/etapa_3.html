@@ -12,7 +12,8 @@ $(document).ready(function(){
 	      // $("#transitory").val(tipoVenda+";"+valorTotal+";"+desconto+";"+representante+";"+enviarEmail);
 	      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante);
 	      ajax('fecharVenda',['transitory']);
-	      $(location).attr('href',"historico?menu=caixa");//redireciona a pagina
+	      // $(location).attr('href',"historico?menu=caixa");//redireciona a pagina
+	      $(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
 	    });	
 
 		$("#btCancelarCaixa").on('click',function(){
