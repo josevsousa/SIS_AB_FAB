@@ -53,7 +53,7 @@ def cheques_boletos():
     dt_futura = hoje + timedelta(dias_por_mes*meses)
 
     pattern = '%' + request.vars.transitory + '%' #primeira letra maiusculo
-    query = db(db.parcelados.id>0 and db.parcelados.statusPagamento != True and db.parcelados.excluido != True and db.parcelados.dataVencimento.like(pattern) ).select()
+    query = db((db.parcelados.id>0) & (db.parcelados.statusPagamento != True) & (db.parcelados.excluido != True) & (db.parcelados.dataVencimento.like(pattern)) ).select()
     
     itens = ''
     for i in query:
@@ -78,7 +78,7 @@ def cheques_boletos_buscar():
     
 
     # # fazendo consulta entre as datas ecolhidas
-    query = db((db.parcelados.dataVencimento >= date_initial) and (db.parcelados.dataVencimento <= data_final)).select()      
+    query = db((db.parcelados.dataVencimento >= date_initial) & (db.parcelados.dataVencimento <= data_final)).select()      
    
     itens = ''
     for i in query:
