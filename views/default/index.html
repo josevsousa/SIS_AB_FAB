@@ -43,6 +43,12 @@
         color: red;
         display: none;
     }
+    #tabela_creditos th:last-child {
+        text-align: center;
+    }
+    .dataDisplay{
+            font-size: x-large;
+    }
     </style>
  <script>
 
@@ -80,7 +86,10 @@
     };    
 
     $(document).ready(function(){
-            
+            var data = new Date();
+            var ano = data.getFullYear();
+
+
             $('#buscarCq').on('click',function(){
                 var d1 = $('#no_table_date_initial').val();
                 var d2 = $('#no_table_date_final').val();
@@ -97,13 +106,45 @@
 
                 $('#no_table_date_initial, #no_table_date_final').val('');
                 // enviar data para pesquisa
-                var data = new Date();
-                var ano = data.getFullYear()
                 var mes = (data.getMonth()+1).toString(); // 0-11 (zero=janeiro)
+                var mesExtenso = "";
+                // ---- 
+                if (mes == 1) {
+                    mesExtenso = 'Janeiro'
+                }else if(mes == 2){
+                    mesExtenso = 'Fevereiro';
+                }else if(mes == 3){
+                    mesExtenso = 'Março';
+                }else if(mes == 4){
+                    mesExtenso = 'Abril';
+                }else if(mes == 5){
+                    mesExtenso = 'Maio';
+                }else if(mes == 6){
+                    mesExtenso = 'Junho';
+                }else if(mes == 7){
+                    mesExtenso = 'Julho';
+                }else if(mes == 8){
+                    mesExtenso = 'Agosto';
+                }else if(mes == 9){
+                    mesExtenso = 'Setembro';
+                }else if(mes == 10){
+                    mesExtenso = 'Outubro';
+                }else if(mes == 11){
+                    mesExtenso = 'Novembro';
+                }else{
+                    mesExtenso = 'Desembro';
+                };
+                // ----
                 if (mes<10 && mes>0) {
                     mes = "0"+mes;
                 };
+                $('.dataDisplay').text(mesExtenso+' de '+ano);
+
+
                 var busca = ano+"-"+mes;
+
+
+
                 $('#transitory').val(busca);
                 ajax('cheques_boletos',['transitory'],'grid');
                 /* Act on the event */
@@ -259,15 +300,21 @@
           <div class="panel-body">
            <!-- <div id="grid"></div> -->
             <span class="ee"> Os dois campos obrigatórios</span>
-            <form class="form-inline" action='#'>
-                  <div class="form-group">
-                   <input class="form-control" id="no_table_date_initial" name="date_initial" type="text" value="" placeholder="Data inicial">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="no_table_date_final" placeholder="Data final">
-                  </div>
-                  <a type="text" id="buscarCq" class="btn btn-default">Buscar</a>
-            </form>
+            <div class="row">
+                <div class="col-md-6">
+                    <form class="form-inline" action='#'>
+                          <div class="form-group">
+                           <input class="form-control" id="no_table_date_initial" name="date_initial" type="text" value="" placeholder="Data inicial">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="form-control" id="no_table_date_final" placeholder="Data final">
+                          </div>
+                          <a type="text" id="buscarCq" class="btn btn-default">Buscar</a>
+                    </form>
+                </div>
+                
+                <div class="col-md-6 dataDisplay"></div>    
+            </div>    
             <hr>
             <table id="tabela_creditos" class="table hover"  >
                 <thead>
