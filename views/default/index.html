@@ -49,6 +49,10 @@
     .dataDisplay{
             font-size: x-large;
     }
+    #telaRepresentantes img{
+        width: 200px;
+        margin-left: 40%;
+    }
     </style>
  <script>
 
@@ -70,12 +74,80 @@
                 //passar o True para o Itens.status
                 updateStat(cod,'True');
             };
-
         });
 
         //alinha a pagina no scroll
         // $('html, body').animate({scrollTop:83}, 1040);
     };
+
+
+    function graficoRep(){
+         $('#grafico').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Receita tre anual'
+                    },
+                    // subtitle: {
+                    //     text: 'Source: WorldClimate.com'
+                    // },
+                    xAxis: {
+                        categories: [
+                            'Jan',
+                            'Fev',
+                            'Mar',
+                            'Abr',
+                            'Mai',
+                            'Jun',
+                            'Jul',
+                            'Ago',
+                            'Set',
+                            'Out',
+                            'Nov',
+                            'Des'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Valor  (R$)'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>R$ {point.y:.1f} reais</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: ([{
+                        name: {{=dadosgraf[0][0]}},
+                        data: {{=dadosgraf[0][1]}}
+
+                    },{
+                        name: {{=dadosgraf[1][0]}},
+                        data: {{=dadosgraf[1][1]}}
+
+                    },{
+                        name: {{=dadosgraf[2][0]}},
+                        data: {{=dadosgraf[2][1]}}
+
+                    }])
+                });
+    }
+
+
+
+
     // var b = document.querySelector('#buscarCq');
     
     function updateStat(cod, status){
@@ -150,6 +222,66 @@
                 /* Act on the event */
             });   
 
+        // TAB REPRESENTANTES
+            // var table = $('#representantes').DataTable();
+     
+            // $('#representantes tbody').on('click', 'tr', function () {
+            //     var data = table.row( this ).data();
+            //     alert( 'You clicked on '+data[0]+'\'s row' );
+            // } );
+
+            $("#repress").on('click',function(){
+
+                $('#no_table_date_initialR, #no_table_date_finalR').val('');
+                // enviar data para pesquisa
+                var mes = (data.getMonth()+1).toString(); // 0-11 (zero=janeiro)
+                var mesExtenso = "";
+                // ---- 
+                if (mes == 1) {
+                    mesExtenso = 'Janeiro'
+                }else if(mes == 2){
+                    mesExtenso = 'Fevereiro';
+                }else if(mes == 3){
+                    mesExtenso = 'Março';
+                }else if(mes == 4){
+                    mesExtenso = 'Abril';
+                }else if(mes == 5){
+                    mesExtenso = 'Maio';
+                }else if(mes == 6){
+                    mesExtenso = 'Junho';
+                }else if(mes == 7){
+                    mesExtenso = 'Julho';
+                }else if(mes == 8){
+                    mesExtenso = 'Agosto';
+                }else if(mes == 9){
+                    mesExtenso = 'Setembro';
+                }else if(mes == 10){
+                    mesExtenso = 'Outubro';
+                }else if(mes == 11){
+                    mesExtenso = 'Novembro';
+                }else{
+                    mesExtenso = 'Desembro';
+                };
+                // ----
+                if (mes<10 && mes>0) {
+                    mes = "0"+mes;
+                };
+                $('.dataDisplay').text(mesExtenso+' de '+ano);
+                var busca = ano+"-"+mes;
+
+                $('#transitory').val(busca);
+
+                ajax('tela_representantes', ['transitory'], 'telaRepresentantes')
+                // $('.telaRepresentantes').load('representantes.html')
+            })
+
+        // FIM TAB REPRESENTANTES
+
+
+
+
+
+
             // datepicker
             $(function() {
                 $( "#no_table_date_initial" ).datepicker({
@@ -169,7 +301,27 @@
                   }
                 });
                 $('fieldset').append('<span class="glyphicon glyphicon-calendar dt1"></span> <span class="glyphicon glyphicon-calendar dt2"></span>')
+            });            
+            $(function() {
+                $( "#no_table_date_initialR" ).datepicker({
+                  // defaultDate: "+1w",
+                  changeMonth: true,
+                  // numberOfMonths: 2,
+                  onClose: function( selectedDate ) {
+                    $( "#no_table_date_finalR" ).datepicker( "option", "minDate", selectedDate );
+                  }
+                });
+                $( "#no_table_date_finalR" ).datepicker({
+                  // defaultDate: "+1w",
+                  changeMonth: true,
+                  // numberOfMonths: 2,
+                  onClose: function( selectedDate ) {
+                    $( "#no_table_date_initialR" ).datepicker( "option", "maxDate", selectedDate );
+                  }
+                });
+                $('fieldset').append('<span class="glyphicon glyphicon-calendar dt1"></span> <span class="glyphicon glyphicon-calendar dt2"></span>')
             });
+
  
 
             // $('#tabela_creditos').DataTable({
@@ -201,67 +353,11 @@
             // console.log( $('.ui-datepicker-calendar td a').length ) 
             // $("#datepicker").datepicker( "setDate", "10/12/2012" );
 
-                $('#container').highcharts({
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Receita tre anual'
-                    },
-                    // subtitle: {
-                    //     text: 'Source: WorldClimate.com'
-                    // },
-                    xAxis: {
-                        categories: [
-                            'Jan',
-                            'Fev',
-                            'Mar',
-                            'Abr',
-                            'Mai',
-                            'Jun',
-                            'Jul',
-                            'Ago',
-                            'Set',
-                            'Out',
-                            'Nov',
-                            'Des'
-                        ],
-                        crosshair: true
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Valor  (R$)'
-                        }
-                    },
-                    tooltip: {
-                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                            '<td style="padding:0"><b>R$ {point.y:.1f} reais</b></td></tr>',
-                        footerFormat: '</table>',
-                        shared: true,
-                        useHTML: true
-                    },
-                    plotOptions: {
-                        column: {
-                            pointPadding: 0.2,
-                            borderWidth: 0
-                        }
-                    },
-                    series: ([{
-                        name: {{=dadosgraf[0][0]}},
-                        data: {{=dadosgraf[0][1]}}
+               
 
-                    },{
-                        name: {{=dadosgraf[1][0]}},
-                        data: {{=dadosgraf[1][1]}}
 
-                    },{
-                        name: {{=dadosgraf[2][0]}},
-                        data: {{=dadosgraf[2][1]}}
 
-                    }])
-                });
+
 
         });//fim jquary ready
     </script>
@@ -275,16 +371,32 @@
 	  <div class="panel panel-default">
 	    <div class="panel-heading" role="tab" id="headingOne">
 	      <h4 class="panel-title">
-	        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+	        <a role="button" id="repress" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
 	          Receitas Anual
 	        </a>
 	      </h4>
 	    </div>
-	    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+	    <div id="collapseOne" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne">
 	      <div class="panel-body">
-	        <!-- grafico -->
-	       	<div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-
+           <span class="ee"> Os dois campos obrigatórios</span>
+            <div class="row">
+                <div class="col-md-6">
+                    <form class="form-inline" action='#'>
+                          <div class="form-group">
+                           <input class="form-control" id="no_table_date_initialR" name="date_initial" type="text" value="" placeholder="Data inicial">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="form-control" id="no_table_date_finalR" placeholder="Data final">
+                          </div>
+                          <a type="text" id="buscarCqR" class="btn btn-default">Buscar</a>
+                    </form>
+                </div>                
+                <div class="col-md-6 dataDisplay"></div>    
+            </div>    
+            <hr>
+            <div id="telaRepresentantes">
+	           <img src="{{=URL('static','images/loading.gif')}}" alt="">
+            </div>   
 	      </div>
 	    </div>
 	  </div>

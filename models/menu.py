@@ -71,7 +71,7 @@ if 'auth' in globals():
         response.menu = []
     else:  
         if auth.has_membership('admin'):
-            response.menu = [
+            response.menu += [
                 
                   (T('Home'), False, URL('default', 'index?menu=principal'), []),
                   (T('Vendas'),False, None, [
