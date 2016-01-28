@@ -105,16 +105,20 @@ auth.settings.reset_password_requires_verification = True
 ## after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
 
+TAMANHO = ('Unico','P/M/G','P','M','G','GG')
+
 #tabela produtos
 db.define_table('produtos',
     Field('codigo_produto',label="Código"), #unique = nao repetir
     Field('nome_produto', requires = IS_NOT_EMPTY(error_message="Nome obrigatório"), label="Nome" ),
     Field('preco_produto_lojinha','double', label="R$"),
     Field('dataGravado','datetime', default=request.now, label="Data", writable=False),
+    Field('tamanho', label="Tamanho", default="PMG"),
     Field('foto_produto','upload', label="Foto"),
     migrate ='produtos.table'   
     )
-db.produtos.codigo_produto.requires = IS_NOT_EMPTY(error_message="Codigo obrigatório")
+db.produtos.tamanho.requires = IS_IN_SET(TAMANHO, error_message="Código obrigatório")
+db.produtos.codigo_produto.requires = IS_NOT_EMPTY(error_message="Código obrigatório")
 db.produtos.codigo_produto.requires = IS_NOT_IN_DB(db, db.produtos.codigo_produto, error_message = 'Codigo inválido!')
 
 # db.define_table('autoCompletProdutos',

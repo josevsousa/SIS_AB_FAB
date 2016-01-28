@@ -19,17 +19,17 @@
         padding: 3px;       
     }
     .check div{
-        width: 25px;
-        height: 29px;
-        cursor:pointer;
-        margin:0 auto;
-        margin-top: 4px;
+    width: 20px;
+    height: 22px;
+    cursor: pointer;
+    margin: 0 auto;
+    margin-top: 0px;
     }
     .check div.check_False{
-        background:url('{{=URL('static','images/checkBOX.png')}}') center 4px no-repeat;   
+        background:url('{{=URL('static','images/checkBOX.png')}}') center 0px no-repeat;   
     }
     .check div.check_True{
-        background:url('{{=URL('static','images/checkBOX.png')}}') center -20px no-repeat;                               
+        background:url('{{=URL('static','images/checkBOX.png')}}') center -24px no-repeat;                               
     }
     .obs_iten{
         padding: 2px !important;
@@ -363,7 +363,7 @@
     </script>
 
     <input type="text" id="transitory" name="transitory" style='display:none'>
-	<h2>Sistema de controle gerencial da ArtesanalBaby!</h2>
+	<h2>Relatórios de movimento!</h2>
     
 
 	<!-- <h3>Teste em produção com pull</h3> -->
@@ -372,7 +372,7 @@
 	    <div class="panel-heading" role="tab" id="headingOne">
 	      <h4 class="panel-title">
 	        <a role="button" id="repress" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-	          Receitas Anual
+	          <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Histórico de venda dos Representantes
 	        </a>
 	      </h4>
 	    </div>
@@ -404,7 +404,7 @@
 	    <div class="panel-heading" role="tab" id="headingTwo">
 	      <h4 class="panel-title">
 	        <a class="collapsed cheques_boletos" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-	          Vencimentos de cheques e Boletos!
+	          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Vencimentos de cheques e Boletos!
 	        </a>
 	      </h4>
 	    </div>
@@ -428,7 +428,7 @@
                 <div class="col-md-6 dataDisplay"></div>    
             </div>    
             <hr>
-            <table id="tabela_creditos" class="table hover"  >
+            <table id="tabela_creditos" class="table hover table-bordered"  >
                 <thead>
                     <th>Código venda</th>
                     <th>Tipo crédito</th>

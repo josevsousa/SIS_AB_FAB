@@ -91,6 +91,7 @@
 'Current session': 'Sessão atual',
 'customize me!': 'Personalize-me!',
 'Código': 'Código',
+'Código obrigatório': 'Código obrigatório',
 'Data': 'Data',
 'Data inválida': 'Data inválida',
 'data uploaded': 'dados enviados',

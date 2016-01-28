@@ -113,7 +113,6 @@ def tela_representantes():
     pattern = '%' + request.vars.transitory + '%' #primeira letra maiusculo
     # queryHistoricoVendas = db((db.historicoVendas.id>0) & (db.historicoVendas.deletado != True) & (db.historicoVendas.dataVenda.like(pattern)) ).select()
 
-
     # grafico = DIV(_id="container", _style='min-width: 300px; height: 400px; margin: 0 auto')
     rows = TBODY()
 
@@ -128,12 +127,7 @@ def tela_representantes():
         row = TR(TD(representante.nome),TD(qtdeVendas),TD("R$ %.2f"%comissaoVendas),TD("R$ %.2f"%(comissaoVendas*10/100)))
         rows.append(row)
 
-    # populando a TBODY
-    # for venda in db(db.historicoVendas.id>0).select():
-    #     #buscar no db
-    #     row = TR(TD(venda.id),TD('b'),TD('c'))
-    #     rows.append(row)
-    return TABLE(THEAD(TR(TH('Representante'),TH('Qtde Vendas'),TH('Total Vendas'),TH('Total Comissão'))),rows,_id="representantes",_class="table hover")
+    return TABLE(THEAD(TR(TH('Representante'),TH('Qtde Vendas'),TH('Total Vendas'),TH('Total Comissão'))),rows,_id="representantes",_class="table hover table-bordered")
 
 
 
