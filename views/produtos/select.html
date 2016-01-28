@@ -7,9 +7,10 @@
 		<div class="col-md-6">
 			<ul class="list-group">
 			  <li class="list-group-item"><strong>Codigo : </strong> {{=table[0].codigo_produto}}</li>
-			  <li class="list-group-item"><strong>Nome :</strong> {{=table[0].nome_produto}}</li>
-			  <li class="list-group-item"><strong>Valor :</strong> R${{= " %.2f"% float(table[0].preco_produto_lojinha)}}</li>
-			  <li class="list-group-item"><strong>Criado em :</strong>{{=table[0].dataGravado}}</li>
+			  <li class="list-group-item"><strong>Nome : </strong> {{=table[0].nome_produto}}</li>
+			  <li class="list-group-item"><strong>Valor : </strong> R${{= " %.2f"% float(table[0].preco_produto_lojinha)}}</li>
+			  <li class="list-group-item"><strong>Tamanho : </strong>{{=table[0].tamanho}}</li>
+			  <li class="list-group-item"><strong>Criado em : </strong>{{=table[0].dataGravado}}</li>
 			</ul>
 			<nav>
 			  <ul class="pager">

@@ -158,9 +158,42 @@
     };    
 
     $(document).ready(function(){
+            // ---- DATA
             var data = new Date();
             var ano = data.getFullYear();
-
+            var mes = (data.getMonth()+1).toString(); // 0-11 (zero=janeiro)
+            var mesExtenso = "";
+            // ---- 
+            if (mes == 1) {
+                mesExtenso = 'Janeiro'
+            }else if(mes == 2){
+                mesExtenso = 'Fevereiro';
+            }else if(mes == 3){
+                mesExtenso = 'Março';
+            }else if(mes == 4){
+                mesExtenso = 'Abril';
+            }else if(mes == 5){
+                mesExtenso = 'Maio';
+            }else if(mes == 6){
+                mesExtenso = 'Junho';
+            }else if(mes == 7){
+                mesExtenso = 'Julho';
+            }else if(mes == 8){
+                mesExtenso = 'Agosto';
+            }else if(mes == 9){
+                mesExtenso = 'Setembro';
+            }else if(mes == 10){
+                mesExtenso = 'Outubro';
+            }else if(mes == 11){
+                mesExtenso = 'Novembro';
+            }else{
+                mesExtenso = 'Desembro';
+            };
+            // ----
+            if (mes<10 && mes>0) {
+                mes = "0"+mes;
+            };
+            // ----- FIM DATA
 
             $('#buscarCq').on('click',function(){
                 var d1 = $('#no_table_date_initial').val();
@@ -177,39 +210,7 @@
             $(".cheques_boletos").on('click', function() {
 
                 $('#no_table_date_initial, #no_table_date_final').val('');
-                // enviar data para pesquisa
-                var mes = (data.getMonth()+1).toString(); // 0-11 (zero=janeiro)
-                var mesExtenso = "";
-                // ---- 
-                if (mes == 1) {
-                    mesExtenso = 'Janeiro'
-                }else if(mes == 2){
-                    mesExtenso = 'Fevereiro';
-                }else if(mes == 3){
-                    mesExtenso = 'Março';
-                }else if(mes == 4){
-                    mesExtenso = 'Abril';
-                }else if(mes == 5){
-                    mesExtenso = 'Maio';
-                }else if(mes == 6){
-                    mesExtenso = 'Junho';
-                }else if(mes == 7){
-                    mesExtenso = 'Julho';
-                }else if(mes == 8){
-                    mesExtenso = 'Agosto';
-                }else if(mes == 9){
-                    mesExtenso = 'Setembro';
-                }else if(mes == 10){
-                    mesExtenso = 'Outubro';
-                }else if(mes == 11){
-                    mesExtenso = 'Novembro';
-                }else{
-                    mesExtenso = 'Desembro';
-                };
-                // ----
-                if (mes<10 && mes>0) {
-                    mes = "0"+mes;
-                };
+               
                 $('.dataDisplay').text(mesExtenso+' de '+ano);
 
 
@@ -233,39 +234,7 @@
             $("#repress").on('click',function(){
 
                 $('#no_table_date_initialR, #no_table_date_finalR').val('');
-                // enviar data para pesquisa
-                var mes = (data.getMonth()+1).toString(); // 0-11 (zero=janeiro)
-                var mesExtenso = "";
-                // ---- 
-                if (mes == 1) {
-                    mesExtenso = 'Janeiro'
-                }else if(mes == 2){
-                    mesExtenso = 'Fevereiro';
-                }else if(mes == 3){
-                    mesExtenso = 'Março';
-                }else if(mes == 4){
-                    mesExtenso = 'Abril';
-                }else if(mes == 5){
-                    mesExtenso = 'Maio';
-                }else if(mes == 6){
-                    mesExtenso = 'Junho';
-                }else if(mes == 7){
-                    mesExtenso = 'Julho';
-                }else if(mes == 8){
-                    mesExtenso = 'Agosto';
-                }else if(mes == 9){
-                    mesExtenso = 'Setembro';
-                }else if(mes == 10){
-                    mesExtenso = 'Outubro';
-                }else if(mes == 11){
-                    mesExtenso = 'Novembro';
-                }else{
-                    mesExtenso = 'Desembro';
-                };
-                // ----
-                if (mes<10 && mes>0) {
-                    mes = "0"+mes;
-                };
+            
                 $('.dataDisplay').text(mesExtenso+' de '+ano);
                 var busca = ano+"-"+mes;
 
@@ -372,13 +341,13 @@
 	    <div class="panel-heading" role="tab" id="headingOne">
 	      <h4 class="panel-title">
 	        <a role="button" id="repress" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-	          <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Histórico de venda dos Representantes
+	          <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>Histórico de venda dos Representantes
 	        </a>
 	      </h4>
 	    </div>
 	    <div id="collapseOne" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne">
 	      <div class="panel-body">
-           <span class="ee"> Os dois campos obrigatórios</span>
+           <span class="ee">Os dois campos obrigatórios</span>
             <div class="row">
                 <div class="col-md-6">
                     <form class="form-inline" action='#'>

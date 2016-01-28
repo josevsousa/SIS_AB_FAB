@@ -35,7 +35,7 @@ def etapa_2():
     sTotal = 0.0
     for iten in grid:
         sTotal += float(iten.valorTotal) 
-    sTotal = "R$%.2f"%sTotal    
+    sTotal = "R$ %.2f"%sTotal    
     # ---- fim sTotal
     return dict(grid=grid, sTotal=sTotal)
 

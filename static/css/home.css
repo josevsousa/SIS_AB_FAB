@@ -80,4 +80,7 @@ td.btD, td.btDD {
     padding-top: 22px; 
     /*border-top: 1px solid #D9D9D9;*/
 }
+#dataTable_filter input {
+    border-radius: 6px;
+}
 /*FIM DA HEADER E FOOTER*/

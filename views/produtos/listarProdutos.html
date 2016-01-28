@@ -23,7 +23,8 @@
 		    		}else{
 		    			console.log("Nao apagado")
 		    		};
-		    })
+		    });
+		    $('input[type=search]').addClass('form-control')
 	})
 
 </script>
@@ -33,11 +34,19 @@
 	td#opcoes div{float: right;}
 	td#opcoes div button{margin-right: 0px !important}
 	.idS {display:none !important;}
-*/	.JpositionA{float: right;}
+	.JpositionA{float: right;}
+*/
 	.JpositionA a{margin-right: 0px !important}
 	#cod{display:none;}
-
-
+	td {
+	    border: 1px solid #EFEFEF;
+	}
+	#dataTable th:first-child, #dataTable td:first-child{
+		width: 50px;
+	}
+	#dataTable_filter input{
+		color: red;
+	}
 </style>
 
 <input type="text" id="cod" name="cod">
@@ -51,11 +60,12 @@
 
 
 <hr>
-<table id="dataTable" class="table table-striped hover" cellspacing="0" width="100%" >
+<table id="dataTable" class="table table-striped hover " cellspacing="0" width="100%" >
 <thead>
 	<tr>
 		<th>Codigo da peça</th>
 		<th>Nome do produto</th>
+		<th>Tamanho</th>
 		<th>Preço</th>
 		<th></th>
 	</tr> 
@@ -64,6 +74,7 @@
 			<tr>
 				<td>{{=produto.produtos.codigo_produto}}</td>
 				<td>{{=produto.produtos.nome_produto}}</td>
+				<td>{{=produto.produtos.tamanho}}</td>
 				<td>R${{= " %.2f"%float(produto.produtos.preco_produto_lojinha)}}</td>
 				<td class="opcoes">{{=produto.campos_virtual.botoes}}</td>
 			</tr>
