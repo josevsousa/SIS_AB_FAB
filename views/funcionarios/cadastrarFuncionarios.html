@@ -19,6 +19,7 @@
 		$("#SelectItensTipoPagamento").on('change',function(e){
 			console.log(e)
 		});
+		// incrementa o ultimo numero de funcionario
 		{{x = len(db(Funcionarios.id>0).select())+1}}
 		$('#funcionarios_matricula').val('{{=str(x).zfill(4)}}')
 
@@ -55,10 +56,11 @@
 <div class="row">
 	<div class="col-md-6 formm">
 		{{=formCadastro}}
-		
 	</div>
 	<div class="col-md-6">
-		
+		<h3>Número de matrícula automático!</h3>
+		<p>O número de matrícula para o novo ítem, é a sequência da útima matrícula cadastra</p>
+		<p>Se você preferir altere o número de matrícula para um novo número.</p>
 	</div>
 </div>
 

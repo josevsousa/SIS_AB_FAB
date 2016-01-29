@@ -108,7 +108,7 @@ auth.settings.reset_password_requires_verification = True
 TAMANHO = ('Unico','P/M/G','P','M','G','GG')
 
 #tabela produtos
-db.define_table('produtos',
+Produtos = db.define_table('produtos',
     Field('codigo_produto',label="Código"), #unique = nao repetir
     Field('nome_produto', requires = IS_NOT_EMPTY(error_message="Nome obrigatório"), label="Nome" ),
     Field('preco_produto_lojinha','double', label="R$"),
@@ -157,8 +157,6 @@ CATEGORIA = ('cliente','fornecedor','funcionario')
 # Cadastros.tipo.requires = IS_IN_SET(TIPO, error_message="Tipo inválido!!!") 
 # Cadastros.uf.requires = IS_IN_SET(UF, error_message="UF inválido!!!")  
 # Cadastros.categoria.requires = IS_IN_SET(CATEGORIA, error_message="Categoria inválida!!!") 
-
-
 
 
 Clientes = db.define_table('clientes',
@@ -285,7 +283,6 @@ Parcelados = db.define_table('parcelados',
     Field('dataPagamento', 'datetime'),
     Field('excluido', 'boolean', default=False)
     )
-
 
 
 Itens = db.define_table('itens',
