@@ -185,7 +185,7 @@
 			{{if venda.deletado == False:}}
 				<tr>
 					<td>{{=venda.codigoVenda}}</td>
-					<td>{{=venda.representante}}</td>
+					<td>{{= db(db.representantes.id == venda.representante ).select('nome')[0].nome }}</td>
 					<td>{{=venda.tipoVenda}}</td>
 					<td>{{="R$ %.2f"%float(venda.valorVenda)}}</td>
 					<td>{{="R$ %.2f"%float(venda.valorDesconto)}}</td>

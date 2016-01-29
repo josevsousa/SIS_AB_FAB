@@ -119,7 +119,8 @@ def fecharVenda():
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
-    representante = index[3]
+    # pegar o nome do representante e gravar o id no historico
+    representante = db(db.representantes.nome == index[3] ).select('id')[0].id
     enviarEmail = 'N'
 
      # Parcela, DataVencimento, Valor
