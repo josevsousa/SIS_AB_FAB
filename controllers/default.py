@@ -57,8 +57,9 @@ def cheques_boletos():
     
     itens = ''
     for i in query:
+        representante = db(db.representantes.id == i.representante ).select('nome')[0].nome
         if i.excluido != True:
-            itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante, i.statusPagamento)
+            itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, representante, i.statusPagamento)
             pass
         pass
     table = XML("%s %s"%(itens,'<script>window.onload = checkOk();</script>')) # carregar funcao no DOM  
@@ -82,8 +83,9 @@ def cheques_boletos_buscar():
    
     itens = ''
     for i in query:
+        representante = db(db.representantes.id == i.representante ).select('nome')[0].nome
         if i.excluido != True:
-            itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, i.representante, i.statusPagamento)
+            itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente,representante, i.statusPagamento)
             pass
         pass
 
@@ -121,11 +123,13 @@ def tela_representantes():
         # representante jose
         comissaoVendas = 0.0
         qtdeVendas = 0
-        for venda in db((db.historicoVendas.representante == representante.nome) & (db.historicoVendas.deletado != True) & (db.historicoVendas.dataVenda.like(pattern))).select():
+        for venda in db((db.historicoVendas.representante == representante.id) & (db.historicoVendas.deletado != True) & (db.historicoVendas.dataVenda.like(pattern))).select():
+            # print "*** %s ***"%
             comissaoVendas += float(venda.valorVenda)
             qtdeVendas += 1
         row = TR(TD(representante.nome),TD(qtdeVendas),TD("R$ %.2f"%comissaoVendas),TD("R$ %.2f"%(comissaoVendas*10/100)))
         rows.append(row)
+
 
     return TABLE(THEAD(TR(TH('Representante'),TH('Qtde Vendas'),TH('Total Vendas'),TH('Total Comissão'))),rows,_id="representantes",_class="table hover table-bordered")
 

@@ -5,16 +5,20 @@ def etapa_1():
     if not session.parcelada:
         session.parcelada = " "
 
+    representante = ''   
+    if session.representante:
+        representante = db(db.representantes.id == session.representante ).select('nome')[0].nome
+
     # form cliente e representante
     form = SQLFORM.factory(
         Field('Cliente',default=session.cliente, requires = IS_NOT_EMPTY(error_message = "Digite o nome do cliente"
             ), widget = SQLFORM.widgets.autocomplete(
             request, db.clientes.nome, limitby=(0,5), min_length=1)),
-        Field('Representante',default=session.representante, requires = IS_IN_DB(db, Representantes.nome, error_message = 'Escolha um representante'))
+            Field('Representante',default=representante , requires = IS_IN_DB(db, Representantes.nome, error_message = 'Escolha um representante'))
         )
     if form.process().accepted:
         session.cliente = form.vars.Cliente
-        session.representante = form.vars.Representante
+        session.representante = db(db.representantes.nome == form.vars.Representante ).select('id')[0].id
         #cria codigo da venda  
         if not session.codigo_venda:
             from datetime import datetime
@@ -120,7 +124,7 @@ def fecharVenda():
     valorVenda = index[1]
     valorDesconto = index[2]
     # pegar o nome do representante e gravar o id no historico
-    representante = db(db.representantes.nome == index[3] ).select('id')[0].id
+    representante = session.representante
     enviarEmail = 'N'
 
      # Parcela, DataVencimento, Valor
