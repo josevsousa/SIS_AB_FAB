@@ -192,6 +192,9 @@
     font-size: 19px;
     text-align: center;
   }
+  .btCC{
+    width: 9%;
+  }
 </style>
 <input type="text" id="transitory" name="transitory" style='display:none'>
 <div class="container animated fadeIn">
@@ -231,8 +234,8 @@
         <tr>
           <th style='display:none'>-</th>
           <th style='display:none'>-</th>
-          <th>Codigo</th>
-          <th>Qtde</th>
+          <th class='btCC'>Codigo</th>
+          <th class='btCC'>Qtde</th>
           <th>Produto</th>
           <th>Valor Unid</th>
           <th>Valor Total</th>
@@ -243,8 +246,8 @@
               <tr>
                 <td style='display:none'>{{="%s"%iten.id}}</td>
                 <td style='display:none'>{{="%s"%iten.dataRegistro}}</td>
-                <td>{{=iten.codigoIten}}</td>
-                <td>{{=iten.quantidade}}</td>
+                <td class='btCC'>{{=iten.codigoIten}}</td>
+                <td class='btCC'>{{=iten.quantidade}}</td>
                 <td>{{=iten.produto}}</td>
                 <td>{{="R$ %.2f"%float(iten.valorUnidade)}}</td>
                 <td>{{="R$ %.2f"%float(iten.valorTotal)}}</td>
