@@ -76,8 +76,13 @@
 
 
                       } else{
-                        $(this).addClass('codigoError').focus();
-                        $("#produto, #qtde").val('').attr('disabled',true);
+                        if (codDigitado == '') {
+                          $("#produto").val('').attr('disabled',false).focus();
+                          $('#codigo').removeClass('codigoError');
+                        }else{
+                          $('#codigo').addClass('codigoError').focus();
+                          $("#produto, #qtde").val('').attr('disabled',true);
+                        };
                       };
 
                                 //   //add ao campo nome

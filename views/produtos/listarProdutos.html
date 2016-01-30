@@ -24,7 +24,17 @@
 		    			console.log("Nao apagado")
 		    		};
 		    });
-		    $('input[type=search]').addClass('form-control')
+		    $('input[type=search]').addClass('form-control');
+
+		    $('.config_Prod').on('click', function(event) {
+		    	// event.preventDefault();
+		    	/* Act on the event */
+		    	$('#config_produtos').show(400);
+		    });
+		    $('#fechar_painel_produtos').on('click', function(event) {
+		    	$('#config_produtos').hide(400);
+		    	/* Act on the event */
+		    });
 	})
 
 </script>
@@ -45,6 +55,13 @@
 		width: 20px;
 	}
 */
+div#config_produtos {
+	display: none;
+	margin-top: 10px;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #CCC;	
+}
 </style>
 
 <input type="text" id="cod" name="cod">
@@ -52,11 +69,22 @@
 
 {{if auth.has_membership('admin'):}}
 	<a class="btn btn-default" href="/{{=request.application}}/produtos/cadastrarProdutos?menu=produtos"><span class="glyphicon glyphicon-plus"></span> Novo Produto</a>
+	<a class="btn btn-default config_Prod" href="#"><span class="glyphicon glyphicon-cog"></span></a>
 {{else:}}
 	<a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-plus"></span> Novo produto</a>
+	<a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-plus"></span></a>
 {{pass}}
-
-
+<div id="config_produtos" >
+	<div class="row">
+		<div class="col-md-12">
+			
+			<h4><span class="glyphicon glyphicon-wrench conff"></span>   Configuração! <small> altera comportamentos da tabela produtos.</small></h4>
+		</div>
+		<div class="col-md-12">
+			<a href="#" id="fechar_painel_produtos" class="btn btn-default">Fechar painel</a>
+		</div>
+	</div>
+</div>
 <hr>
 <table id="dataTable" class="table table-striped hover " cellspacing="0" width="100%" >
 <thead>
