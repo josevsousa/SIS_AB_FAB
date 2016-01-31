@@ -305,7 +305,7 @@ Caixa_Cliente = db.define_table('caixa_cliente',
     )
 
 Produtos_config = db.define_table('produtos_config',
-    Field('almento','integer'),
+    Field('aumento','integer'),
     Field('data_criacao', 'datetime', default=request.now),
     Field('autor', db.auth_user, default=auth.user.id if auth.user else None)
     )

@@ -23,32 +23,33 @@ def listarProdutos():
 
     #config produtos
 	configProdutos = db(Produtos_config.id>0).select()
-	ultima_porcentage = configProdutos.last().almento
+	ultima_porcentage = configProdutos.last().aumento
 	ultima_alteracao = configProdutos.last().data_criacao.strftime("%d/%m/%Y as %H:%M:%S")
 
 	return dict(formListar=produtos, ultima_porcentage=ultima_porcentage, ultima_alteracao=ultima_alteracao)
 
 def almentarValorProduto():
-	valorAumento = request.vars.valorAlmento
+	valorAumento = request.vars.valorAumento
+	valorAumento = int(valorAumento)
 	produtos = db(Produtos.id>0).select('id','preco_produto_lojinha')
 	#é pra diminuir ou almentar o valor?
-	if int(valorAumento) > 0:
+	if valorAumento > 0:
 		for produto in produtos:
 			# montar o novo valor 
 			valor = float(produto.preco_produto_lojinha)
-			aumento = float((valor*10)/100)
+			aumento = float((valor*valorAumento)/100)
 			db(Produtos.id == produto.id).update(preco_produto_lojinha=(valor+aumento))
 			pass
-		# db.produtos_config.insert(almento=valorAumento) #gravar no log		
+		db.produtos_config.insert(aumento=valorAumento)
 	else: #é 0	
 		for produto in produtos:
+			# montar o novo valor 
 			valor = float(produto.preco_produto_lojinha)
-			aumento = float((valor*10)/100)
-			db(Produtos.id == produto.id).update(preco_produto_lojinha=(valor-aumento))		
+			aumento = float((valor*valorAumento)/100)
+			db(Produtos.id == produto.id).update(preco_produto_lojinha=(valor+aumento))		
 			pass
+		db.produtos_config.insert(aumento=valorAumento)	
 		pass
-
-	#gravar log na tabela produtos_config	
 
 
 # ============== select insert update ==============

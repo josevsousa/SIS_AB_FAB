@@ -45,11 +45,15 @@
 			// });
 			$('#btAlterarr').on('click',function(){
 				var c = confirm("Tem certeza que deseja amentar os preços?")
-		      	if (c == true) {
-		      		ajax('almentarValorProduto', ['valorAlmento'], $(location).attr('href',"listarProdutos?menu=produtos"));
-		      	}else{
-			        console.log("Registro mantido!")
-			    };				
+				if ($('#valorAumento').val() != '0'){
+			      	if (c == true) {
+			      		ajax('almentarValorProduto', ['valorAumento'], $(location).attr('href',"listarProdutos?menu=produtos"));
+			      	}else{
+				        console.log("Registro mantido!")
+				    };		
+				}else{
+					alert("Valor não pode ser zero '0' ");
+				}    		
 			})
 	})//fim do ready
 
@@ -124,7 +128,7 @@ div#config_produtos {
 					<!-- b -->
 					<div class="input-group"> 
 					<span class="input-group-addon" id="sizing-addon1">%</span>
-						<input type="number" id="valorAlmento" name="valorAlmento" class="form-control" aria-label="Text input with multiple buttons"> 
+						<input type="number" id="valorAumento" name="valorAumento" class="form-control" aria-label="Text input with multiple buttons"> 
 						<div class="input-group-btn"> 
 							<button type="button" id="btAlterarr" class="btn btn-default">Alterar</button> 
 						</div> 
