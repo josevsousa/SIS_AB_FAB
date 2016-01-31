@@ -303,6 +303,14 @@ Caixa_Cliente = db.define_table('caixa_cliente',
     Field('nome'),
     Field('representante')
     )
+
+Produtos_config = db.define_table('produtos_config',
+    Field('almento','integer'),
+    Field('data_criacao', 'datetime', default=request.now),
+    Field('autor', db.auth_user, default=auth.user.id if auth.user else None)
+    )
+
+
 # Caixa_Cliente.representante.requires = IS_IN_DB(db, Representante.nome, error_message = 'Usuário invalido') 
 # Caixa_Cliente.nome.widget = SQLFORM.widgets.autocomplete(
 #      request, db.clientes.nome, limitby=(0,10), min_length=2)

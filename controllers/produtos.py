@@ -6,7 +6,7 @@ def cadastrarProdutos():
 # @auth.requires_login()
 def listarProdutos():
 	produtos = db(db.produtos.id>0).select()
-	#return dict(livros=livros)
+	#return dict(livros=livros)	
 
 	#virtaul fields
 	class Virtual(object):
@@ -19,9 +19,37 @@ def listarProdutos():
 				bts = DIV(XML(A(SPAN(_class='glyphicon glyphicon-eye-open'),_href=URL('produtos','select',args=[self.produtos.id]),_class='btn btn-default f Jview btn-xs')),XML(A(SPAN(_class='glyphicon glyphicon-pencil'),_href='#',_class='btn btn-default Jview btn-xs',_disabled='disabled')),XML(A(SPAN(_class='glyphicon glyphicon-remove'),_href='#',_class='btn btn-default Jview btn-xs',_disabled='disabled')),_class='btn-group JpositionA')
 			return bts
 
-	produtos.setvirtualfields(campos_virtual = Virtual())		
+	produtos.setvirtualfields(campos_virtual = Virtual())	
 
-	return dict(formListar=produtos)
+    #config produtos
+	configProdutos = db(Produtos_config.id>0).select()
+	ultima_porcentage = configProdutos.last().almento
+	ultima_alteracao = configProdutos.last().data_criacao.strftime("%d/%m/%Y as %H:%M:%S")
+
+	return dict(formListar=produtos, ultima_porcentage=ultima_porcentage, ultima_alteracao=ultima_alteracao)
+
+def almentarValorProduto():
+	valorAumento = request.vars.valorAlmento
+	produtos = db(Produtos.id>0).select('id','preco_produto_lojinha')
+	#é pra diminuir ou almentar o valor?
+	if int(valorAumento) > 0:
+		for produto in produtos:
+			# montar o novo valor 
+			valor = float(produto.preco_produto_lojinha)
+			aumento = float((valor*10)/100)
+			db(Produtos.id == produto.id).update(preco_produto_lojinha=(valor+aumento))
+			pass
+		# db.produtos_config.insert(almento=valorAumento) #gravar no log		
+	else: #é 0	
+		for produto in produtos:
+			valor = float(produto.preco_produto_lojinha)
+			aumento = float((valor*10)/100)
+			db(Produtos.id == produto.id).update(preco_produto_lojinha=(valor-aumento))		
+			pass
+		pass
+
+	#gravar log na tabela produtos_config	
+
 
 # ============== select insert update ==============
 # def selectCrud():

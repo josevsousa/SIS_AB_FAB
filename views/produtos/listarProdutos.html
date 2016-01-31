@@ -35,7 +35,23 @@
 		    	$('#config_produtos').hide(400);
 		    	/* Act on the event */
 		    });
-	})
+		 //   	$(".btAlterarr").on('click',function(){
+			// 	var c = confirm("Tem certeza que deseja deletar a Venda?")
+		 //      	if (c == true) {
+
+		 //      	}else{
+			//         console.log("Registro mantido!")
+			//     };			
+			// });
+			$('#btAlterarr').on('click',function(){
+				var c = confirm("Tem certeza que deseja amentar os preços?")
+		      	if (c == true) {
+		      		ajax('almentarValorProduto', ['valorAlmento'], $(location).attr('href',"listarProdutos?menu=produtos"));
+		      	}else{
+			        console.log("Registro mantido!")
+			    };				
+			})
+	})//fim do ready
 
 </script>
 <style type="text/css">
@@ -58,15 +74,23 @@
 div#config_produtos {
 	display: none;
 	margin-top: 10px;
-    padding: 12px;
+/*    padding: 12px;
     border-radius: 4px;
     border: 1px solid #CCC;	
+*/}
+.p {
+ 
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    padding: 12px;
+    border-radius: 5px;
+  
 }
 </style>
 
 <input type="text" id="cod" name="cod">
 <div id="minhaTabela" class="animated fadeInDown">
-
 {{if auth.has_membership('admin'):}}
 	<a class="btn btn-default" href="/{{=request.application}}/produtos/cadastrarProdutos?menu=produtos"><span class="glyphicon glyphicon-plus"></span> Novo Produto</a>
 	<a class="btn btn-default config_Prod" href="#"><span class="glyphicon glyphicon-cog"></span></a>
@@ -74,7 +98,9 @@ div#config_produtos {
 	<a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-plus"></span> Novo produto</a>
 	<a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-plus"></span></a>
 {{pass}}
-<div id="config_produtos" >
+
+
+<!-- <div id="config_produtos" >
 	<div class="row">
 		<div class="col-md-12">
 			
@@ -82,6 +108,54 @@ div#config_produtos {
 		</div>
 		<div class="col-md-12">
 			<a href="#" id="fechar_painel_produtos" class="btn btn-default">Fechar painel</a>
+		</div>
+	</div>
+</div>
+ -->
+<div class="panel panel-default" id="config_produtos" >
+  <div class="panel-heading">
+    <h3 class="panel-title"><span class="glyphicon glyphicon-wrench conff"></span> Configuração dos produtos</h3>
+  </div>
+  <div class="panel-body">
+  		<div class="row">
+    		<div class="col-md-4">
+    			<div class="p">
+    				<h4 for="basic-url">Ajustar os preços da tabela</h4>
+					<!-- b -->
+					<div class="input-group"> 
+					<span class="input-group-addon" id="sizing-addon1">%</span>
+						<input type="number" id="valorAlmento" name="valorAlmento" class="form-control" aria-label="Text input with multiple buttons"> 
+						<div class="input-group-btn"> 
+							<button type="button" id="btAlterarr" class="btn btn-default">Alterar</button> 
+						</div> 
+					</div>
+					<!-- fim b -->
+					<p>O valor digitado é o valor em porcentagem que será alterado a todos os campos <strong>PREÇO</strong> da tabela.</p>
+				</div>	
+    		</div>
+    		<div class="col-md-4">
+	    		<!-- <div class="p">
+	    			<label for="basic-url">Última alteração!</label>
+					<p> <small>	Data : <mark>{{=ultima_alteracao}}</mark>.</small></p>
+					<p> <small>	Reajuste : <mark>{{=ultima_porcentage}} %</mark>.</small></p>
+				</div> -->
+				<div class="alert alert-warning alert-dismissible" role="alert">
+  					<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+  					<h4>Última alteração</h4>
+  					<strong>Data: </strong> {{=ultima_alteracao}}.<br>
+  					<strong>Reajuste: </strong> {{=ultima_porcentage}}%.
+				</div>	
+    		</div>
+
+    		<div class="col-md-4">
+    			
+    		</div>
+    	</div>	
+    	<br>
+    	<div class="row">
+			<div class="col-md-12">
+				<a href="#" id="fechar_painel_produtos" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Fechar painel</a>
+			</div>
 		</div>
 	</div>
 </div>
