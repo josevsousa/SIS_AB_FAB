@@ -205,18 +205,23 @@
                 } else{
                     $('.ee').show();
                 };
+            });            
+            $('#buscarCqR').on('click',function(){
+                var d1 = $('#no_table_date_initialR').val();
+                var d2 = $('#no_table_date_finalR').val();
+                if (d1 != '' && d2 != '') {
+                    $('#transitory').val(d1+';'+d2);                    
+                    ajax('tela_representantes_busca', ['transitory'], 'telaRepresentantes');
+                    console.log(d1+" - "+d2)  
+                };
             });
 
             $(".cheques_boletos").on('click', function() {
-
                 $('#no_table_date_initial, #no_table_date_final').val('');
                
                 $('.dataDisplay').text(mesExtenso+' de '+ano);
 
-
                 var busca = ano+"-"+mes;
-
-
 
                 $('#transitory').val(busca);
                 ajax('cheques_boletos',['transitory'],'grid');

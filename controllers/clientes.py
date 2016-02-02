@@ -4,7 +4,7 @@
 def cadastrarClientes():
   	return dict(formCadastro=crud.create(db.clientes))
 
-# @auth.requires_login()
+@auth.requires_login()
 def listarClientes():
 	clientes = db(db.clientes.id>0).select()
 	#return dict(livros=livros)

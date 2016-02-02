@@ -3,7 +3,7 @@ def cadastrarProdutos():
 	menu = 'produtos'
 	return dict(formCadastro=crud.create(db.produtos))
 
-# @auth.requires_login()
+@auth.requires_login()
 def listarProdutos():
 	produtos = db(db.produtos.id>0).select()
 	#return dict(livros=livros)	

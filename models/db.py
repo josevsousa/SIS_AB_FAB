@@ -182,21 +182,23 @@ Clientes = db.define_table('clientes',
     )
 # db.clientes.cpf.requires = IS_CPF(), IS_NOT_IN_DB(db, db.clientes.cpf, error_message="CEP já existe") 
 db.clientes.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.clientes.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
-db.clientes.email.requires = IS_EMAIL(error_message='Email inválido!!')
+# db.clientes.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.clientes.nome.requires = IS_NOT_IN_DB(db, db.clientes.nome, error_message = 'Usuario invalido')
 db.clientes.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
 db.clientes.operadora.requires = IS_IN_SET(OPERADORA, error_message="Operadora invalida!!!")
 db.clientes.tipo.requires = IS_IN_SET(TIPO, error_message="Tipo inválido!!!") 
 
+
+
 Funcionarios = db.define_table('funcionarios',
+    Field('tipo', default='Pessoa_física'),
     Field('matricula', label='Matrícula'),
     Field('nome',label='Nome'), 
-    Field('celular', label='Celular'),
+    Field('celular', label='Celulares'),
     # Field('Cel',"list:string"),
     Field('operadora', default=' - '),
     Field('fixo', label='Tel:..'),
     Field('email',label='E-mail'),
-    # Field('cpf', label='CPF', default=' - '),
     Field('cnpj_cpf', label='CNPJ/CPF'),
     Field('cep', label='CEP'),
     Field('endereco', label='Endereço'),
@@ -209,11 +211,13 @@ Funcionarios = db.define_table('funcionarios',
     migrate = "funcionarios.table"
     )
 
-# db.funcionarios.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.funcionarios.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
-db.funcionarios.email.requires = IS_EMAIL(error_message='Email inválido!!')
+# db.funcionarios.email.requires = IS_EMAIL(error_message='Email inválido!!')
+db.funcionarios.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.funcionarios.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
 db.funcionarios.nome.requires = IS_NOT_IN_DB(db, db.funcionarios.nome, error_message = 'Usuario invalido')
 db.funcionarios.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
 db.funcionarios.operadora.requires = IS_IN_SET(OPERADORA, error_message="Operadora invalida!!!")
+db.funcionarios.tipo.requires = IS_IN_SET(TIPO, error_message="Tipo inválido!!!") 
+
 
 Historico = db.define_table('historicoVendas',
     Field('codigoVenda', label='Código'),
@@ -231,6 +235,7 @@ Historico = db.define_table('historicoVendas',
     ) 
 
 Representantes = db.define_table('representantes',
+    Field('tipo'),
     Field('nome',label='Nome'), 
     Field('celular', label='Celula 1'),
     Field('operadora', label='Operadora 1', default=' - '),
@@ -244,7 +249,7 @@ Representantes = db.define_table('representantes',
     Field('cep', label='CEP'),
     Field('endereco', label='Endereço'),
     Field('numero' ,label='Número'),
-    Field('uf', label='UF'),
+    Field('uf', label='UF', default=' - '),
     Field('cidade', label='Cidade'),
     Field('bairro', label='Bairro'),
     Field('apelido', label='Apelido'),
@@ -253,18 +258,19 @@ Representantes = db.define_table('representantes',
     migrate = "representante.table"
     )
 db.representantes.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.representantes.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
-db.representantes.email.requires = IS_EMAIL(error_message='Email inválido!!')
+# db.representantes.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.representantes.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
 db.representantes.nome.requires = IS_NOT_EMPTY(error_message="Nome obrigatório")
-db.representantes.email.requires = IS_NOT_EMPTY(error_message="E-mail obrigatório")
+# db.representantes.email.requires = IS_NOT_EMPTY(error_message="E-mail obrigatório")
 db.representantes.celular.requires = IS_NOT_EMPTY(error_message="Celular obrigatório")
 db.representantes.operadora.requires = IS_IN_SET(OPERADORA, error_message="Operadora invalida!!!")
 db.representantes.operadora_2.requires = IS_IN_SET(OPERADORA, error_message="Operadora invalida!!!")
+db.representantes.tipo.requires = IS_IN_SET(TIPO, error_message="Tipo inválido!!!") 
 
 Pendentes = db.define_table('pendentes',
     Field('codigo'),
     Field('cliente'),
-    Field('representante'),
+    Field('representantes'),
     Field('dataSolicitacao', 'datetime', default=request.now),
     Field('status', default='Pendente'),
     Field('dataSeparado','datetime')
@@ -283,7 +289,6 @@ Parcelados = db.define_table('parcelados',
     Field('dataPagamento', 'datetime'),
     Field('excluido', 'boolean', default=False)
     )
-
 
 Itens = db.define_table('itens',
     Field('codigoVenda', readable=False),
@@ -309,7 +314,6 @@ Produtos_config = db.define_table('produtos_config',
     Field('data_criacao', 'datetime', default=request.now),
     Field('autor', db.auth_user, default=auth.user.id if auth.user else None)
     )
-
 
 # Caixa_Cliente.representante.requires = IS_IN_DB(db, Representante.nome, error_message = 'Usuário invalido') 
 # Caixa_Cliente.nome.widget = SQLFORM.widgets.autocomplete(

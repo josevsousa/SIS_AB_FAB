@@ -90,7 +90,7 @@ def cheques_boletos_buscar():
         pass
 
     table = XML("%s %s"%(itens,'<script>window.onload = checkOk();</script>')) # carregar funcao no DOM 
-    return table   
+    return table  
 
 def user():
     """
@@ -130,10 +130,35 @@ def tela_representantes():
         row = TR(TD(representante.nome),TD(qtdeVendas),TD("R$ %.2f"%comissaoVendas),TD("R$ %.2f"%(comissaoVendas*10/100)))
         rows.append(row)
 
-
     return TABLE(THEAD(TR(TH('Representante'),TH('Qtde Vendas'),TH('Total Vendas'),TH('Total Comissão'))),rows,_id="representantes",_class="table hover table-bordered")
 
+def tela_representantes_busca():   
+    index = request.vars.transitory
+    index = index.split(';')
+    date_initial = index[0] 
+    date_initial = date_initial.split('/')
+    date_initial = "%s-%s-%s"%(date_initial[2],date_initial[0],date_initial[1])
+    date_final = index[1] 
+    date_final = date_final.split('/')
+    data_final = "%s-%s-%s"%(date_final[2],date_final[0],date_final[1])
+    # fazendo consulta entre as datas ecolhidas
+    query = db((db.historicoVendas.dataVenda >= date_initial) & (db.historicoVendas.dataVenda <= data_final)).select()      
+    
+    rows = TBODY()
 
+    # busca representantes
+    for representante in db(db.representantes.id>0).select():
+        # representante jose
+        comissaoVendas = 0.0
+        qtdeVendas = 0
+        for venda in db((db.historicoVendas.representante == representante.id) & (db.historicoVendas.deletado != True) & ((db.historicoVendas.dataVenda >= date_initial) & (db.historicoVendas.dataVenda <= data_final))).select():
+            # print "*** %s ***"%
+            comissaoVendas += float(venda.valorVenda)
+            qtdeVendas += 1
+        row = TR(TD(representante.nome),TD(qtdeVendas),TD("R$ %.2f"%comissaoVendas),TD("R$ %.2f"%(comissaoVendas*10/100)))
+        rows.append(row)
+
+    return TABLE(THEAD(TR(TH('Representante'),TH('Qtde Vendas'),TH('Total Vendas'),TH('Total Comissão'))),rows,_id="representantes",_class="table hover table-bordered")
 
 
 @cache.action()

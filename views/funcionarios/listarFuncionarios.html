@@ -4,7 +4,7 @@
 	$(document).ready(function(){
 	    // $('#minhaTabela table').attr('id', 'dataTable').addClass('display');
 	    $('#dataTable').DataTable({
-	        "scrollX": true,
+	        // "scrollX": true,
 	        "language": {
 	          "url": "{{=URL('static','js/tradutorTable.json')}}"
 	        } 
@@ -46,6 +46,7 @@
 	<table id="dataTable" class="table table-striped hover" cellspacing="0" width="100%" >
 		<thead>
 			<tr>
+				<th>Tipo</th>
 				<th>Matrícula</th>
 				<th>Nome do Funcionário</th>
 				<th>Celular</th>
@@ -55,6 +56,7 @@
 			<tbody>
 			{{for funcionario in formListar:}}
 			<tr>	
+				<td>{{=funcionario.funcionarios.tipo}}</td>
 				<td>{{=funcionario.funcionarios.matricula}}</td>
 				<td>{{=funcionario.funcionarios.nome}}</td>
 				<td>{{=funcionario.funcionarios.celular}} : {{=funcionario.funcionarios.operadora}}</td>
