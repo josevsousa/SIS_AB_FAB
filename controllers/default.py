@@ -142,7 +142,6 @@ def tela_representantes_busca():
     date_final = date_final.split('/')
     data_final = "%s-%s-%s"%(date_final[2],date_final[0],date_final[1])
     # fazendo consulta entre as datas ecolhidas
-    query = db((db.historicoVendas.dataVenda >= date_initial) & (db.historicoVendas.dataVenda <= data_final)).select()      
     
     rows = TBODY()
 

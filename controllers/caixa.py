@@ -11,9 +11,11 @@ def etapa_1():
 
     # form cliente e representante
     form = SQLFORM.factory(
-        Field('Cliente',default=session.cliente, requires = IS_NOT_EMPTY(error_message = "Digite o nome do cliente"
-            ), widget = SQLFORM.widgets.autocomplete(
-            request, db.clientes.nome, limitby=(0,5), min_length=1)),
+        # Field('Cliente',default=session.cliente, requires = IS_NOT_EMPTY(error_message = "Digite o nome do cliente"
+        #     ), widget = SQLFORM.widgets.autocomplete(
+        #     request, db.clientes.nome, limitby=(0,5), min_length=1)),
+        #     # Field('Cliente',default=session.cliente , requires = IS_IN_DB(db, Clientes.nome, error_message = 'Escolha um cliente'),
+            Field('Cliente', default=session.cliente, requires = IS_IN_DB(db, Clientes.nome, error_message = 'Escolha um representante') ),
             Field('Representante',default=representante , requires = IS_IN_DB(db, Representantes.nome, error_message = 'Escolha um representante'))
         )
     if form.process().accepted:
