@@ -35,6 +35,7 @@ def almentarValorProduto():
 	#é pra diminuir ou almentar o valor?
 	if valorAumento > 0:
 		for produto in produtos:
+			db(Produtos.id == produto.id).update(preco_produto_lojinha_backup=produto.preco_produto_lojinha)
 			# montar o novo valor 
 			valor = float(produto.preco_produto_lojinha)
 			aumento = float((valor*valorAumento)/100)
@@ -43,6 +44,7 @@ def almentarValorProduto():
 		db.produtos_config.insert(aumento=valorAumento)
 	else: #é 0	
 		for produto in produtos:
+			db(Produtos.id == produto.id).update(preco_produto_lojinha_backup=produto.preco_produto_lojinha)
 			# montar o novo valor 
 			valor = float(produto.preco_produto_lojinha)
 			aumento = float((valor*valorAumento)/100)
@@ -51,6 +53,16 @@ def almentarValorProduto():
 		db.produtos_config.insert(aumento=valorAumento)	
 		pass
 
+def resetarValorProduto():
+    produtos = db(Produtos.id>0).select()
+    for produto in produtos:
+        print produto.preco_produto_lojinha
+        db(Produtos.id == produto.id).update(preco_produto_lojinha=produto.preco_produto_lojinha_backup)
+        pass
+    produtosConfig = db(db.produtos_config.id>0).select()
+    produtosConfigDel = produtosConfig.last().id
+    crud.delete(db.produtos_config, produtosConfigDel)
+    
 
 # ============== select insert update ==============
 # def selectCrud():

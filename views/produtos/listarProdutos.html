@@ -49,12 +49,22 @@
 			      	if (c == true) {
 			      		ajax('almentarValorProduto', ['valorAumento'], $(location).attr('href',"listarProdutos?menu=produtos"));
 			      	}else{
-				        console.log("Registro mantido!")
+				        console.log("Registro mantido!");
 				    };		
 				}else{
 					alert("Valor não pode ser zero '0' ");
 				}    		
-			})
+			});			
+			$('#resetar').on('click',function(){
+				var c = confirm("Tem certeza que deseja resetar os preços para o anterior?")
+		      	if (c == true) {
+		      		ajax('resetarValorProduto');
+		      		$(location).attr('href',"listarProdutos?menu=produtos")
+		      	}else{
+			        console.log("Registro mantido!");
+			    };   		
+			});
+
 	})//fim do ready
 
 </script>
@@ -147,7 +157,9 @@ div#config_produtos {
   					<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
   					<h4>Última alteração</h4>
   					<strong>Data: </strong> {{=ultima_alteracao}}.<br>
-  					<strong>Reajuste: </strong> {{=ultima_porcentage}}%.
+  					<strong>Reajuste: </strong> {{=ultima_porcentage}}%.<br>
+  					Reset para a última atualização: 
+					<a class="btn btn-default " id="resetar" href="#"><span class="glyphicon glyphicon-retweet"></span></a>
 				</div>	
     		</div>
 

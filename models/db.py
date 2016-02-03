@@ -112,7 +112,8 @@ Produtos = db.define_table('produtos',
     Field('codigo_produto',label="Código"), #unique = nao repetir
     Field('nome_produto', requires = IS_NOT_EMPTY(error_message="Nome obrigatório"), label="Nome" ),
     Field('preco_produto_lojinha','double', label="R$"),
-    Field('dataGravado','datetime', default=request.now, label="Data", writable=False),
+    Field('preco_produto_lojinha_backup',readable=False, writable=False),
+    Field('dataGravado','datetime', default=request.now, label="Data", readable=False,  writable=False),
     Field('tamanho', label="Tamanho", default="P/M/G"),
     Field('foto_produto','upload', label="Foto"),
     migrate ='produtos.table'   
