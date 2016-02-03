@@ -105,7 +105,7 @@ auth.settings.reset_password_requires_verification = True
 ## after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
 
-TAMANHO = ('Unico','P/M/G','P','M','G','GG')
+TAMANHO = ('Único','P/M/G','P','M','G','GG')
 
 #tabela produtos
 Produtos = db.define_table('produtos',
