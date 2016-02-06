@@ -120,7 +120,7 @@ def fecharVenda():
     index = index.split(";")
     # dados a gravar no db
     codigoVenda = session.codigo_venda
-    email = db(db.clientes.nome == session.cliente).select('email')[0].email
+    email = session.cliente
        
     tipoVenda = index[0]
     valorVenda = index[1]
