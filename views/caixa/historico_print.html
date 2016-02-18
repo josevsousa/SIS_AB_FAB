@@ -142,7 +142,7 @@
 					<td class="col_1 tit codven">Cod Venda</td>
 					<td class="col_2 codvenresp">{{=historico_venda[0].codigoVenda}}</td>
 					<td class="col_3 tit">Representante</td>
-					<td class="col_4">{{=db(db.representantes.id == historico_venda[0].representante).select('nome')[0].nome}}</td>
+					<td class="col_4">{{=db(db.representantes.id == historico_venda[0].representante).select('matricula')[0].matricula}}</td>
 				</tr>
 
 			</tbody>

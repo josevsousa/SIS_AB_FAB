@@ -12,6 +12,7 @@
 		    $('.fechar').on('click',function(){
 		    	
 		    		var td = $(this).parent().parent().parent().children()[0];
+		    		console.log(td);
 		    		var x = td.textContent;
 		    		var c = confirm("Deseja mesmo apagar?");
 		    		if (c == true) {
@@ -34,7 +35,7 @@
 	td#opcoes div button{margin-right: 0px !important}
 	.idS {display:none !important;}
 */	.JpositionA{float: right;}
-	.JpositionA a{margin-right: 0px !important}
+	.JpositionA a{margin-right: 0px !important;}
 	#cod{display:none;}
 
 
@@ -54,6 +55,8 @@
 <table id="dataTable" class="table table-striped hover" cellspacing="0" width="100%" >
 <thead>
 	<tr>
+		<th style="display:none">id</th>
+		<th>Matrícula</th>
 		<th>Nome</th>
 		<th>Celular</th>
 		<th>Email</th>
@@ -62,6 +65,8 @@
 	<tbody>
 		{{for representante in formListar:}}
 			<tr>
+				<td style="display:none">{{=representante.representantes.id}}</td>
+				<td>{{=representante.representantes.matricula}}</td>
 				<td>{{=representante.representantes.nome}}</td>
 				<td>{{=representante.representantes.celular}}</td>
 				<td>{{=representante.representantes.email}}</td>

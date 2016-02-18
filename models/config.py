@@ -27,5 +27,5 @@ class double_real(object):
         # monta uma string com os valores do array 
         for item in nValor:
             rValor += item   
+        
         return rValor 
-    

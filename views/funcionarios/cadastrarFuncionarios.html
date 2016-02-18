@@ -20,7 +20,10 @@
 			console.log(e)
 		});
 		// incrementa o ultimo numero de funcionario
-		{{x = len(db(Funcionarios.id>0).select())+1}}
+		// {{#x = len(db(Funcionarios.id>0).select())+1}}
+		{{max = db.funcionarios.matricula.max()
+			x = int(db().select(max).first()[max])+1
+		}}
 		$('#funcionarios_matricula').val('{{=str(x).zfill(4)}}')
 
 	});

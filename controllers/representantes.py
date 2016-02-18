@@ -44,7 +44,7 @@ def update():
 #delete
 def deletar():
 	print request.vars.cod
-	db(db.representantes.codigo_produto == request.vars.cod).delete()
+	db(db.representantes.id == request.vars.cod).delete()
 	return ''
 
 

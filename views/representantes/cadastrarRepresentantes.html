@@ -18,7 +18,12 @@
 		$('input[type=submit]').val('Cadastrar');
 		// $("tbody tr:nth-child(4)").css('display','none')
 		$('select').addClass('generic-widget form-control');
-
+		// incrementa o ultimo numero de funcionario
+		//{{#x = len(db(Representantes.matricula).select())+1}}
+		{{max = db.representantes.matricula.max()
+			x = int(db().select(max).first()[max])+1
+		}}
+		$('#representantes_matricula').val('{{=str(x).zfill(4)}}')
 
 	});
 </script>
