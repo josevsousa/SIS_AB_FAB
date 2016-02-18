@@ -210,9 +210,6 @@ def enviar_email(codigo):
         response.flash = 'Unable to send the email : email parameters not defined'  
 
 
-    
-
-
 
 @auth.requires_membership('admin')
 def historico():

@@ -1,5 +1,4 @@
 {{extend 'layoutLojinha.html'}}
-{{import locale}}
 
 <link rel="stylesheet" href="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.css')}}">
 <script src="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.js')}}"></script>
@@ -189,8 +188,8 @@
 					<td>{{=venda.codigoVenda}}</td>
 					<td>{{= db(db.representantes.id == venda.representante ).select('nome')[0].nome }}</td>
 					<td>{{=venda.tipoVenda}}</td>
-					<td>{{="R$ %.2f"%float(venda.valorVenda)}}</td>
-					<td>{{="R$ %.2f"%float(venda.valorDesconto)}}</td>
+					<td>{{=double_real(venda.valorVenda).real()}}</td>
+					<td>{{=double_real(venda.valorDesconto).real()}}</td>
 					<td>{{=venda.clienteEmail}}</td>
 					<td>{{=venda.dataVenda}}</td>
 					<td class="btDD">

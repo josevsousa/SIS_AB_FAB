@@ -1,3 +1,4 @@
+
 #CPF ou CNPJ
 class IS_CPF_OR_CNPJ(object):
 

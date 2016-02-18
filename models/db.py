@@ -317,7 +317,4 @@ Produtos_config = db.define_table('produtos_config',
 
 # Caixa_Cliente.representante.requires = IS_IN_DB(db, Representante.nome, error_message = 'Usuário invalido') 
 # Caixa_Cliente.nome.widget = SQLFORM.widgets.autocomplete(
-#      request, db.clientes.nome, limitby=(0,10), min_length=2)
-
-
-
+# request, db.clientes.nome, limitby=(0,10), min_length=2)

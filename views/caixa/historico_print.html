@@ -203,8 +203,10 @@
 						<td>{{=iten.codigoIten}}</td>
 						<td>{{=iten.produto}}</td>
 						<td>{{=iten.quantidade}}</td>
-						<td>{{="R$ %.2f"%float(iten.valorUnidade)}}</td>
-						<td>{{="R$ %.2f"%float(iten.valorTotal)}}</td>
+						<!-- <td>{{#="R$ %.2f"%float(iten.valorUnidade)}}</td> -->
+						<td>{{=double_real(float(iten.valorUnidade)).real()}}</td>
+						<td>{{=double_real(float(iten.valorTotal)).real()}}</td>
+						<!-- <td>{{#="R$ %.2f"%float(iten.valorTotal)}}</td> -->
 					</tr>
 				{{pass}}
 			</tbody>
@@ -225,7 +227,8 @@
 				<tr>
 					<td>{{=iten.parcela}}</td> 
 					<td>{{=(iten.dataVencimento).strftime("%d/%m/%Y")}}</td> 
-					<td>{{="R$ %.2f"%float(iten.valor)}}</td> 
+					<!-- <td>{{#="R$ %.2f"%float(iten.valor)}}</td>  -->
+					<td>{{=double_real(float(iten.valor)).real()}}</td>
 				</tr>
 			{{pass}}	
 			</tbody>
@@ -255,15 +258,18 @@
 				</tr>
 				<tr>
 					<td class="col_1 tit">T.Parcial</td>
-					<td class="col_2">{{="R$ %.2f"%sTotal}}</td>
+					<!-- <td class="col_2">{{#="R$ %.2f"%sTotal}}</td> -->
+					<td>{{=double_real(float(sTotal)).real()}}</td>
 				</tr>	
 				<tr>
 					<td class="col_1 tit">Desc</td>
-					<td class="col_2">{{="R$ %.2f"%desconto}}</td>
+					<!-- <td class="col_2">{{#="R$ %.2f"%desconto}}</td> -->
+					<td>{{=double_real(float(desconto)).real()}}</td>
 				</tr>
 				<tr>
 					<td class="col_1 tit">T.Geral</td>
-					<td class="col_2">{{="R$ %.2f"%total}}</td>
+					<!-- <td class="col_2">{{#="R$ %.2f"%total}}</td> -->
+					<td>{{=double_real(float(total)).real()}}</td>
 				</tr>
 
 			</tbody>
