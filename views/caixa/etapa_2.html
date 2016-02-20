@@ -299,8 +299,10 @@
                 <td class='btCC'>{{=iten.codigoIten}}</td>
                 <td class='btCC'>{{=iten.quantidade}}</td>
                 <td>{{=iten.produto}}</td>
-                <td>{{="R$ %.2f"%float(iten.valorUnidade)}}</td>
-                <td>{{="R$ %.2f"%float(iten.valorTotal)}}</td>
+
+                <td>{{=double_real(float(iten.valorUnidade)).real()}}</td>
+                <td>{{=double_real(float(iten.valorTotal)).real()}}</td>
+                
                 <td class="btDD"><a class="btn btn-default del btn-xs" href="#"><span class="glyphicon glyphicon-trash"></span></a></td>
               </tr>
           {{pass}}  

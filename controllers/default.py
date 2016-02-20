@@ -59,7 +59,7 @@ def cheques_boletos():
     for i in query:
         representante = db(db.representantes.id == i.representante ).select('nome')[0].nome
         if i.excluido != True:
-            itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente, representante, i.statusPagamento)
+            itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ x %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, double_real(float(i.valor)).real(), i.cliente, representante, i.statusPagamento)
             pass
         pass
     table = XML("%s %s"%(itens,'<script>window.onload = checkOk();</script>')) # carregar funcao no DOM  
@@ -85,7 +85,7 @@ def cheques_boletos_buscar():
     for i in query:
         representante = db(db.representantes.id == i.representante ).select('nome')[0].nome
         if i.excluido != True:
-            itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>R$ %s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, i.valor, i.cliente,representante, i.statusPagamento)
+            itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, double_real(float(i.valor)).real(), i.cliente,representante, i.statusPagamento)
             pass
         pass
 
@@ -127,7 +127,7 @@ def tela_representantes():
             # print "*** %s ***"%
             comissaoVendas += float(venda.valorVenda)
             qtdeVendas += 1
-        row = TR(TD(representante.nome),TD(qtdeVendas),TD("R$ %.2f"%comissaoVendas),TD("R$ %.2f"%(comissaoVendas*10/100)))
+        row = TR(TD(representante.nome),TD(qtdeVendas),TD(double_real(comissaoVendas).real()),TD(double_real((comissaoVendas*10/100)).real()))
         rows.append(row)
 
     return TABLE(THEAD(TR(TH('Representante'),TH('Qtde Vendas'),TH('Total Vendas'),TH('Total Comissão'))),rows,_id="representantes",_class="table hover table-bordered")
@@ -154,7 +154,7 @@ def tela_representantes_busca():
             # print "*** %s ***"%
             comissaoVendas += float(venda.valorVenda)
             qtdeVendas += 1
-        row = TR(TD(representante.nome),TD(qtdeVendas),TD("R$ %.2f"%comissaoVendas),TD("R$ %.2f"%(comissaoVendas*10/100)))
+        row = TR(TD(representante.nome),TD(qtdeVendas),TD(double_real(comissaoVendas).real()),TD(double_real((comissaoVendas*10/100)).real()))
         rows.append(row)
 
     return TABLE(THEAD(TR(TH('Representante'),TH('Qtde Vendas'),TH('Total Vendas'),TH('Total Comissão'))),rows,_id="representantes",_class="table hover table-bordered")

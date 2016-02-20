@@ -40,8 +40,8 @@ def etapa_2():
     # ---- sTotal
     sTotal = 0.0
     for iten in grid:
-        sTotal += float(iten.valorTotal) 
-    sTotal = "R$ %.2f"%sTotal    
+        sTotal += float(iten.valorTotal)  
+    sTotal = double_real(sTotal).real()  
     # ---- fim sTotal
     return dict(grid=grid, sTotal=sTotal)
 

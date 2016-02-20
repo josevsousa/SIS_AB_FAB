@@ -81,82 +81,6 @@
     };
 
 
-    function graficoRep(){
-         $('#grafico').highcharts({
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Receita tre anual'
-                    },
-                    // subtitle: {
-                    //     text: 'Source: WorldClimate.com'
-                    // },
-                    xAxis: {
-                        categories: [
-                            'Jan',
-                            'Fev',
-                            'Mar',
-                            'Abr',
-                            'Mai',
-                            'Jun',
-                            'Jul',
-                            'Ago',
-                            'Set',
-                            'Out',
-                            'Nov',
-                            'Des'
-                        ],
-                        crosshair: true
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Valor  (R$)'
-                        }
-                    },
-                    tooltip: {
-                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                            '<td style="padding:0"><b>R$ {point.y:.1f} reais</b></td></tr>',
-                        footerFormat: '</table>',
-                        shared: true,
-                        useHTML: true
-                    },
-                    plotOptions: {
-                        column: {
-                            pointPadding: 0.2,
-                            borderWidth: 0
-                        }
-                    },
-                    series: ([{
-                        name: {{=dadosgraf[0][0]}},
-                        data: {{=dadosgraf[0][1]}}
-
-                    },{
-                        name: {{=dadosgraf[1][0]}},
-                        data: {{=dadosgraf[1][1]}}
-
-                    },{
-                        name: {{=dadosgraf[2][0]}},
-                        data: {{=dadosgraf[2][1]}}
-
-                    }])
-                });
-    }
-
-
-
-
-    // var b = document.querySelector('#buscarCq');
-    
-    function updateStat(cod, status){
-        d = new Date();
-        dataGrav = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDay()+' '+ d.getHours()+':'+d.getMinutes()+':'+ d.getSeconds(); 
-        $('#transitory').val(cod +';'+ status +';'+ dataGrav);
-        ajax('updateSt',['transitory']);    
-    };    
-
     $(document).ready(function(){
             // ---- DATA
             var data = new Date();
@@ -207,6 +131,7 @@
                 };
             });            
             $('#buscarCqR').on('click',function(){
+
                 var d1 = $('#no_table_date_initialR').val();
                 var d2 = $('#no_table_date_finalR').val();
                 if (d1 != '' && d2 != '') {

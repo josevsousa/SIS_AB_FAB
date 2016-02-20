@@ -59,7 +59,7 @@ $(document).ready(function(){
 	      }
 	    }); 
 		
-	    var totall = parseFloat($("#subTotal").text().replace('R$','').trim());
+	    var totall = parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim());
 	    // din
 	    $("#din").on('keyup',function(){
 	      var d = $(this).val(); //dinheiro
@@ -70,13 +70,13 @@ $(document).ready(function(){
 	        $('#subTotal').text($(".verde").text());
 	        var porcC = $('.parcelarC').val();
 	        if (porcC != '0' && porcC != '') {
-	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))   
+	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim()))   
 	        };
 	      }else{
 	        vizor(d,p);
 	        var porcC = $('.parcelarC').val();
 	        if (porcC != '0' && porcC != '') {
-	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))
+	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim()))
 	        }else{
 
 	        };
@@ -92,13 +92,13 @@ $(document).ready(function(){
 	        $('#subTotal').text($(".verde").text());
 	        var porcC = $('.parcelarC').val();
 	        if (porcC != '0' && porcC != '') {
-	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))   
+	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim()))   
 	        };
 	      }else{
 	        vizor(d,p);
 	        var porcC = $('.parcelarC').val();
 	        if (porcC != '0' && porcC != '') {
-	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').trim()))
+	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim()))
 	        }else{
 
 	        };
@@ -108,7 +108,7 @@ $(document).ready(function(){
       if (din == '' && por == '') {
 	        $("#calcDesc").hide(400);//esconder
 	        $('#subTotal').text($(".verde").text());
-	        $('.vermelho').text('R$ 0.00')
+	        $('.vermelho').text('R$ 0,00')
       	}else{
 	        if (din == "") {
 	          din = "0"
@@ -142,7 +142,7 @@ $(document).ready(function(){
     $('.parcelarC').on('change', function(){
       var p = $(this).val(); 
       if (p != '' && p != '0' ) {
-        gerarGridParcela(p,parseFloat($("#subTotal").text().replace('R$','').trim())); 
+        gerarGridParcela(p,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim())); 
         $('#parcelado').show(400); 
       }else if(p == '0'){
         $('#parcelado').hide(400); 
