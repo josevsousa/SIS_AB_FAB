@@ -6,8 +6,9 @@ class double_real(object):
     def __init__(self, valor):
         self.valor = valor
 
+    # BR R$    
     def real(self):
-        valor = '%.2f'%self.valor #converte o valor em string e completa a casa decimal em 2
+        valor = '%.2f'%(float(self.valor)) #converte o valor em string e completa a casa decimal em 2
         valor = valor.replace('.','') # tira a virgula da string
         valorT = len(valor)-1 #conta quantos digitos tem a string
         nValor = [] #cria um novoValor vazio
@@ -27,5 +28,9 @@ class double_real(object):
         # monta uma string com os valores do array 
         for item in nValor:
             rValor += item   
-        
+
         return rValor 
+
+
+    # US $
+        #aqui
