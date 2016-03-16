@@ -7,7 +7,6 @@
 ## - user is required for authentication and authorization
 ## - download is for downloading files uploaded in the db (does streaming)
 #########################################################################
-
 # @auth.requires_membership('admin')
 
 @auth.requires_login()

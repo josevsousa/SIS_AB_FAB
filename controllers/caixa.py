@@ -143,7 +143,7 @@ def fecharVenda():
         pass
     
     db.historicoVendas.insert(codigoVenda = codigoVenda,clienteEmail = email,tipoVenda = tipoVenda,valorVenda = valorVenda,valorDesconto = valorDesconto,  vendedor = vendedor, representante = representante ) 
-  
+
     viewDesc = "";
     if valorDesconto != "0.00":
         valorT = (float(valorVenda) + float(valorDesconto))
@@ -155,7 +155,8 @@ def fecharVenda():
     temp_codigoVenda = session.codigo_venda
     session.__delitem__('codigo_venda')
     session.__delitem__('cliente')
-    session.__delitem__('representante')
+    session.__delitem__('representante')  
+ 
 #--------------------------------    
 
 def reenviarEmail():

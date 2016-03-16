@@ -32,6 +32,15 @@
 			ajax('update_ItenStatus',['transitory'])
 		}
 
+		//Qtde de volume
+		$("#volumePedido").on('keyup',function(){
+			var v = $(this).val();
+			if (v == "") {
+				//$(this).val(0);
+			}else{
+				console.log($(this).val())
+			}
+		})
   	});
 </script>
 <style>
@@ -57,7 +66,9 @@
 	th{
 		text-align: center;
 	}
-
+	.volumesPedido {
+	    width: 231px;
+	}
 	#check{
 		padding: 3px;		
 	}
@@ -84,7 +95,7 @@
 
 </style>
 
-<input type="text" id="transitory" name="transitory" style="display:none">
+<input type="text" id="transitory" name="transitory" style="display:none;">
 <div class="animated fadeIn">
 	<div class="titVolt">
 		<nav>
@@ -96,34 +107,41 @@
 		{{=head}}
 	</div>
 	<hr>
-<!-- AQUI A TABELA DE ITENS DO SQLFORM.grid -->
+	<!-- AQUI A TABELA DE ITENS DO SQLFORM.grid -->
 
-<div id="minhaTabela" class="container" >
-	<h3>Lista de pedidos para separar</h3>
-	<table id="dataTable" class="table table-striped hover" cellspacing="0" width="100%" >
-		<thead>
-			<tr>
-				<th>Codigo</th>
-				<th>Peça</th>
-				<th>Qtde</th>
-				<th>Status</th>
-				<th>Obs</th>
-			</tr>
-			<tbody>
-				{{for iten in grid:}}
-					<!-- pegar a data da solicitacao -->
-						<tr>
-							<td style="display:none">{{=iten.id}}</td>
-							<td>{{=iten.codigoIten}}</td>
-							<td>{{=iten.produto}}</td>
-							<td>{{=iten.quantidade}}</td>
-							<td id="check"><div class="{{='check_%s'%iten.status}}"></div></td>
-							<td class="obs_iten"><input type="text" class="form-control" value="{{=iten.obs}}"></td>
-						</tr>
-					
-				{{pass}}
-			</tbody>
-		</thead>
-	</table>
-</div>
-</div>
+	<div id="minhaTabela" class="container" >
+		<h3>Lista de pedidos para separar</h3>
+		<table id="dataTable" class="table table-striped hover" cellspacing="0" width="100%" >
+			<thead>
+				<tr>
+					<th>Codigo</th>
+					<th>Peça</th>
+					<th>Qtde</th>
+					<th>Status</th>
+					<th>Obs</th>
+				</tr>
+				<tbody>
+					{{for iten in grid:}}
+						<!-- pegar a data da solicitacao -->
+							<tr>
+								<td style="display:none">{{=iten.id}}</td>
+								<td>{{=iten.codigoIten}}</td>
+								<td>{{=iten.produto}}</td>
+								<td>{{=iten.quantidade}}</td>
+								<td id="check"><div class="{{='check_%s'%iten.status}}"></div></td>
+								<td class="obs_iten"><input type="text" class="form-control" value="{{=iten.obs}}"></td>
+							</tr>
+						
+					{{pass}}
+				</tbody>
+			</thead>
+		</table>
+<form class="form-inline">
+  <div class="form-group">
+    <label>Qtde Pacote : </label>
+    
+    <input type="number" class="form-control" id="volumePedido" value="0" min="0" max="20">
+</form>		
+		 
+	</div>
+</div><!-- fim do animated fadein -->

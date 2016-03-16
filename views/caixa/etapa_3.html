@@ -4,7 +4,7 @@ $(document).ready(function(){
 	    $("#btFecharCaixa").on('click',function(){
 	      $(this).text("Enviando e-mail...").attr('disabled',true);
 	      var tipoVenda = $('.tpv').prop('value');
-	      var valorTotal = $('#subTotal').text().replace('R$','').trim();
+	      var valorTotal = $('#subTotal').text().replace('R$','').replace(',','.').trim();
 	      var desconto = $('.vermelho').text().replace('R$','').trim();
 	      var representante = "{{=session.representante}}";
 
@@ -13,7 +13,7 @@ $(document).ready(function(){
 	      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante);
 	      ajax('fecharVenda',['transitory']);
 	      // $(location).attr('href',"historico?menu=caixa");//redireciona a pagina
-	      $(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
+	      //$(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
 	    });	
 
 		$("#btCancelarCaixa").on('click',function(){
