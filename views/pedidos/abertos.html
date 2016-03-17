@@ -39,6 +39,9 @@
 	span.atrazo_verde {
 	    background: #61F166;
 	}
+	span.qtdePendente{
+		background: #F2DEDE;
+	}
 	#minhaTabela .glyphicon-ok {
 	    margin-left: 11px;
 	    color: #0CF34C;
@@ -80,14 +83,14 @@
 							<td>{{=pedido.codigoVenda}}</td>
 							<td>{{=(pedido.dataVenda).strftime('%d/%m/%Y as %H:%M:%S')}}{{=atrazo}}</td>
 							<td>{{=pedido.status_venda}}</td>
-							{{if (pedido.volume != None) and (pedido.volume != "0"):}}
+							{{if (pedido.volume != None) and (pedido.volume != 0):}}
 								<td id="volumePendente">
 									<span class="at atrazo_verde">{{=pedido.volume}}</span>
 								</td>
 
 							{{else:}}
 								<td id="volumePendente">
-									<span class="at atrazo_vermelho">0</span>
+									<span class="at qtdePendente">F</span>
 								</td>
 							{{pass}}
 							

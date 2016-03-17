@@ -37,6 +37,7 @@
 			var v = $(this).val();
 			if (v == "") {
 				//$(this).val(0);
+				//enviar "0" 
 			}else{
 				console.log($(this).val())
 			}
@@ -136,12 +137,12 @@
 				</tbody>
 			</thead>
 		</table>
-<form class="form-inline">
-  <div class="form-group">
-    <label>Qtde Pacote : </label>
-    
-    <input type="number" class="form-control" id="volumePedido" value="0" min="0" max="20">
-</form>		
+		<form class="form-inline">
+		  <div class="form-group">
+		    <label>Qtde Pacote : </label>
+		    <input type="number" class="form-control" id="volumePedido"  min="0" max="20">
+		</form>		
 		 
 	</div>
 </div><!-- fim do animated fadein -->
+</div>
