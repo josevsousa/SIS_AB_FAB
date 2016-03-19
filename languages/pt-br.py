@@ -214,6 +214,7 @@
 'Modified By': 'Modified By',
 'Modified On': 'Modified On',
 'My Sites': 'Meus sites',
+'Má Oeeii!': 'Má Oeeii!',
 'Name': 'Nome',
 'New password': 'Nova senha',
 'New Record': 'Novo Registro',

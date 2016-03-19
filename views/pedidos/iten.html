@@ -34,14 +34,27 @@
 
 		//Qtde de volume
 		$("#volumePedido").on('keyup',function(){
-			var v = $(this).val();
-			if (v == "") {
-				//$(this).val(0);
-				//enviar "0" 
+			var v = $(this).val();	
+			console.log(v);
+			if ((v == "") || (v == '0')) {
+				$(this).addClass('vp_vazio');
+				$("#enviar").addClass('bt_vazio').text('Registrar');
 			}else{
-				console.log($(this).val())
+				$(this).removeClass('vp_vazio');
+				$("#enviar").removeClass('bt_vazio').text('Alterar');
+
 			}
 		})
+
+		//enviar volume
+		$('#enviar').on('click',function(){
+			var v = $('#volumePedido').val();
+			$('#transitory').val(v+";"+{{=cod}});
+			$(this).text('Gravando...');
+			ajax('qtdeVolume', ['transitory']);
+			$(location).attr('href',"abertos?menu=operacional");
+		})
+
   	});
 </script>
 <style>
@@ -93,6 +106,14 @@
 		margin: 0 auto;
 		width: 95%;
 	}
+	/* qtde vazia */
+	.vp_vazio{
+		border: 1px solid #E91E63 !important;
+        box-shadow: rgba(0, 0, 0, 0.0745098) 0 1px 1px inset, rgba(233, 30, 99, 0.63) 0 0 8px !important;
+	}
+	.bt_vazio {
+    	color: #E91E63;
+	}
 
 </style>
 
@@ -137,11 +158,19 @@
 				</tbody>
 			</thead>
 		</table>
-		<form class="form-inline">
+		<div class="form-inline qtdeVolume">
 		  <div class="form-group">
 		    <label>Qtde Pacote : </label>
-		    <input type="number" class="form-control" id="volumePedido"  min="0" max="20">
-		</form>		
+		    
+			{{vlm=db(db.historicoVendas.codigoVenda == cod).select('volume')[0].volume}}
+			{{if vlm == '0':}}
+			    <input type="number" class="form-control vp_vazio" id="volumePedido" min="0" max="20">
+			    <button type="text" id="enviar"  class="btn btn-default bt_vazio">Registrar</button>
+			{{else:}}
+				<input type="number" class="form-control" id="volumePedido" value="{{=vlm}}" min="0" max="20">
+			    <button type="text" id="enviar" class="btn btn-default">Alterar</button>
+			{{pass}}
+		</div>	
 		 
 	</div>
 </div><!-- fim do animated fadein -->

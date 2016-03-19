@@ -20,6 +20,7 @@ def iten():
 	grid = db(Itens.codigoVenda == cod).select()
 	head = H3("COD: [ %s ]  aberto em %s"%(cod, data))
 
+
 	#pegar lista do historicoVendas.itensVendaPendente e jogar na tela 
 	return dict(head=head,grid=grid,cod=cod)
 
@@ -48,7 +49,11 @@ def update_ItenObs():
     index = index.split(';')
     db(Itens.id == index[0]).update(obs=index[1])
 
-
+def qtdeVolume():
+	index = request.vars.transitory
+	index = index.split(';')
+	db(db.historicoVendas.codigoVenda == index[1]).update(volume=index[0])
+	
 
 # def updateGrid():
 # 	index = request.vars.transitory
