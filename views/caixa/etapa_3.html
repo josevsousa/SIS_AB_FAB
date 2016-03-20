@@ -2,19 +2,45 @@
 <script>
 $(document).ready(function(){
 	    $("#btFecharCaixa").on('click',function(){
-	      $(this).text("Enviando e-mail...").attr('disabled',true);
-	      var tipoVenda = $('.tpv').prop('value');
-	      var valorTotal = $('#subTotal').text().replace('R$','').replace(',','.').trim();
-	      var desconto = $('.vermelho').text().replace('R$','').trim();
-	      var representante = "{{=session.representante}}";
+	    	
+	    	// if ($(".tpv").val() == 'cheque') {
 
-	      // var enviarEmail = 'N';//buscar estado do check do checkbox enviar email
-	      // $("#transitory").val(tipoVenda+";"+valorTotal+";"+desconto+";"+representante+";"+enviarEmail);
-	      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante);
-	      ajax('fecharVenda',['transitory']);
-	      // $(location).attr('href',"historico?menu=caixa");//redireciona a pagina
-	      $(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
-	    });	
+	    	// 	if ($("#titularNome").val() == "") {
+	    	// 		$("#titularNome").addClass('titular_vazio').focus();
+	    	// 		$("#btFecharCaixa").attr('disabled',true);
+	    	// 		console.log('nome do titular vazio')
+	    	// 	}else{
+	    	// 		//gravar o nome do titular no db parcelados
+	    	// 	}	    	
+	    	// }else{
+	    	// 	//gravarCaix()
+	    	// 	console.log("gravado com sucesso")
+	    	// }
+	    	if ($(".tpv").val() == 'cheque' || $(".tpv").val() == 'boleto') {
+		    	if ($(".parcelarC").val() == '0') {
+		    		$(".parcelarC").addClass('titular_vazio').focus();
+		    	}else{
+		    		gravarCaix()
+		    	}
+		    }else{
+		    	gravarCaix()
+		    }		
+		});	
+
+
+	    function gravarCaix(){
+	    	  $("#btFecharCaixa").text("Enviando e-mail...").attr('disabled',true);
+		      var tipoVenda = $('.tpv').prop('value');
+		      var valorTotal = $('#subTotal').text().replace('R$','').replace(',','.').trim();
+		      var desconto = $('.vermelho').text().replace('R$','').trim();
+		      var representante = "{{=session.representante}}";
+
+		      // var enviarEmail = 'N';//buscar estado do check do checkbox enviar email
+		      // $("#transitory").val(tipoVenda+";"+valorTotal+";"+desconto+";"+representante+";"+enviarEmail);
+		      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante);
+		      ajax('fecharVenda',['transitory']);
+		      $(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
+	    }
 
 		$("#btCancelarCaixa").on('click',function(){
 	        var c = confirm("Tem certeza que deseja cancelar a venda???")
@@ -33,6 +59,8 @@ $(document).ready(function(){
 	      if (valor == "aVista"){
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
+	        $("#titularNome").val('');
+	        $(".titular").hide();
 	        parcelar(false);
 	        $('#comprovantePagSeg').hide(400);
 	        $('#parcelado').hide(400);
@@ -43,12 +71,22 @@ $(document).ready(function(){
 	        $("#btFecharCaixa").attr('disabled',false);
 	        $("#calcDesc").hide(400);
 	        $(".d").hide(400);
-	      }else if(valor == "cheque" || valor == "boleto" ){
+	      }else if(valor == "boleto" ){
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
+	        // $(".titular").hide(400);
+	        // $("#titularNome").val('');
 	        parcelar(true);
 	        $('#comprovantePagSeg').hide(400)
+	      }else if(valor == "cheque"){
+	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
+	        $(".d").show(400);
+	        // $("#titularNome").removeClass('titular_vazio');
+	        // $(".titular").show(400);
+	        parcelar(true);
+	        $('#comprovantePagSeg').text('').hide(400)
 	      }else{
+	      	$("#titularNome").removeClass('titular_vazio');
 	        zerarDesconto();	        
 	        parcelar(false);
 	        $("#btFecharCaixa").removeClass('btF');
@@ -168,7 +206,10 @@ $(document).ready(function(){
 });//ready
 </script>
 <style>
-
+	.titular_vazio{
+		border: 1px solid #E91E63 !important;
+        box-shadow: rgba(0, 0, 0, 0.0745098) 0 1px 1px inset, rgba(233, 30, 99, 0.63) 0 0 8px !important;
+	}
 	span#d {
 	    color: red;
 	}
@@ -288,6 +329,12 @@ $(document).ready(function(){
 		          </div>
 		        </div>        
 		      </div>
+
+		      <!--input propCheque-->
+		      <div class="titular " style="display:none">
+		          <label>Titular Cheque: </label>
+		          <input type="text" class="form-control" id="titularNome" value="" placeholder="Cliente">
+		      </div><!--fim do input propCheque--> 
 		      <!--input parcelar-->
 		      <div class="p" style="display:none">
 		          <label>Parcelas: </label>
@@ -301,6 +348,7 @@ $(document).ready(function(){
 		            </select>
 		          </div> 
 		      </div><!--fim do input parcelar--> 
+
 		      <div id="parcelado">
 	<!-- 	        <table class="table table-striped hover  no-footer">
 		          <thead>
