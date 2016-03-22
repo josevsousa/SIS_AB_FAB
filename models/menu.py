@@ -34,28 +34,6 @@ response.google_analytics_id = None
 DEVELOPMENT_MENU = True
 
 
-if 'auth' in globals():
-    # verifica se o usuario nao esta logado
-    # caso nao estiver exibir somente os menus publicos
-    if not auth.is_logged_in(): 
-        response.menu = [
-            (T('Home'), False, URL(request.application,'default','index'), []),
-            (T('Cadastrar'), False, URL(request.application, 'default','user', args='register'), []),
-            (T('Sobre'), False, URL(request.application, 'default', 'sobre'), []),
-            ]
-    else:
-        # Estando logado, verifica a permissao.
-        # Se sua permissao for do grupo Admin, entao exibe os seguintes menus
-        if auth.has_membership('Admin'):
-            response.menu = [
-                (T('Menu Admin'), False, URL(request.application, 'licoes', 'novo'), []),
-                ]
-        # Se sua permissao for do grupo user_3, entao exibe os seguintes menus                
-        if auth.has_membership('user_3'):
-            response.menu = [
-                (T('Má Oeeii!'), False, URL(request.application, 'licoes', 'novo'), []),
-                ]
-
 
 #########################################################################
 ## provide shortcuts for development. remove in production
@@ -70,7 +48,7 @@ if 'auth' in globals():
     if not auth.is_logged_in():  
         response.menu = []
     else:  
-        if auth.has_membership('admin'):
+        if auth.has_membership('admin_2') or auth.has_membership('admin') :
             response.menu += [
                 
                   (T('Home'), False, URL('default', 'index?menu=principal'), []),
@@ -92,7 +70,7 @@ if 'auth' in globals():
                   #   (T('Cadastro Produtos'), False, URL('produtos', 'cadastrarProdutos'), [])
                   # ])
                 ]  
-        if auth.has_membership('operacional_A'):
+        elif auth.has_membership('operacional_A'):
             response.menu = [
                 (T('Operacional'),False, None, [
                     # (T('Separar itens venda'), False, URL('pedidos', 'abertos?menu=operacional'), []),
@@ -103,7 +81,7 @@ if 'auth' in globals():
                   #   (T('Listar Produtos'), False, URL('produtos', 'listarProdutos'), []),
                   #   (T('Cadastro Produtos'), False, URL('produtos', 'cadastrarProdutos'), [])
                   # ])
-                ]
+                ]  
 
 
 if DEVELOPMENT_MENU: _()

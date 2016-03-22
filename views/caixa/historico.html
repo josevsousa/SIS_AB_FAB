@@ -191,9 +191,16 @@
 					<td>{{=double_real(venda.valorDesconto).real()}}</td>
 					<td>{{=venda.clienteEmail}}</td>
 					<td>{{=venda.dataVenda}}</td>
+				{{if auth.has_membership('admin'):}}	
 					<td class="btDD">
 						<a class="btn btn-default del btn-xs" href="#"><span class="glyphicon glyphicon-remove"></span></a>
 					</td>
+				{{else:}}
+					<td class="btDD">
+						<a class="btn btn-default btn-xs" disabled href="#"><span class="glyphicon glyphicon-remove"></span></a>
+					</td>
+				{{pass}}	
+				
 				</tr>
 			{{pass}}		
 		{{pass}}			

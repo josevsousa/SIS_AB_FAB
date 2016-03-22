@@ -210,6 +210,7 @@
 'lost password?': 'esqueceu sua senha?',
 'Main Menu': 'Menu Principal',
 'Manage Cache': 'Gerenciar Cache',
+'Menu Admin': 'Menu Admin',
 'Menu Model': 'Modelo de Menu',
 'Modified By': 'Modified By',
 'Modified On': 'Modified On',

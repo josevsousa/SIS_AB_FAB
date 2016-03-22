@@ -41,7 +41,7 @@ def etapa_2():
     sTotal = 0.0
     for iten in grid:
         sTotal += float(iten.valorTotal)  
-    sTotal = double_real(sTotal).real()  
+    session.sTotal = sTotal
     # ---- fim sTotal
     return dict(grid=grid, sTotal=sTotal)
 
@@ -50,10 +50,11 @@ def produto():
     produto = request.vars.produto
     qtde = request.vars.qtde
 
+
     valorUn = (db(db.produtos.codigo_produto == codigo).select('preco_produto_lojinha'))[0].preco_produto_lojinha
     valorTotal = int(qtde)*float(valorUn)
     Itens.insert(codigoVenda=session.codigo_venda,codigoIten=codigo,produto=produto,quantidade=qtde,valorUnidade=valorUn,valorTotal=valorTotal)
-    redirect(URL('etapa_2?menu=caixa')) 
+    #redirect(URL('etapa_2?menu=caixa')) 
  
 def delItem():
     index = request.vars.transitory
@@ -86,7 +87,7 @@ def buscaProduto():
 
 # ----------------------- ETAPA 3 -----------------------
 def etapa_3():
-    return locals()
+    return dict(sTotal = session.sTotal, sTotal_F = double_real(session.sTotal).real())
 # ------------------ FIM DA ETAPA 3 ---------------------
 
 # @auth.requires_login()
@@ -125,6 +126,7 @@ def fecharVenda():
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
+    totalParcelas = index[4]
     # pegar o nome do representante e gravar o id no historico
     representante = session.representante
     enviarEmail = 'N'
@@ -132,19 +134,16 @@ def fecharVenda():
      # Parcela, DataVencimento, Valor
     if tipoVenda == 'boleto' or tipoVenda == 'cheque':
         for iten in session.parceladaDB:
-            valor = "%.2f"%float(iten['valor'])
+            valor = "%.2f"%(float(valorVenda)/int(totalParcelas))
             Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=email, representante=representante, parcela=iten['iten'], dataVencimento=iten['data'], valor=valor)
-
     vendedor = session.auth.user.email #pegar usuario logado        
-
     itensVenda = crud.select(Itens, Itens.codigoVenda == '%s'%codigoVenda,['codigoIten','quantidade','produto','valorUnidade','valorTotal'])
+    
     if valorDesconto == '':
         valorDesconto = '0.00'
         pass
-    
     db.historicoVendas.insert(codigoVenda = codigoVenda,clienteEmail = email,tipoVenda = tipoVenda,valorVenda = valorVenda,valorDesconto = valorDesconto,  vendedor = vendedor, representante = representante ) 
-
-    viewDesc = "";
+    viewDesc = ""
     if valorDesconto != "0.00":
         valorT = (float(valorVenda) + float(valorDesconto))
         viewDesc = "<h3><b>Total</b> : R$ %.2f - <b>Desconto</b> : <span>R$ %.2f</span></h3>"%(valorT, float(valorDesconto))
@@ -156,7 +155,7 @@ def fecharVenda():
     session.__delitem__('codigo_venda')
     session.__delitem__('cliente')
     session.__delitem__('representante')  
- 
+
 #--------------------------------    
 
 def reenviarEmail():
@@ -212,7 +211,7 @@ def enviar_email(codigo):
 
 
 
-@auth.requires_membership('admin')
+@auth.requires_membership('admin','admin_2')
 def historico():
     # data atual
     from datetime import datetime
@@ -285,6 +284,7 @@ def parcelado():
     dados = request.vars.transitory
     dados = dados.split(';')
     qtdeParcelas = int(dados[0])
+    #pegar o valor total na session.sTotal
     valorDaParcela = float(dados[1])/qtdeParcelas
 
     from datetime import datetime, timedelta
@@ -298,9 +298,9 @@ def parcelado():
     for x in range(qtdeParcelas):
         dt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%d/%m/%Y")
         dtt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%Y-%m-%d %H:%M:%S")
-        itens = itens+"<tr><td>%d</td><td>%s</td><td>R$ %.2f</td></tr>"%(x+1, dt, valorDaParcela)
+        itens = itens+"<tr><td>%d</td><td>%s</td><td>%s</td></tr>"%(x+1, dt,double_real(valorDaParcela).real())
         enviar_itens.append({'iten':x+1,'data':dtt, 'valor': valorDaParcela})
-    
+
     session.parceladaDB = enviar_itens
 
     grid = XML(
@@ -317,6 +317,7 @@ def parcelado():
         )
 
     session.parcelada = grid #grid para o a tela de print
+
     return grid
 
 

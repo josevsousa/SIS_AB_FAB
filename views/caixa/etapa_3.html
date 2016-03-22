@@ -20,10 +20,10 @@ $(document).ready(function(){
 		    	if ($(".parcelarC").val() == '0') {
 		    		$(".parcelarC").addClass('titular_vazio').focus();
 		    	}else{
-		    		gravarCaix()
+		    		gravarCaix();
 		    	}
 		    }else{
-		    	gravarCaix()
+		    	gravarCaix();
 		    }		
 		});	
 
@@ -31,13 +31,15 @@ $(document).ready(function(){
 	    function gravarCaix(){
 	    	  $("#btFecharCaixa").text("Enviando e-mail...").attr('disabled',true);
 		      var tipoVenda = $('.tpv').prop('value');
-		      var valorTotal = $('#subTotal').text().replace('R$','').replace(',','.').trim();
+		      var valorTotal = $('#subTotal').text().trim();
+		      valorTotal = valorTotal.replace('R$','').replace('.','');
+		      valorTotal = valorTotal.replace(',','.');
 		      var desconto = $('.vermelho').text().replace('R$','').trim();
 		      var representante = "{{=session.representante}}";
-
+		      var totalParcelas = $('.parcelarC').val();
 		      // var enviarEmail = 'N';//buscar estado do check do checkbox enviar email
 		      // $("#transitory").val(tipoVenda+";"+valorTotal+";"+desconto+";"+representante+";"+enviarEmail);
-		      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante);
+		      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante+';'+ totalParcelas);
 		      ajax('fecharVenda',['transitory']);
 		      $(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
 	    }
@@ -48,20 +50,19 @@ $(document).ready(function(){
 	          ajax('cancelarVenda',['transitory']);
 	          $(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
 	        }else{
-	          console.log("Venda mantida!")
 	        };
 	    });
 
 	    //select tipo venda
 	    $('.tpv').on('change',function(){
 	      var valor = $(this).val();
-	      console.log(valor);
 	      if (valor == "aVista"){
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
 	        $("#titularNome").val('');
 	        $(".titular").hide();
 	        parcelar(false);
+	        zerarDesconto();
 	        $('#comprovantePagSeg').hide(400);
 	        $('#parcelado').hide(400);
 	      }else if(valor == "credito" || valor == "debito" ){
@@ -74,15 +75,15 @@ $(document).ready(function(){
 	      }else if(valor == "boleto" ){
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
-	        // $(".titular").hide(400);
-	        // $("#titularNome").val('');
+	        $(".titular").hide(400);
+	        $("#titularNome").val('');
 	        parcelar(true);
 	        $('#comprovantePagSeg').hide(400)
 	      }else if(valor == "cheque"){
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
-	        // $("#titularNome").removeClass('titular_vazio');
-	        // $(".titular").show(400);
+	        $("#titularNome").removeClass('titular_vazio');
+	        $(".titular").show(400);
 	        parcelar(true);
 	        $('#comprovantePagSeg').text('').hide(400)
 	      }else{
@@ -97,7 +98,11 @@ $(document).ready(function(){
 	      }
 	    }); 
 		
-	    var totall = parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim());
+	    var totall = {{=sTotal}};
+	    //var totall = {{session.sTotal}}
+
+	    //zerar desconto
+
 	    // din
 	    $("#din").on('keyup',function(){
 	      var d = $(this).val(); //dinheiro
@@ -105,16 +110,20 @@ $(document).ready(function(){
 	      if (p == '' && d == '') {
 	        vizor(d,p);
 	        $("#calcDesc").hide(400);//esconder
-	        $('#subTotal').text($(".verde").text());
+	        $('#subTotal').text("{{=sTotal_F}}" );
 	        var porcC = $('.parcelarC').val();
 	        if (porcC != '0' && porcC != '') {
-	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim()))   
+	          	gerarGridParcela(porcC,totall)   
 	        };
 	      }else{
 	        vizor(d,p);
 	        var porcC = $('.parcelarC').val();
 	        if (porcC != '0' && porcC != '') {
-	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim()))
+	        	var total = $("#subTotal").text().trim();
+      			total = total.replace('R$ ','');
+      			total = total.replace('.','');
+      			total = total.replace(',','.');
+	          	gerarGridParcela(porcC,total) 
 	        }else{
 
 	        };
@@ -127,16 +136,20 @@ $(document).ready(function(){
 	      if (p == '' && d == '') {
 	        vizor(d,p);
 	        $("#calcDesc").hide(400);//esconder
-	        $('#subTotal').text($(".verde").text());
+	        $('#subTotal').text("{{=sTotal_F}}");
 	        var porcC = $('.parcelarC').val();
 	        if (porcC != '0' && porcC != '') {
-	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim()))   
+	          	gerarGridParcela(porcC,totall)  
 	        };
 	      }else{
 	        vizor(d,p);
 	        var porcC = $('.parcelarC').val();
 	        if (porcC != '0' && porcC != '') {
-	          gerarGridParcela(porcC,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim()))
+	        	var total = $("#subTotal").text().trim();
+      			total = total.replace('R$ ','');
+      			total = total.replace('.','');
+      			total = total.replace(',','.');
+	          	gerarGridParcela(porcC,total) 
 	        }else{
 
 	        };
@@ -156,11 +169,13 @@ $(document).ready(function(){
 	        var desc_din = parseFloat(din);
 	        var desc_porcentage = parseFloat(por);
 	        var desconto = (totall - (desc_din+((totall*desc_porcentage)/100)));
-	        var viewCalc = 'Total ( <span class="verde">R$ '+
-	              totall.toFixed(2)+'</span> ) <b>-</b> Desconto ( <span class="vermelho"> R$ '+
+	        var viewCalc = 'Total ( <span class="verde">{{=sTotal_F}}</span> ) <b>-</b> Desconto ( <span class="vermelho"> R$ '+
 	              parseFloat(totall - desconto).toFixed(2)+
 	              '</span> )';
-	        $('#subTotal').text("R$ "+desconto.toFixed(2)) //SUBTOTAL
+	        desconto = desconto.toFixed(2);  
+	        desconto = desconto.toString();
+	        desconto = desconto.replace('.',',');    
+	        $('#subTotal').text("R$ "+desconto); //SUBTOTAL
 	        $("#calcDesc").html(viewCalc);
 	        $("#calcDesc").show(400);//mostrar
       	}
@@ -178,9 +193,15 @@ $(document).ready(function(){
       }
     }
     $('.parcelarC').on('change', function(){
+   	   //$("#din, #por").attr('disabled',true);	 	
       var p = $(this).val(); 
       if (p != '' && p != '0' ) {
-        gerarGridParcela(p,parseFloat($("#subTotal").text().replace('R$','').replace(',','.').trim())); 
+      	var total = $("#subTotal").text().trim();
+      	total = total.replace('R$ ','').replace('.','');
+      	total = total.replace(',','.');
+      	total = parseFloat(total)
+      	total = total.toFixed(2);
+        gerarGridParcela(p,total); 
         $('#parcelado').show(400); 
       }else if(p == '0'){
         $('#parcelado').hide(400); 
@@ -189,17 +210,19 @@ $(document).ready(function(){
     });   
     function gerarGridParcela(n, total){
       var tipoVenda = $('.tpv').prop('value');
-      $("#transitory").val(n+";"+total+";"+tipoVenda);
-          ajax('parcelado',['transitory'],'parcelado'); //chama a funcao que manda para o db
+      	$("#transitory").val(n+";"+total+";"+tipoVenda);
+        ajax('parcelado',['transitory'],'parcelado'); //chama a funcao que manda para o db
         
       }
     function zerarDesconto(){
+
       var vv = $(".verde").text();
       if (vv != '') {
         $('#subTotal').text(vv);
       };
       $("#din, #por").val('');
       $(".vermelho").text('0');
+      $('#calcDesc').hide(400);
     }    
     // ---- fim parcelar compra ------
 
@@ -276,7 +299,7 @@ $(document).ready(function(){
 	}
 
 </style>
-<input type="text" id="transitory" name="transitory" style='display:none'>
+<input type="text" id="transitory" name="transitory" style='display:block'>
 <div class="container animated fadeIn">
   <div class="row row_borda_bottom"> 
     <div class="fluxoVenda">
@@ -330,11 +353,11 @@ $(document).ready(function(){
 		        </div>        
 		      </div>
 
-		      <!--input propCheque-->
+		      <!--input propCheque--
 		      <div class="titular " style="display:none">
 		          <label>Titular Cheque: </label>
 		          <input type="text" class="form-control" id="titularNome" value="" placeholder="Cliente">
-		      </div><!--fim do input propCheque--> 
+		      </div>   fim do input propCheque--> 
 		      <!--input parcelar-->
 		      <div class="p" style="display:none">
 		          <label>Parcelas: </label>
@@ -379,7 +402,7 @@ $(document).ready(function(){
 		    <div class="panel panel-default">
 		        <div id="calcDesc" style="display: none;"></div>
 		        <div id="subTotal" class="panel-body">
-		          {{=request.vars.sTotal}}		      
+		          {{=sTotal_F}}	      
 		        </div>
 		    </div>
 		      <button type="button" id="btFecharCaixa" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-ok-circle"></span> Fechar caixa</button>

@@ -101,7 +101,8 @@
           $("#addItem").on('click',function(){
             $(this).text("Registr...").attr('disabled',true);
             ajax('produto',['codigo','qtde','produto']);
-            $(location).attr('href',"etapa_2?menu=caixa");//redireciona a pagina
+           // $(location).attr('href',"etapa_2?menu=caixa");//redireciona a pagina location.reload()
+           location.reload()
           })
       //------------------------- fim popula codigo    
       
@@ -272,8 +273,8 @@
         </div>
     </div>
     <div class="col-md-3 highlight">
-      <div class="t"><b>Total: </b> {{=sTotal}}</div>
-      <a href="etapa_3?menu=caixa&sTotal={{=sTotal}}" class="btn btn-default" type="submit" value="Próximo">Próximo <span class="label contageP">3</span></a>
+      <div class="t"><b>Total: </b> {{=double_real(sTotal).real()}}</div>
+      <a href="etapa_3?menu=caixa" class="btn btn-default" type="submit" value="Próximo">Próximo <span class="label contageP">3</span></a>
     </div>
   </div>
   <div class="row ">
