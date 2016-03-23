@@ -11,8 +11,8 @@
 	        //"lengthMenu": [[25, 50, -1], [25, 50, "All"]] 
 	    });
 	    $('.cadastroFull').on('click', function(){
-	    	var cod = $(this).parent().parent().children('td')[0].textContent
-	    	var dataSolicitacao = $(this).parent().parent().children('td')[1].textContent
+	    	var cod = $(this).parent().parent().children('td')[1].textContent
+	    	var dataSolicitacao = $(this).parent().parent().children('td')[2].textContent
 			$(location).attr('href',"iten?menu=operacional&cod="+cod+"&dataSolicitacao="+dataSolicitacao);//redireciona a pagina
 	    });
 
@@ -54,6 +54,7 @@
 	<table id="dataTable" class="table table-striped hover" cellspacing="0" width="100%" >
 		<thead>
 			<tr>
+				<th style="display:none"></th>
 				<th>Codigo Pedido</th>
 				<th>Data Solicitaçao</th>
 				<th>Status Itens</th>
@@ -63,9 +64,7 @@
 			<tbody>
 				{{from datetime import date}}
 				{{for pedido in pedidos:}}
-					<!-- pegar a data da solicitacao -->
 					{{if pedido.deletado != True:}}
-						<!-- date(2015,12,21)- date(2015,12,19) -->
 						{{if pedido.status_venda != 'OK':}}   
 							{{venda =  (pedido.dataVenda).strftime('%Y,%m,%d')
 							venda = venda.split(',')
@@ -81,6 +80,7 @@
 						{{atrazo = XML("<span class='glyphicon glyphicon-ok'></span>")}}
 						{{pass}}	
 						<tr>
+							<td style="display:none">{{=pedido.id}}</td>
 							<td>{{=pedido.codigoVenda}}</td>
 							<td>{{=(pedido.dataVenda).strftime('%d/%m/%Y as %H:%M:%S')}}{{=atrazo}}</td>
 							<td>{{=pedido.status_venda}}</td>
