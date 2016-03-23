@@ -211,7 +211,8 @@ def enviar_email(codigo):
 
 
 
-@auth.requires_membership('admin','admin_2')
+#@auth.requires_membership('admin') 
+@auth.requires_login()
 def historico():
     # data atual
     from datetime import datetime
