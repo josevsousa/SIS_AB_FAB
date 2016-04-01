@@ -148,7 +148,7 @@
 			</tbody>
 		</table>	
 		<!-- o nome do cliente no historicoVendas esta no campo email' -->
-		{{cliente = db(Clientes.nome == historico_venda[0].clienteEmail).select()}}
+		{{cliente = db(Clientes.id == historico_venda[0].clienteEmail).select()}}
 		<table class='table table-bordered'>
 			<tbody>
 				<tr>

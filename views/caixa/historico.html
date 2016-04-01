@@ -189,7 +189,7 @@
 					<td>{{=venda.tipoVenda}}</td>
 					<td>{{=double_real(venda.valorVenda).real()}}</td>
 					<td>{{=double_real(venda.valorDesconto).real()}}</td>
-					<td>{{=venda.clienteEmail}}</td>
+					<td>{{=db(Clientes.id == venda.clienteEmail).select('nome')[0].nome}}</td>
 					<td>{{=venda.dataVenda}}</td>
 				{{if auth.has_membership('admin'):}}	
 					<td class="btDD">
