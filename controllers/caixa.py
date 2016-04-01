@@ -121,7 +121,7 @@ def fecharVenda():
     index = index.split(";")
     # dados a gravar no db
     codigoVenda = session.codigo_venda
-    email = session.cliente
+    idCliente = db(Clientes.nome == session.cliente ).select('id')[0].id
        
     tipoVenda = index[0]
     valorVenda = index[1]
@@ -135,14 +135,14 @@ def fecharVenda():
     if tipoVenda == 'boleto' or tipoVenda == 'cheque':
         for iten in session.parceladaDB:
             valor = "%.2f"%(float(valorVenda)/int(totalParcelas))
-            Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=email, representante=representante, parcela=iten['iten'], dataVencimento=iten['data'], valor=valor)
+            Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=idCliente, representante=representante, parcela=iten['iten'], dataVencimento=iten['data'], valor=valor)
     vendedor = session.auth.user.email #pegar usuario logado        
     itensVenda = crud.select(Itens, Itens.codigoVenda == '%s'%codigoVenda,['codigoIten','quantidade','produto','valorUnidade','valorTotal'])
     
     if valorDesconto == '':
         valorDesconto = '0.00'
         pass
-    db.historicoVendas.insert(codigoVenda = codigoVenda,clienteEmail = email,tipoVenda = tipoVenda,valorVenda = valorVenda,valorDesconto = valorDesconto,  vendedor = vendedor, representante = representante ) 
+    db.historicoVendas.insert(codigoVenda = codigoVenda,clienteEmail = idCliente,tipoVenda = tipoVenda,valorVenda = valorVenda,valorDesconto = valorDesconto,  vendedor = vendedor, representante = representante ) 
     viewDesc = ""
     if valorDesconto != "0.00":
         valorT = (float(valorVenda) + float(valorDesconto))
