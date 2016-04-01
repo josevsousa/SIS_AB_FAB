@@ -251,6 +251,7 @@ def historico_print():
     cod_venda = request.vars.cod 
     # historico da venda ( venda referente ao cod_venda )
     historico_venda = db(Historico.codigoVenda == "%s"%cod_venda).select() 
+    print "[ -- %s -- ]"%historico_venda
     # ok ate aqui
     # itens da venda 
     itens_venda =  db(Itens.codigoVenda == "%s"%cod_venda).select('codigoIten','quantidade','produto','valorUnidade','valorTotal')
