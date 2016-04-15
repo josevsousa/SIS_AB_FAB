@@ -9,7 +9,7 @@
 		$('#produtos_tamanho').addClass('form-control');
 		$('form').addClass('formEditar');
 		$('input[type=submit]').val('Cadastrar');
-		
+		{{newCodigo = int(db(Produtos.id>0).select().last().codigo_produto)+1}}
 		// incrementa o ultimo numero de funcionario
 		$('#produtos_codigo_produto').val('{{=newCodigo}}');
 

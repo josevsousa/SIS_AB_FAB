@@ -4,14 +4,13 @@ def cadastrarProdutos():
 
 
 
-	newCodigo = int(db(Produtos.id>0).select().last().codigo_produto)+1
 
 	#max = db.produtos.id.max()
 	#max_id = db().select(max).first()[max]
 	#ultimo_evento = db.eventos[max_id]
 		
 
-	return dict(formCadastro=crud.create(db.produtos),newCodigo = newCodigo)
+	return dict(formCadastro=crud.create(db.produtos))
 
 @auth.requires_login()
 def listarProdutos():
