@@ -13,7 +13,7 @@
 		
 		// incrementa o ultimo numero de funcionario
 		{{x = len(db(Produtos.id>0).select())+1}}
-		$('#produtos_codigo_produto').val('{{=str(x)}}')
+		$('#produtos_codigo_produto').val('{{=x}}')
 
 
 	});
