@@ -194,6 +194,9 @@
   a, a:link, a:hover {
     text-decoration: none;
   }
+.vermelhoAlert{
+  color: #FF1100 !important;
+}
   /*--grid--*/
 /*  #minhaTabela thead tr th:nth-child(6), #minhaTabela tbody tr td:nth-child(6){
     width: 45px !important;  }
@@ -300,8 +303,14 @@
                 <td class='btCC'>{{=iten.codigoIten}}</td>
                 <td class='btCC'>{{=iten.quantidade}}</td>
                 <td>{{=iten.produto}}</td>
+                {{valor = double_real(float(iten.valorUnidade)).real()}}
+                {{if valor == 'R$ 0,00':}}
+                  <td class="vermelhoAlert">{{=valor}}</td>
+                {{else:}}
+                  <td>{{=valor}}</td>
+                {{pass}}
 
-                <td>{{=double_real(float(iten.valorUnidade)).real()}}</td>
+
                 <td>{{=double_real(float(iten.valorTotal)).real()}}</td>
                 
                 <td class="btDD"><a class="btn btn-default del btn-xs" href="#"><span class="glyphicon glyphicon-trash"></span></a></td>
