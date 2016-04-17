@@ -57,6 +57,7 @@ $(document).ready(function(){
 	    $('.tpv').on('change',function(){
 	      var valor = $(this).val();
 	      if (valor == "aVista"){
+	      	ajax('limparParcelados');
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
 	        $("#titularNome").val('');
@@ -67,6 +68,7 @@ $(document).ready(function(){
 	        $('#parcelado').hide(400);
 	      }else if(valor == "credito" || valor == "debito" ){
 	        parcelar(false);
+	      	ajax('limparParcelados');
 	        $('#comprovantePagSeg').show(400);
 	        zerarDesconto();
 	        $("#btFecharCaixa").attr('disabled',false);
@@ -88,7 +90,8 @@ $(document).ready(function(){
 	        $('#comprovantePagSeg').text('').hide(400)
 	      }else{
 	      	$("#titularNome").removeClass('titular_vazio');
-	        zerarDesconto();	        
+	        zerarDesconto();
+	      	ajax('limparParcelados');	        
 	        parcelar(false);
 	        $("#btFecharCaixa").removeClass('btF');
 	        $("#btFecharCaixa").attr('disabled',true);

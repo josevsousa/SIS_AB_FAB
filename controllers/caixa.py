@@ -20,6 +20,7 @@ def etapa_1():
         )
     if form.process().accepted:
         session.cliente = form.vars.Cliente
+        session.idCliente = db(db.clientes.nome == form.vars.Cliente).select('id')[0].id
         session.representante = db(db.representantes.nome == form.vars.Representante ).select('id')[0].id
         #cria codigo da venda  
         if not session.codigo_venda:
@@ -87,6 +88,7 @@ def buscaProduto():
 
 # ----------------------- ETAPA 3 -----------------------
 def etapa_3():
+    limparParcelados()
     return dict(sTotal = session.sTotal, sTotal_F = double_real(session.sTotal).real())
 # ------------------ FIM DA ETAPA 3 ---------------------
 
@@ -132,10 +134,6 @@ def fecharVenda():
     enviarEmail = 'N'
 
      # Parcela, DataVencimento, Valor
-    if tipoVenda == 'boleto' or tipoVenda == 'cheque':
-        for iten in session.parceladaDB:
-            valor = "%.2f"%(float(valorVenda)/int(totalParcelas))
-            Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=idCliente, representante=representante, parcela=iten['iten'], dataVencimento=iten['data'], valor=valor)
     vendedor = session.auth.user.email #pegar usuario logado        
     itensVenda = crud.select(Itens, Itens.codigoVenda == '%s'%codigoVenda,['codigoIten','quantidade','produto','valorUnidade','valorTotal'])
     
@@ -268,6 +266,7 @@ def historico_print():
 def cancelarVenda():  
     # limpar itens do db
     db(Itens.codigoVenda == session.codigo_venda).delete()
+    limparParcelados()
     # session.venda
     session.__delitem__('codigo_venda')
     session.__delitem__('cliente')
@@ -286,25 +285,26 @@ def parcelado():
     dados = request.vars.transitory
     dados = dados.split(';')
     qtdeParcelas = int(dados[0])
+    tipoVenda = dados[2]
     #pegar o valor total na session.sTotal
-    valorDaParcela = float(dados[1])/qtdeParcelas
-
+    valorDaParcela = '%.2f'%(float(dados[1])/qtdeParcelas)
+    codigo = session.codigo_venda
     from datetime import datetime, timedelta
     meses = 1
     dias_por_mes = 30
     hoje = datetime.now()
     # # dt_futura = hoje + timedelta(dias_por_mes*meses)
 
+    limparParcelados()
+
     itens = ""  
-    enviar_itens = [] 
     for x in range(qtdeParcelas):
-        dt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%d/%m/%Y")
-        dtt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%Y-%m-%d %H:%M:%S")
-        itens = itens+"<tr><td>%d</td><td>%s</td><td>%s</td></tr>"%(x+1, dt,double_real(valorDaParcela).real())
-        enviar_itens.append({'iten':x+1,'data':dtt, 'valor': valorDaParcela})
-
-    session.parceladaDB = enviar_itens
-
+        dt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%Y-%m-%d %H:%M:%S")
+        dtt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%d-%m-%Y")
+        db.parcelados.insert(codigo=codigo,tipoVenda=tipoVenda, cliente=session.idCliente,representante=session.representante,parcela=(x+1),dataVencimento=dt,valor=valorDaParcela)
+        itens = itens+"<tr><td>%d</td><td>%s</td><td>%s</td></tr>"%(x+1, dtt,double_real(valorDaParcela).real())
+    
+  
     grid = XML(
         "<table class='table table-striped table-bordered hover pld no-footer'>"+
             "<thead>"+
@@ -317,13 +317,8 @@ def parcelado():
             "</tbody>"+
         "</table>"
         )
-
-    session.parcelada = grid #grid para o a tela de print
-
     return grid
 
-
-
-
-
-
+def limparParcelados():
+    for z in range(4):
+        db(db.parcelados.codigo == session.codigo_venda).delete()
