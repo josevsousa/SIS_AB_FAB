@@ -87,6 +87,7 @@ def buscaProduto():
 # ------------------ FIM DA ETAPA 2 ---------------------
 
 # ----------------------- ETAPA 3 -----------------------
+@auth.requires_login()
 def etapa_3():
     limparParcelados()
     return dict(sTotal = session.sTotal, sTotal_F = double_real(session.sTotal).real())
