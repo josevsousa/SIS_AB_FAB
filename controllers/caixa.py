@@ -272,6 +272,8 @@ def cancelarVenda():
     session.__delitem__('codigo_venda')
     session.__delitem__('cliente')
     session.__delitem__('representante')
+    #redirect(URL('etapa_1?menu=caixa')) 
+    #session.flash = 'Pedido Cancelado!'
     
 
 def excluirVendaRegistrada():
@@ -303,7 +305,7 @@ def parcelado():
         dt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%Y-%m-%d %H:%M:%S")
         dtt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%d-%m-%Y")
         db.parcelados.insert(codigo=codigo,tipoVenda=tipoVenda, cliente=session.idCliente,representante=session.representante,parcela=(x+1),dataVencimento=dt,valor=valorDaParcela)
-        itens = itens+"<tr><td>%d</td><td>%s</td><td>%s</td></tr>"%(x+1, dtt,double_real(valorDaParcela).real())
+        itens = itens+"<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>"%(x+1, dtt,double_real(valorDaParcela).real(),' - - - ')
     
   
     grid = XML(
@@ -311,7 +313,8 @@ def parcelado():
             "<thead>"+
                 "<th>Parc</th>"+
                 "<th>Data</th>"+
-                "<th>Valor</th>"+   
+                "<th>Valor</th>"+
+                "<th>Dono do cheque</th>"+   
             "</thead>"+
             "<tbody>"+
             "%s"%itens+

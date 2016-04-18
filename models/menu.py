@@ -49,6 +49,7 @@ if 'auth' in globals():
         response.menu = []
     else:  
         if auth.has_membership('admin_2') or auth.has_membership('admin') :
+            auth.settings.expiration = 864000 #10 dias de sessao aberta 
             response.menu += [
                 
                   #(T('Home'), False, URL('default', 'index?menu=principal'), []),

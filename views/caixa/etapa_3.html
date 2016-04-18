@@ -48,8 +48,8 @@ $(document).ready(function(){
 	        var c = confirm("Tem certeza que deseja cancelar a venda???")
 	        if (c == true) {
 	          ajax('cancelarVenda',['transitory']);
+	          $('#btCancelarCaixa').text('cancelando...');
 	          $(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
-	        }else{
 	        };
 	    });
 
@@ -159,18 +159,19 @@ $(document).ready(function(){
 	      };
     	});//fim por 
   function vizor(din, por){
+
       if (din == '' && por == '') {
 	        $("#calcDesc").hide(400);//esconder
 	        $('#subTotal').text($(".verde").text());
 	        $('.vermelho').text('R$ 0,00')
       	}else{
 	        if (din == "") {
-	          din = "0"
+	          din = "0.0"
 	        }else if(por == "") {
-	          	por = "0"
+	          	por = "0.0"
 	        };
 	        var desc_din = parseFloat(din);
-	        var desc_porcentage = parseFloat(por);
+	        var desc_porcentage = parseFloat(por).toFixed(2);
 	        var desconto = (totall - (desc_din+((totall*desc_porcentage)/100)));
 	        var viewCalc = 'Total ( <span class="verde">{{=sTotal_F}}</span> ) <b>-</b> Desconto ( <span class="vermelho"> R$ '+
 	              parseFloat(totall - desconto).toFixed(2)+
