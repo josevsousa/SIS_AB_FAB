@@ -1,8 +1,15 @@
 {{extend 'layoutLojinha.html'}}
 <script>
+
 $(document).ready(function(){
 	    $("#btFecharCaixa").on('click',function(){
-	    	
+	    	//gravar os parcelados
+	    	var tv = $(".tpv").val();
+	    	$('#transitory').val(itensDB+"!"+tv);
+	    	itensDB	= '';
+	    	ajax('parcelado',['transitory']);	
+
+
 	    	// if ($(".tpv").val() == 'cheque') {
 
 	    	// 	if ($("#titularNome").val() == "") {
@@ -20,14 +27,18 @@ $(document).ready(function(){
 		    	if ($(".parcelarC").val() == '0') {
 		    		$(".parcelarC").addClass('titular_vazio').focus();
 		    	}else{
-		    		gravarCaix();
+					gravarCaix();
 		    	}
 		    }else{
 		    	gravarCaix();
 		    }		
-		});	
+		});
+
+			
 
 
+
+	    var tabela = ''; 
 	    function gravarCaix(){
 	    	  $("#btFecharCaixa").text("Enviando e-mail...").attr('disabled',true);
 		      var tipoVenda = $('.tpv').prop('value');
@@ -39,7 +50,7 @@ $(document).ready(function(){
 		      var totalParcelas = $('.parcelarC').val();
 		      // var enviarEmail = 'N';//buscar estado do check do checkbox enviar email
 		      // $("#transitory").val(tipoVenda+";"+valorTotal+";"+desconto+";"+representante+";"+enviarEmail);
-		      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+representante+';'+ totalParcelas);
+		      $("#transitory").val(tipoVenda+';'+valorTotal+';'+desconto+';'+ totalParcelas);
 		      ajax('fecharVenda',['transitory']);
 		      $(location).attr('href',"etapa_1?menu=caixa");//redireciona a pagina
 	    }
@@ -56,9 +67,9 @@ $(document).ready(function(){
 	    //select tipo venda
 	    $('.tpv').on('change',function(){
 	      var valor = $(this).val();
+
 	      if (valor == "aVista"){
-	      	ajax('limparParcelados');
-	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
+	      	$("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
 	        $("#titularNome").val('');
 	        $(".titular").hide();
@@ -68,12 +79,10 @@ $(document).ready(function(){
 	        $('#parcelado').hide(400);
 	      }else if(valor == "credito" || valor == "debito" ){
 	        parcelar(false);
-	      	ajax('limparParcelados');
-	        $('#comprovantePagSeg').show(400);
+	      	$('#comprovantePagSeg').show(400);
 	        zerarDesconto();
 	        $("#btFecharCaixa").attr('disabled',false);
-	        $("#calcDesc").hide(400);
-	        $(".d").hide(400);
+	        $("#calcDesc, .d, #parcelado").hide(400);
 	      }else if(valor == "boleto" ){
 	        $("#din, #por, #btFecharCaixa").attr('disabled',false);
 	        $(".d").show(400);
@@ -91,13 +100,10 @@ $(document).ready(function(){
 	      }else{
 	      	$("#titularNome").removeClass('titular_vazio');
 	        zerarDesconto();
-	      	ajax('limparParcelados');	        
-	        parcelar(false);
+	      	parcelar(false);
 	        $("#btFecharCaixa").removeClass('btF');
 	        $("#btFecharCaixa").attr('disabled',true);
-	        $("#calcDesc").hide(400);
-	        $(".d").hide(400);
-	        $('#comprovantePagSeg').hide(400)
+	        $(".d, #parcelado, #comprovantePagSeg. #calcDesc").hide(400);
 	      }
 	    }); 
 		
@@ -206,18 +212,68 @@ $(document).ready(function(){
       	total = parseFloat(total)
       	total = total.toFixed(2);
         gerarGridParcela(p,total); 
-        $('#parcelado').show(400); 
+        $('#parcelado').show(500); 
       }else if(p == '0'){
         $('#parcelado').hide(400); 
       }; 
         
-    });   
+    });  
+    var itensDB = '';
     function gerarGridParcela(n, total){
-      var tipoVenda = $('.tpv').prop('value');
+      	var tipoVenda = $('.tpv').prop('value');
+      	var totalParcela = (parseFloat(total)/n).toFixed(2);
+      	var cliente = '{{=session.cliente}}';	
+      	var itens = '';
+      	
+      	// adicionar 30 dias a data 
+      	Date.prototype.addDias = function(dias){this.setDate(this.getDate() + dias)};
+      	var dt = new Date();
+      	for (var i = 1; i <= n; i++) {
+      			dt.addDias(30);		
+      			if (i != 1) {
+      				itensDB	+= '@'
+      			}	
+      			itensDB += (i+','+contaMes(dt)+','+totalParcela+','+cliente);
+      			itens += '<tr><td class="parcelado_parcela">'+i+'</td><td class="parcelado_data"><input type="date" value="'+contaMes(dt)+'"></td><td class="parcelado_valor desct">R$ '+(totalParcela.replace('.',','))+'</td><td class="parcelado_cliente"><input type="text" maxlength=30 placeholder="'+cliente+'"/></td></tr>';
+      				
+      		}	
+      	// fim adcionoar 30 dias a data	
+
+      	tabela = '<table class="table table-striped table-bordered hover no-footer">'+
+		          '<thead>'+
+		            '<th class="parcelado_parcela">Parc</th>'+
+		            '<th class="parcelado_data">Data</th>'+
+		            '<th class="parcelado_valor">Valor</th>'+
+		            '<th class="parcelado_cliente">Nome no Cheque</th>'+
+		          '</thead>'+
+		          '<tbody id="tableItens">'+
+		          '</tbody>'+
+		        '</table>';
+		$('#parcelado').html(tabela);
+		$('#tableItens').append(itens);     
+		inputNome();	
+    }; 
+    function inputNome(){ 
+	    $('.parcelado_cliente input').keyup(function(){
+	    	var v = $(this).val();
+	    	$(this).val(v.toUpperCase());
+	    });
+	};    
+    function contaMes(data){
+	    var dia = data.getDate();
+	    if (dia.toString().length == 1)
+	      dia = "0"+dia;
+	    var mes = data.getMonth()+1;
+	    if (mes.toString().length == 1)
+	      mes = "0"+mes;
+	    var ano = data.getFullYear();  
+	    return ano+"-"+mes+"-"+dia;
+	}  
+    function gerarGridParcelaGravar(n, total){
+      	var tipoVenda = $('.tpv').prop('value');
       	$("#transitory").val(n+";"+total+";"+tipoVenda);
-        ajax('parcelado',['transitory'],'parcelado'); //chama a funcao que manda para o db
-        
-      }
+      	
+     }
     function zerarDesconto(){
 
       var vv = $(".verde").text();
@@ -233,9 +289,32 @@ $(document).ready(function(){
 });//ready
 </script>
 <style>
+.desct{
+    font-size: large;
+    color: #4CAF50;
+}
+.btFecharCaixa{
+	display: -webkit-inline-box;
+    float: left;
+}
+button#btCancelarCaixa {
+    float: right;
+    display: -webkit-inline-box;
+}
+.parcelado_data input, .parcelado_cliente input {
+    width: 100%;
+    border-radius: 3px;
+    padding: 0 4px;
+}
 	.titular_vazio{
 		border: 1px solid #E91E63 !important;
         box-shadow: rgba(0, 0, 0, 0.0745098) 0 1px 1px inset, rgba(233, 30, 99, 0.63) 0 0 8px !important;
+	}
+	input.bordaParcelado {
+    	color: #2196F3;
+	}
+	td.bordaParceladoDonoCheque{
+		color: #2196F3;
 	}
 	span#d {
 	    color: red;
@@ -288,11 +367,12 @@ $(document).ready(function(){
     	padding: 0px 15px !important;
     }
 	div#ret {
-	    padding: 35px 0px;
+	    padding-top: 35px;
 	    display: -webkit-box;
 	}
 	div#enviarEmail {
     	width: 147px;
+    	float: left;
 	}
 
 	div#calcDesc {
@@ -325,7 +405,7 @@ $(document).ready(function(){
 		  <div class="col-md-6 fVenda">
 		    <div>
 		      <label>Tipo venda!</label>
-		      <div class="form-group">
+		      <div class="form-group ">
 		        <select class="form-control tpv">
 		          <option value="0"></option>
 		          <option value="aVista">A vista</option>
@@ -366,7 +446,7 @@ $(document).ready(function(){
 		      <div class="p" style="display:none">
 		          <label>Parcelas: </label>
 		          <div class="form-group">
-		            <select class="form-control parcelarC">
+		            <select class="form-control parcelarC desct">
 		              <option value="0">0</option>
 		              <option value="1">1</option>
 		              <option value="2">2</option>
@@ -376,7 +456,31 @@ $(document).ready(function(){
 		          </div> 
 		      </div><!--fim do input parcelar--> 
 
-		      <div id="parcelado">
+		    </div> 
+		    <h2 id="comprovantePagSeg" style="display:none"><b>Cel.:</b> <span> (83) 9992-0746</span></h2> 
+		  </div>
+		  <div class="col-md-6 cfr">
+		    <div class="panel panel-default">
+		        <div id="calcDesc" style="display: none;"></div>
+		        <div id="subTotal" class="panel-body">
+		          {{=sTotal_F}}	      
+		        </div>
+		    </div>
+		     <p>			      <div class="col-md-3" id="enviarEmail">
+		        <div class="checkbox">
+		          <!-- enviar email? -->
+		          <label>
+		            <input id="e_email" name="e_email" type="checkbox">Enviar e-mail!
+		          </label>
+		        </div>
+		      </div>
+		       <button type="button" id="btFecharCaixa" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-ok-circle"></span> Fechar caixa</button>
+		      <button type="button" id="btCancelarCaixa" class="btn btn-danger"> <span class="glyphicon glyphicon-remove-circle"></span> DELETE</button>
+		      </p>
+
+		  </div>
+	</div> 
+			      <div id="parcelado">
 	<!-- 	        <table class="table table-striped hover  no-footer">
 		          <thead>
 		            <th>Parc</th>
@@ -398,28 +502,6 @@ $(document).ready(function(){
 		        </table>
  -->		        
 		      </div>
-
-		    </div> 
-		    <h2 id="comprovantePagSeg" style="display:none"><b>Cel.:</b> <span> (83) 9992-0746</span></h2> 
-		  </div>
-		  <div class="col-md-6 cfr">
-		    <div class="panel panel-default">
-		        <div id="calcDesc" style="display: none;"></div>
-		        <div id="subTotal" class="panel-body">
-		          {{=sTotal_F}}	      
-		        </div>
-		    </div>
-		      <button type="button" id="btFecharCaixa" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-ok-circle"></span> Fechar caixa</button>
-		      <div class="col-md-3" id="enviarEmail">
-		        <div class="checkbox">
-		          <!-- enviar email? -->
-		          <label>
-		            <input id="e_email" name="e_email" type="checkbox">Enviar e-mail!
-		          </label>
-		        </div>
-		      </div>
-		      <button type="button" id="btCancelarCaixa" class="btn btn-danger"> <span class="glyphicon glyphicon-remove-circle"></span> Cancelar venda</button>
-		  </div>
-	</div>  
+ 
 </div>
 </div><!--fim container-->  

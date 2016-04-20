@@ -89,7 +89,6 @@ def buscaProduto():
 # ----------------------- ETAPA 3 -----------------------
 @auth.requires_login()
 def etapa_3():
-    limparParcelados()
     return dict(sTotal = session.sTotal, sTotal_F = double_real(session.sTotal).real())
 # ------------------ FIM DA ETAPA 3 ---------------------
 
@@ -125,16 +124,20 @@ def fecharVenda():
     # dados a gravar no db
     codigoVenda = session.codigo_venda
     idCliente = db(Clientes.nome == session.cliente ).select('id')[0].id
-       
+    
+    print '----------------------------- 1'   
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
-    totalParcelas = index[4]
+    #parcelados = parecelado(index[5])
     # pegar o nome do representante e gravar o id no historico
-    representante = session.representante
-    enviarEmail = 'N'
 
-     # Parcela, DataVencimento, Valor
+    print '-----------------------------2'
+    representante = session.representante
+    enviarEmail = 'N' 
+    # Parcela, DataVencimento, Valor
+
+    # Parcela, DataVencimento, Valor
     vendedor = session.auth.user.email #pegar usuario logado        
     itensVenda = crud.select(Itens, Itens.codigoVenda == '%s'%codigoVenda,['codigoIten','quantidade','produto','valorUnidade','valorTotal'])
     
@@ -156,6 +159,25 @@ def fecharVenda():
     session.__delitem__('representante')  
 
 #--------------------------------    
+def parcelado():
+    index = request.vars.transitory
+    index = index.split('!')
+    tabela = index[0].split('@')
+    tipoVenda = index[1];
+    cliente = db(Clientes.nome == session.cliente ).select('id')[0].id
+    repres = session.representante
+    for linha in tabela:
+        linha = linha.split(',')
+        parcela = linha[0]
+        dataParcela = "%s 00:00:00"%linha[1]
+        valorParcela = linha[2]
+        codigoVenda = session.codigo_venda     
+        #representante = session.representante
+        #gravar no db parcelados
+        Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=cliente, representante=repres, parcela=parcela, dataVencimento=dataParcela, valor=valorParcela)
+        pass
+
+
 
 def reenviarEmail():
     cod = request.vars.transitory
@@ -267,7 +289,6 @@ def historico_print():
 def cancelarVenda():  
     # limpar itens do db
     db(Itens.codigoVenda == session.codigo_venda).delete()
-    limparParcelados()
     # session.venda
     session.__delitem__('codigo_venda')
     session.__delitem__('cliente')
@@ -283,46 +304,3 @@ def excluirVendaRegistrada():
     db(db.parcelados.codigo == codigo).update(excluido=True)
     return ''
 
-def parcelado():
-    #numero de parcelas e valor da venda
-    dados = request.vars.transitory
-    dados = dados.split(';')
-    qtdeParcelas = int(dados[0])
-    tipoVenda = dados[2]
-    #pegar o valor total na session.sTotal
-    valorDaParcela = '%.2f'%(float(dados[1])/qtdeParcelas)
-    codigo = session.codigo_venda
-    from datetime import datetime, timedelta
-    meses = 1
-    dias_por_mes = 30
-    hoje = datetime.now()
-    # # dt_futura = hoje + timedelta(dias_por_mes*meses)
-
-    limparParcelados()
-
-    itens = ""  
-    for x in range(qtdeParcelas):
-        dt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%Y-%m-%d %H:%M:%S")
-        dtt = (hoje + (timedelta(dias_por_mes*(x+1)))).strftime("%d-%m-%Y")
-        db.parcelados.insert(codigo=codigo,tipoVenda=tipoVenda, cliente=session.idCliente,representante=session.representante,parcela=(x+1),dataVencimento=dt,valor=valorDaParcela)
-        itens = itens+"<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>"%(x+1, dtt,double_real(valorDaParcela).real(),' - - - ')
-    
-  
-    grid = XML(
-        "<table class='table table-striped table-bordered hover pld no-footer'>"+
-            "<thead>"+
-                "<th>Parc</th>"+
-                "<th>Data</th>"+
-                "<th>Valor</th>"+
-                "<th>Dono do cheque</th>"+   
-            "</thead>"+
-            "<tbody>"+
-            "%s"%itens+
-            "</tbody>"+
-        "</table>"
-        )
-    return grid
-
-def limparParcelados():
-    for z in range(4):
-        db(db.parcelados.codigo == session.codigo_venda).delete()
