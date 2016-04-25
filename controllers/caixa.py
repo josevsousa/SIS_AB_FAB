@@ -129,7 +129,7 @@ def fecharVenda():
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
-    #parcelados = parecelado(index[5])
+    #parcelados = parcelado(index[5])
     # pegar o nome do representante e gravar o id no historico
 
     print '-----------------------------2'
@@ -156,15 +156,15 @@ def fecharVenda():
     temp_codigoVenda = session.codigo_venda
     session.__delitem__('codigo_venda')
     session.__delitem__('cliente')
-    session.__delitem__('representante')  
-
+    session.__delitem__('representante') 
+    pass
 #--------------------------------    
 def parcelado():
     index = request.vars.transitory
     index = index.split('!')
     tabela = index[0].split('@')
     tipoVenda = index[1];
-    cliente = db(Clientes.nome == session.cliente ).select('id')[0].id
+    #cliente = db(Clientes.nome == session.cliente ).select('id')[0].id
     repres = session.representante
     for linha in tabela:
         linha = linha.split(',')
@@ -174,7 +174,7 @@ def parcelado():
         codigoVenda = session.codigo_venda     
         #representante = session.representante
         #gravar no db parcelados
-        Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=cliente, representante=repres, parcela=parcela, dataVencimento=dataParcela, valor=valorParcela)
+        Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=linha[3], representante=repres, parcela=parcela, dataVencimento=dataParcela, valor=valorParcela)
         pass
 
 

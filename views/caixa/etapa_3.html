@@ -1,13 +1,34 @@
 {{extend 'layoutLojinha.html'}}
 <script>
+var itensDB = '';//grid das parcelas
+function gravarItensDB(){
+	var itens = tableItens.rows;
+	var l = '@';
+	var t = itens.length;
+	for(i = 0 ;i < t; i ++){
+		//nao coloca o '@' no final da ultima linha
+		if (i == (t-1)) {  
+			l = '';
+		}
 
+		var tr = itens[i]; //pega a linha
+		var nParcela = tr.cells[0].textContent; //celula 1
+		var data = tr.cells[1].children[0].value; //celula 2 
+		var valor = tr.cells[2].textContent; //celula 3
+		valor = valor.replace('R$ ','').replace(',','.');// formata a celula 3
+		var nome = tr.cells[3].children[0].value;// celula 4
+		itensDB += (nParcela+","+data+","+ valor+","+nome+l); // concatena a var itensDB
+	}
+}
 $(document).ready(function(){
 	    $("#btFecharCaixa").on('click',function(){
+	    	gravarItensDB();
+
 	    	//gravar os parcelados
 	    	var tv = $(".tpv").val();
-	    	$('#transitory').val(itensDB+"!"+tv);
-	    	itensDB	= '';
-	    	ajax('parcelado',['transitory']);	
+
+	    	$('#transitory').val(itensDB+"!"+tv);//add o itensDB e o totalValor no #transitory
+	    	ajax('parcelado',['transitory']); //chama a função parcelado para gravar as parcelas	
 
 
 	    	// if ($(".tpv").val() == 'cheque') {
@@ -211,16 +232,16 @@ $(document).ready(function(){
       	total = total.replace(',','.');
       	total = parseFloat(total)
       	total = total.toFixed(2);
-        gerarGridParcela(p,total); 
-        $('#parcelado').show(500); 
+        gerarGridParcela(p,total);//gera o grid das parcelas 
+        $('#parcelado').show(500);//mostra o grid das parcelas
       }else if(p == '0'){
         $('#parcelado').hide(400); 
       }; 
         
     });  
-    var itensDB = '';
+
     function gerarGridParcela(n, total){
-      	var tipoVenda = $('.tpv').prop('value');
+    	var tipoVenda = $('.tpv').prop('value');
       	var totalParcela = (parseFloat(total)/n).toFixed(2);
       	var cliente = '{{=session.cliente}}';	
       	var itens = '';
@@ -230,11 +251,7 @@ $(document).ready(function(){
       	var dt = new Date();
       	for (var i = 1; i <= n; i++) {
       			dt.addDias(30);		
-      			if (i != 1) {
-      				itensDB	+= '@'
-      			}	
-      			itensDB += (i+','+contaMes(dt)+','+totalParcela+','+cliente);
-      			itens += '<tr><td class="parcelado_parcela">'+i+'</td><td class="parcelado_data"><input type="date" value="'+contaMes(dt)+'"></td><td class="parcelado_valor desct">R$ '+(totalParcela.replace('.',','))+'</td><td class="parcelado_cliente"><input type="text" maxlength=30 placeholder="'+cliente+'"/></td></tr>';
+      			itens += '<tr><td class="parcelado_parcela">'+i+'</td><td class="parcelado_data"><input type="date" value="'+contaMes(dt)+'"></td><td class="parcelado_valor desct">R$ '+(totalParcela.replace('.',','))+'</td><td class="parcelado_cliente"><input type="text" maxlength=30 value="'+cliente+'"/></td></tr>';
       				
       		}	
       	// fim adcionoar 30 dias a data	
@@ -249,8 +266,8 @@ $(document).ready(function(){
 		          '<tbody id="tableItens">'+
 		          '</tbody>'+
 		        '</table>';
-		$('#parcelado').html(tabela);
-		$('#tableItens').append(itens);     
+		$('#parcelado').html(tabela);//adiciona a estrutura da tabela no html pra receber os itens
+		$('#tableItens').append(itens);//add os itens dentro da tabela criada acima     
 		inputNome();	
     }; 
     function inputNome(){ 
