@@ -21,7 +21,6 @@
     .check div{
     width: 20px;
     height: 22px;
-    cursor: pointer;
     margin: 0 auto;
     margin-top: 0px;
     }
@@ -53,35 +52,30 @@
         width: 200px;
         margin-left: 40%;
     }
+    .containerRadio {
+        padding-left: 23px;
+    }
+    .containerRadio label{
+        margin: 0 !important;
+    }
+    .progress {
+        height: 9px;
+    }
+    .oculto{display:none;}
     </style>
  <script>
 
-    //esperando a funcao ser chamada no ajax
-    function checkOk(){
-        $('.check div').on('click',function(){
-            statusAtual = $(this).attr('class');//status do check 
-            // console.log(statusAtual);
-            cod  = $(this).parent().parent().children()[0];//id do row do check
-            cod = cod.textContent;
-            if (statusAtual == "check_True") {
-                //mudar par check_False
-                $(this).removeClass('check_True').addClass('check_False');
-                //passar o False para o Itens.status
-                updateStat(cod,'False');
-            }else{
-                //mudar para check_True
-                $(this).removeClass('check_False').addClass('check_True');
-                //passar o True para o Itens.status
-                updateStat(cod,'True');
-            };
-        });
-
-        //alinha a pagina no scroll
-        // $('html, body').animate({scrollTop:83}, 1040);
-    };
+      $(document).ready(function(){
+        $('#minhaTabela').DataTable({
+            // "scrollX": true,
+            // "order": [ 6, 'desc' ],
+            "language": {
+              "url": "{{=URL('static','js/tradutorTable.json')}}"
+            }
+            
+        }); 
 
 
-    $(document).ready(function(){
             // ---- DATA
             var data = new Date();
             var ano = data.getFullYear();
@@ -121,24 +115,18 @@
 
         //============ ABA CHEQUE =================
             $(".cheques_boletos").on('click', function() {
-                $('#no_table_date_initial, #no_table_date_final').val('');//zera os campos das duas datas
-                $('.dataDisplay').text(mesExtenso+' de '+ano);//monta o mes e ano por exenso na tela
-
-                var busca = ano+"-"+mes;//pega o mes e ano atual
-                $('#transitory').val(busca);//manda pro transitory
-                ajax('cheques_boletos',['transitory'],'grid');//chama a funçao que retorna a grid pronta
+                // var busca = ano+"-"+mes;//pega o mes e ano atual
+                var opcao = $("input[name='inlineRadioOptions']:checked").val();
+                
+                // $('#transitory').val(opcao+';'+"jose");//manda pro transitory
+                // ajax('cheques_boletos',['transitory'],'grid');//chama a funçao que retorna a grid pronta
             });  
-            $('#buscarCq').on('click',function(){
-                var d1 = $('#no_table_date_initial').val();
-                var d2 = $('#no_table_date_final').val();
-                if (d1 != '' && d2 != '') {
-                    $('#transitory').val(d1+';'+d2);
-                    ajax('cheques_boletos_buscar',['transitory'], 'grid');
-                    $('.ee').hide(400)
-                } else{
-                    $('.ee').show();
-                };
-            });               
+
+            $('#opcaoCheque').change(function(){
+                var opcao = $("input[name='inlineRadioOptions']:checked").val();
+                $('#transitory').val(opcao+';'+"jose");//manda pro transitory
+                ajax('cheques_boletos',['transitory'],'grid');//chama a funçao que retorna a grid pronta
+            });
         //============= FIM ABA CHEQUE ==============
 
         //================ REPRESENTANTES ==============
@@ -292,46 +280,111 @@
 	    <div class="panel-heading" role="tab" id="headingTwo">
 	      <h4 class="panel-title">
 	        <a class="collapsed cheques_boletos" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-	          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Vencimentos de cheques e Boletos!
+	          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Controle de cheques recebidos
 	        </a>
 	      </h4>
 	    </div>
-	    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+	   <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
           <div class="panel-body">
            <!-- <div id="grid"></div> -->
             <span class="ee"> Os dois campos obrigatórios</span>
-            <div class="row">
-                <div class="col-md-6">
-                    <form class="form-inline" action='#'>
-                          <div class="form-group">
-                           <input class="form-control" id="no_table_date_initial" name="date_initial" type="text" value="" placeholder="Data inicial">
-                          </div>
-                          <div class="form-group">
-                            <input type="text" class="form-control" id="no_table_date_final" placeholder="Data final">
-                          </div>
-                          <a type="text" id="buscarCq" class="btn btn-default">Buscar</a>
-                    </form>
-                </div>
-                
-                <div class="col-md-6 dataDisplay"></div>    
+            <div class="row"> 
+            <form id="opcaoCheque">
+                <div class="col-md-4"> 
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <span class="badge">14</span>
+                        <div class="containerRadio">
+                            <label class="radio">
+                                <input type="radio" checked  name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
+                            </label>
+                        </div>  
+                      </li>
+                      <li class="list-group-item">
+                        <div class="containerRadio">
+                            <label class="radio">
+                                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Compensado
+                            </label>
+                        </div>
+                      </li>
+                    </ul>
+                </div>  
+                <div class="col-md-4"> 
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <div class="containerRadio">
+                            <label class="radio">
+                                <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Devolvido 1-Vez
+                            </label>
+                        </div>  
+                      </li>
+                      <li class="list-group-item">
+                        <div class="containerRadio">
+                            <label class="radio">
+                                <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4"> Devolvido 2-Vez
+                            </label>
+                        </div>
+                      </li>
+                    </ul>
+                </div> 
+                <div class="col-md-4"> 
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <div class="containerRadio">
+                            <label class="radio">
+                                <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5"> Devolvido ao cliente
+                            </label>
+                        </div>  
+                      </li>
+                      <li class="list-group-item">
+                        <div class="containerRadio">
+                            <label class="radio">
+                                <input type="radio" disabled='disabled' name="inlineRadioOptions" id="inlineRadio6" value="option6"> Exibir todos
+                            </label>
+                        </div>
+                      </li>
+                    </ul>
+                </div>    
+            </form>
             </div>    
-            <hr>
-            <table id="tabela_creditos" class="table hover table-bordered"  >
-                <thead>
-                    <th>Código venda</th>
-                    <th>Tipo crédito</th>
-                    <th>Data Vencimento</th>
-                    <th>Parcela</th> 
-                    <th>Valor</th>
-                    <th>Cliente</th>  
-                    <th>Representante</th>
-                    <th>Status</th>
-                </thead>  
-                <tbody id="grid"></tbody>
-            </table> 
+            <div class="carregando">
+                <hr>
+            </div>    
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- table -->
+                    <table id="minhaTabela" class="table hover table-striped" cellspacing="0" width="100%" >
+                    <thead>
+                        <tr>
+                            <th class="oculto">id</th>
+                            <th>Código venda</th>
+                            <th>Número cheque</th>
+                            <th>Proprietário do  Cheque</th>
+                            <th>Parcela</th>   
+                            <th>Data agendada</th>     
+                            <th>Status lançamento</th>
+                        </tr> 
+                        <tbody id="grid">
+                            {{for i in table:}}
+                                <tr>
+                                    <td class="oculto">{{=i.id}}</td>
+                                    <td>{{=i.codigo}}</td>
+                                    <td>{{=i.numeroCheque}}</td>
+                                    <td>{{=i.cliente}}</td>
+                                    <td>{{=i.parcela}}</td>
+                                    <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
+                                    <td>{{=i.statusLancamento}}</td>
+                                </tr>
+                            {{pass}}
+                        </tbody>
+                    </thead>
+                    </table>
+
+                </div>    
+            </div>
           </div>
-	    </div>
-	  </div><!-- 
+        </div>
+      </div><!-- 
 	  <div class="panel panel-default">
 	    <div class="panel-heading" role="tab" id="headingThree">
 	      <h4 class="panel-title">

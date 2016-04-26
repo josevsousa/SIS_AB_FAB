@@ -145,6 +145,7 @@
 'Escolha uma operadora!!!': 'Escolha uma operadora!!!',
 'Esse celular já existe': 'Esse celular já existe',
 'Esse código já existe': 'Esse código já existe',
+'Excluido': 'Excluido',
 'export as csv file': 'exportar como um arquivo csv',
 'Export:': 'Export:',
 'FAQ': 'Perguntas frequentes',

@@ -11,6 +11,11 @@
 
 @auth.requires_login()
 def index():
+
+    # for iten in db(db.parcelados.id>0).select('id'):
+    #     db(db.parcelados.id==iten.id).update(statusLancamento='pendente',numeroCheque='000000000')
+
+
     #redireciona para outra pagina se o usuario for do grupo operacional_A
     if auth.has_membership('operacional_A'):
         redirect(URL('pedidos','abertos?menu=operacional')) 
@@ -35,7 +40,7 @@ def index():
         formstyle='divs',
         submit_button="Search",
         )
-
+    table = query = db((db.parcelados.id>0) & (db.parcelados.tipoVenda == 'cheque')).select()
     # response.flash = T("Seja bem vindo!  %s !"%(hoje.strftime('%d/%m/%Y')))
     return locals()
 
@@ -44,7 +49,7 @@ def updateSt():
     index = index.split(';')
     db(db.parcelados.id == index[0]).update(statusPagamento=index[1], dataPagamento=index[2])
 
-def cheques_boletos():
+def cheques_boletos__():
     from datetime import datetime, timedelta
     meses = 1
     dias_por_mes = 30
@@ -61,10 +66,21 @@ def cheques_boletos():
             itens = itens+"<tr><td style='display:none'>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td class='check'><div class='check_%s'></div></td><tr>"%(i.id, i.codigo, i.tipoVenda, (i.dataVencimento).strftime('<b style="color:red">%d</b>/%m/%Y'), i.parcela, double_real(float(i.valor)).real(), i.cliente, representante, i.statusPagamento)
             pass
         pass
-    table = XML("%s %s"%(itens,'<script>window.onload = checkOk();</script>')) # carregar funcao no DOM  
-    # table = query   
-                                  
+    #table = XML("%s"%(itens)) # carregar funcao no DOM  
+    table = XML("%s %s"%(itens,'<script>window.onload = mTable();</script>')) # carregar funcao no DOM  
+    # table = query                                 
     return table
+
+def cheques_boletos():
+    opcao = request.vars.transitory  #opcao selecionada
+    query = db((db.parcelados.id>0) & (db.parcelados.tipoVenda == 'cheque')).select()
+    itens = ''
+    for i in query:
+        itens = itens+"<tr><td>%s</td></tr>"%i.id
+        
+    return itens
+
+
 
 def cheques_boletos_buscar():
     index = request.vars.transitory

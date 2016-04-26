@@ -278,16 +278,18 @@ Pendentes = db.define_table('pendentes',
     Field('dataSeparado','datetime')
     )
 # Pendentes.status.requires = IS_IN_SET(STATUS, error_message="Status invalido!!!")
-
+STATUS_LANCAMENTO = ('pendente','compensado','devolvido 1-vez','devolvido 2-vez','devolvido ao cliente')
 Parcelados = db.define_table('parcelados',
     Field('codigo'),
     Field('tipoVenda'),
+    Field('numeroCheque',default='000000000'),
     Field('cliente'),
-    Field('representante'),
+    Field('representante', db.representantes),
     Field('parcela', label='Parcela'),
     Field('dataVencimento', 'datetime', label='Vencimento'),
     Field('valor', label='Valor'),
     Field('statusPagamento', 'boolean', default=False),
+    Field('statusLancamento', default='pendente', requires=IS_IN_SET(STATUS_LANCAMENTO)),
     Field('dataPagamento', 'datetime'),
     Field('excluido', 'boolean', default=False)
     )
