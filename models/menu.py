@@ -52,7 +52,7 @@ if 'auth' in globals():
             auth.settings.expiration = 864000 #10 dias de sessao aberta 
             response.menu += [
                 
-                  #(T('Home'), False, URL('default', 'index?menu=principal'), []),
+                  (T('Home'), False, URL('default', 'index?menu=principal'), []),
                   (T('Vendas'),False, None, [
                     (T('Caixa'), False, URL('caixa', 'etapa_1?menu=caixa'), []),
                     (T('historico'), False, URL('caixa', 'historico?menu=caixa'), [])

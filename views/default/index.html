@@ -119,6 +119,15 @@
             };
             // ----- FIM DATA
 
+        //============ ABA CHEQUE =================
+            $(".cheques_boletos").on('click', function() {
+                $('#no_table_date_initial, #no_table_date_final').val('');//zera os campos das duas datas
+                $('.dataDisplay').text(mesExtenso+' de '+ano);//monta o mes e ano por exenso na tela
+
+                var busca = ano+"-"+mes;//pega o mes e ano atual
+                $('#transitory').val(busca);//manda pro transitory
+                ajax('cheques_boletos',['transitory'],'grid');//chama a funçao que retorna a grid pronta
+            });  
             $('#buscarCq').on('click',function(){
                 var d1 = $('#no_table_date_initial').val();
                 var d2 = $('#no_table_date_final').val();
@@ -129,56 +138,36 @@
                 } else{
                     $('.ee').show();
                 };
-            });            
-            $('#buscarCqR').on('click',function(){
+            });               
+        //============= FIM ABA CHEQUE ==============
 
-                var d1 = $('#no_table_date_initialR').val();
-                var d2 = $('#no_table_date_finalR').val();
-                if (d1 != '' && d2 != '') {
-                    $('#transitory').val(d1+';'+d2);                    
-                    ajax('tela_representantes_busca', ['transitory'], 'telaRepresentantes');
-                    console.log(d1+" - "+d2)  
-                };
-            });
-
-            $(".cheques_boletos").on('click', function() {
-                $('#no_table_date_initial, #no_table_date_final').val('');
-               
-                $('.dataDisplay').text(mesExtenso+' de '+ano);
-
-                var busca = ano+"-"+mes;
-
-                $('#transitory').val(busca);
-                ajax('cheques_boletos',['transitory'],'grid');
-                /* Act on the event */
-            });   
-
-        // TAB REPRESENTANTES
+        //================ REPRESENTANTES ==============
             // var table = $('#representantes').DataTable();
      
             // $('#representantes tbody').on('click', 'tr', function () {
             //     var data = table.row( this ).data();
             //     alert( 'You clicked on '+data[0]+'\'s row' );
             // } );
-
             $("#repress").on('click',function(){
+                $('#no_table_date_initialR, #no_table_date_finalR').val('');//zera os campos das duas datas
+                //$('.dataDisplay').text(mesExtenso+' de '+ano);//monta o mes e ano por exenso na tela
+                $('.dataDisplay').text('Em desenvolvimento!!');
+                var busca = ano+"-"+mes;//pega o mes e ano atual
+                $('#transitory').val(busca);//manda pro transitory
 
-                $('#no_table_date_initialR, #no_table_date_finalR').val('');
-            
-                $('.dataDisplay').text(mesExtenso+' de '+ano);
-                var busca = ano+"-"+mes;
-
-                $('#transitory').val(busca);
-
-                ajax('tela_representantes', ['transitory'], 'telaRepresentantes')
-                // $('.telaRepresentantes').load('representantes.html')
-            })
-
-        // FIM TAB REPRESENTANTES
-
-
-
-
+                //ajax('tela_representantes', ['transitory'], 'telaRepresentantes')//chama a funçao que retorna a grid pronta
+                //$('.telaRepresentantes').load('representantes.html')
+            });
+            //butao buscar 
+            $('#buscarCqR').on('click',function(){
+                var d1 = $('#no_table_date_initialR').val();
+                var d2 = $('#no_table_date_finalR').val();
+                if (d1 != '' && d2 != '') {
+                    $('#transitory').val(d1+';'+d2);                    
+                    //ajax('tela_representantes_busca', ['transitory'], 'telaRepresentantes');
+                };
+            });
+        //================ FIM REPRESENTANTES ==============
 
 
             // datepicker
