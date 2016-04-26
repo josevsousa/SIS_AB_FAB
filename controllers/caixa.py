@@ -125,14 +125,12 @@ def fecharVenda():
     codigoVenda = session.codigo_venda
     idCliente = db(Clientes.nome == session.cliente ).select('id')[0].id
     
-    print '----------------------------- 1'   
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
     #parcelados = parcelado(index[5])
     # pegar o nome do representante e gravar o id no historico
 
-    print '-----------------------------2'
     representante = session.representante
     enviarEmail = 'N' 
     # Parcela, DataVencimento, Valor
@@ -272,8 +270,7 @@ def historico_print():
     cod_venda = request.vars.cod 
     # historico da venda ( venda referente ao cod_venda )
     historico_venda = db(Historico.codigoVenda == "%s"%cod_venda).select() 
-    print "[ -- %s -- ]"%historico_venda
-    # ok ate aqui
+     # ok ate aqui
     # itens da venda 
     itens_venda =  db(Itens.codigoVenda == "%s"%cod_venda).select('codigoIten','quantidade','produto','valorUnidade','valorTotal')
     
