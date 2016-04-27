@@ -1,0 +1,260 @@
+{{extend 'layoutLojinha.html'}}
+
+<style>
+	.debito{color: red;}
+	.containerRadio {
+	    padding-left: 23px;
+	}
+	.containerRadio label{
+	    margin: 0 !important;
+	}
+	.progress {
+	    height: 9px;
+	}
+	.oculto{display:none;}
+	#minhaTabela {
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	.atualizar{float: right;}
+	.JpositionA{float: right;}
+	.JpositionA a{margin-right: 0px !important;}
+	.ativoo{
+		background: #E3FFF6;
+	}
+	#minhaTabela input {
+    	height: 22px;
+	}
+    .modal-dialog {
+        width: 293px;
+    }
+</style>
+<script>
+
+    $(document).ready(function(){
+        $('#minhaTabela').DataTable({
+            // "scrollX": true,
+            "order": [ 0, 'desc' ],
+            "language": {
+              "url": "{{=URL('static','js/tradutorTable.json')}}"
+            }
+            
+        });
+        function inputNome(){ 
+            $('#cliente').keyup(function(){
+                var v = $(this).val();
+                $(this).val(v.toUpperCase());
+            });
+        }; 
+
+
+        //=== BUSCAR REGISTRO
+        $('#minhaTabela').on('dblclick','tr', function(){
+			var iten = $(this)[0]
+			var id = iten.children[0].textContent;
+			var codigo = iten.children[1].textContent;
+			var cheque = iten.children[2].textContent;
+			var cliente = iten.children[3].textContent;
+			var parcela = iten.children[4].textContent;
+			var data = iten.children[5].textContent;
+            data = data.split('/');
+            data = data[2]+"-"+data[1]+"-"+data[0]
+			var status = iten.children[6].textContent;
+
+			//chamar o modal
+            var titulo = '<span class="text-uppercase"> PARCELA : [ '+parcela+' ]</span>'
+            //==== MODAL ======          
+
+            //chama o modal            
+			$('#myModal').modal('show');
+			//quando o modal abrir faça
+            $('#myModal').on('shown.bs.modal', function () {
+                inputNome();
+                $("#codigo").val(codigo);
+                $("#cheque").val(cheque);
+                $("#data").val(data);
+                $("#cliente").val(cliente);
+                // $("#status").val(status);
+                if (status == 'pendente'){
+                    status = 0;
+                }else if(status == 'depositado'){
+                    status = 1;
+                }else if(status == 'repassado'){
+                    status = 2;
+                }else if(status == 'devolvido 1-vez'){
+                    status = 3;
+                }else if(status == 'devolvido 2-vez'){
+                    status = 4;
+                }else{
+                    status = 5;
+                };
+                $("#status").prop('selectedIndex',status);
+                $("#myModalLabel").html(titulo);
+            })
+            //botao gravar do modal
+            $('#gravar').on('click',function(){
+                var cheque_Modal = $('#cheque').val();
+                var cliente_Modal = $('#cliente').val();
+                var data_Modal = $('#data').val();
+                var status_Modal = $('#status').val();
+                $(this).text('gravando...');
+                $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal);
+                console.log(data_Modal);
+                ajax('atualizarParcelados',['transitory']);
+                $("#myModal").modal('hide');
+            })
+            //quando o modal fechar
+            $('#myModal').on('hide.bs.modal', function () {
+                // location.reload();//reload na pagina pra carregar as alteracoes na tabela
+            })
+		}); 
+        //==== FIM MODAL ======
+
+});//fim jquary ready
+</script>
+
+<input type="text" id="transitory" name="transitory" style='display:none'>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Código venda:</label>
+                    <input type="text" class="form-control" disabled id="codigo" value="">
+                </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Número Cheque:</label>
+                        <input type="text" class="form-control" id="cheque" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Data parcela:</label>
+                        <input type="date" class="form-control" id="data" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Proprietário:</label>
+                        <input type="text" class="form-control" id="cliente" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Status</label>
+                        <select class="form-control" id="status">
+                          <option value="pendente">pendente</option>
+                          <option value="depositado">depositado</option>
+                          <option value="repassado">repassado</option>   
+                          <option value="devolvido 1-vez">devolvido 1-vez</option>  
+                          <option value="devolvido 2-vez">devolvido 2-vez</option>  
+                          <option value="devolvido ao cliente">devolvido ao cliente</option>           
+                        </select>
+                    </div>
+                </form>       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <button type="button" id="gravar" class="btn btn-success">Atualizar</button>
+      </div>
+    </div>
+  </div>
+</div><!-- fim do Modal -->
+<div class="container animated fadeIn">
+	<div class="row"> 
+        <form id="opcaoCheque">
+            <div class="col-md-4"> 
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <span class="badge">14</span>
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" checked  name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
+                        </label>
+                    </div>  
+                  </li>
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Depositado na conta
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+            </div>  
+            <div class="col-md-4"> 
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5"> Devolvido ao cliente
+                        </label>
+                    </div>  
+                  </li>
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option6"> Repassado
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+            </div>
+            <div class="col-md-4"> 
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Devolvido 1-Vez
+                        </label>
+                    </div>  
+                  </li>
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4"> Devolvido 2-Vez
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+            </div>     
+        </form>
+    </div>    
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- table -->
+            <table id="minhaTabela" class="table hover table-striped" cellspacing="0" width="100%" >
+            <thead>
+                <tr>
+                    <th class="oculto">id</th>
+                    <th>Código venda</th>
+                    <th>Número cheque</th>
+                    <th>Proprietário do  Cheque</th>
+                    <th>Parcela</th>   
+                    <th>Data deposito</th>     
+                    <th>Status lançamento</th>
+                </tr> 
+                <tbody>
+                    {{for i in table:}}
+                        <tr>
+                            <td class="oculto">{{=i.id}}</td>
+                            <td>{{=i.codigo}}</td>
+                            <td>{{=i.numeroCheque}}</td>
+                            <td>{{=i.cliente}}</td>
+                            <td>{{=i.parcela}}</td>
+                            <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
+                            <td>{{=i.statusLancamento}}</td>
+                        </tr>
+                    {{pass}}
+                </tbody>
+            </thead>
+            </table>
+        </div>    
+    </div>
+</div>

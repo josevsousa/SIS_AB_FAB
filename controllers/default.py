@@ -11,36 +11,11 @@
 
 @auth.requires_login()
 def index():
-
-    # for iten in db(db.parcelados.id>0).select('id'):
-    #     db(db.parcelados.id==iten.id).update(statusLancamento='pendente',numeroCheque='000000000')
-
-
     #redireciona para outra pagina se o usuario for do grupo operacional_A
     if auth.has_membership('operacional_A'):
         redirect(URL('pedidos','abertos?menu=operacional')) 
-
-    from datetime import datetime, timedelta
-    meses = 1
-    dias_por_mes = 30
-    hoje = datetime.now()
-    dt_futura = hoje + timedelta(dias_por_mes*meses)
-
-    # dados para o grafico
-    ano = int(hoje.strftime('%Y'))
-    ano = ano - 3
-    dadosgraf = []
-    for i in range(1,4):
-        #burcar dados do grafico
-        dadosgraf.append([ano+i,[49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]])
-    
-    form = SQLFORM.factory(
-        Field("date_initial", requires=IS_NOT_EMPTY(error_message="Campo vazio")),
-        Field("date_final", requires=IS_NOT_EMPTY(error_message="Campo vazio")),
-        formstyle='divs',
-        submit_button="Search",
-        )
-    table = query = db((db.parcelados.id>0) & (db.parcelados.tipoVenda == 'cheque')).select()
+    if auth.has_membership('admin'):
+        redirect(URL('caixa','etapa_1?menu=caixa')) 
     # response.flash = T("Seja bem vindo!  %s !"%(hoje.strftime('%d/%m/%Y')))
     return locals()
 
@@ -74,11 +49,13 @@ def cheques_boletos__():
 def cheques_boletos():
     opcao = request.vars.transitory  #opcao selecionada
     query = db((db.parcelados.id>0) & (db.parcelados.tipoVenda == 'cheque')).select()
+    head = '<thead><tr><th class="oculto">kkk</th><th>kkk</th><th>kkk</th><th>kkk</th><th>kkk</th><th>kkk</th><th>kkk</th></tr></thead>'
+
     itens = ''
     for i in query:
         itens = itens+"<tr><td>%s</td></tr>"%i.id
         
-    return itens
+    return XML("%s%s"%(head,itens))
 
 
 

@@ -71,6 +71,7 @@ mail.settings.login = 'senha'
 
 
 ## configure auth policy
+auth.settings.actions_disabled = ['register'] # desabilita a ação de registrar usuários
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
@@ -278,7 +279,7 @@ Pendentes = db.define_table('pendentes',
     Field('dataSeparado','datetime')
     )
 # Pendentes.status.requires = IS_IN_SET(STATUS, error_message="Status invalido!!!")
-STATUS_LANCAMENTO = ('pendente','compensado','devolvido 1-vez','devolvido 2-vez','devolvido ao cliente')
+STATUS_LANCAMENTO = ('pendente','depositado','repassado','devolvido 1-vez','devolvido 2-vez','devolvido ao cliente')
 Parcelados = db.define_table('parcelados',
     Field('codigo'),
     Field('tipoVenda'),
@@ -287,10 +288,11 @@ Parcelados = db.define_table('parcelados',
     Field('representante', db.representantes),
     Field('parcela', label='Parcela'),
     Field('dataVencimento', 'datetime', label='Vencimento'),
-    Field('valor', label='Valor'),
+    Field('valor', 'double', label='Valor R$'),
     Field('statusPagamento', 'boolean', default=False),
-    Field('statusLancamento', default='pendente', requires=IS_IN_SET(STATUS_LANCAMENTO)),
+    Field('statusLancamento', label='Lançamento', default='pendente', requires=IS_IN_SET(STATUS_LANCAMENTO)),
     Field('dataPagamento', 'datetime'),
+    Field('data_criacao', 'datetime', default=request.now),
     Field('excluido', 'boolean', default=False)
     )
 

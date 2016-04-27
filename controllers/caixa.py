@@ -304,3 +304,13 @@ def excluirVendaRegistrada():
     db(db.parcelados.codigo == codigo).update(excluido=True)
     return ''
 
+def aguardaLancamento():
+    table = query = db((db.parcelados.id>0) & (db.parcelados.tipoVenda == 'cheque')).select()
+    return locals()
+#update
+def atualizarParcelados():
+    index = request.vars.transitory
+    index = index.split(';')
+    db(db.parcelados.id == index[0]).update(numeroCheque=index[1],cliente=index[2],statusLancamento=index[3],dataVencimento=(index[4]+" 00:00:00"))
+   
+    

@@ -83,6 +83,7 @@
 'Config.ini': 'Config.ini',
 'Confirm Password': 'Confirm Password',
 'contains': 'contains',
+'Controle Cheque': 'Controle Cheque',
 'Controller': 'Controlador',
 'Copyright': 'Copyright',
 'Created By': 'Created By',
