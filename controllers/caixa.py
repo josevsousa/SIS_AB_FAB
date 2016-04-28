@@ -304,6 +304,8 @@ def excluirVendaRegistrada():
     db(db.parcelados.codigo == codigo).update(excluido=True)
     return ''
 
+
+@auth.requires_login()
 def aguardaLancamento():
     # table = db(db.parcelados.id>0).select()
     table = db((db.parcelados.id>0) & (db.parcelados.tipoVenda == 'cheque')).select()

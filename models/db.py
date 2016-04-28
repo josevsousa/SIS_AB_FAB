@@ -283,7 +283,7 @@ STATUS_LANCAMENTO = ('pendente','depositado','repassado','devolvido 1-vez','devo
 Parcelados = db.define_table('parcelados',
     Field('codigo'),
     Field('tipoVenda'),
-    Field('numeroChequ'),
+    Field('numeroChequ', default='00000000'),
     Field('cliente'),
     Field('representante', db.representantes),
     Field('parcela', label='Parcela'),

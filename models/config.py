@@ -2,6 +2,11 @@
 # vendaAtual = Storage()  #vendaAtual é uma session
 # vendaAtual.codigo = 5555  #vendaAtual{'codigo':555}
 
+# def atualizar():
+#     for i in db(db.parcelados.id>0).select('id'):
+#         db(db.parcelados.id==i.id).update(numeroChequ='00000000')
+
+
 class double_real(object):
     def __init__(self, valor):
         self.valor = valor
