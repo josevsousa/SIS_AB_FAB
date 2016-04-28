@@ -40,7 +40,13 @@
     //============ ABA CHEQUE =================
         $('#opcaoCheque').change(function(){
             var opcao = $("input[name='inlineRadioOptions']:checked").val();
-            $(location).attr('href',"aguardaLancamento?menu=caixa");//redireciona a pagina
+            if (opcao == 'option1') {
+              $(location).attr('href',"aguardaLancamento?menu=caixa");//redireciona a pagina
+            }else if(opcao == 'option2'){
+              $(location).attr('href',"compensado?menu=caixa");//redireciona a pagina
+            }else{
+              console.log(opcao)
+            }
         });
     //============= FIM ABA CHEQUE ==============
     

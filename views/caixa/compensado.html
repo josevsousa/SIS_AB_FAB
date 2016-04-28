@@ -20,30 +20,30 @@
         color:#FF9D00;
         font-weight: 600;        
     }
-	.containerRadio {
-	    padding-left: 23px;
-	}
-	.containerRadio label{
-	    margin: 0 !important;
-	}
-	.oculto{display:none;}
-	#minhaTabela {
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-khtml-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
-	}
-	.atualizar{float: right;}
-	.JpositionA{float: right;}
-	.JpositionA a{margin-right: 0px !important;}
-	.ativoo{
-		background: #E3FFF6;
-	}
-	#minhaTabela input {
-    	height: 22px;
-	}
+    .containerRadio {
+        padding-left: 23px;
+    }
+    .containerRadio label{
+        margin: 0 !important;
+    }
+    .oculto{display:none;}
+    #minhaTabela {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .atualizar{float: right;}
+    .JpositionA{float: right;}
+    .JpositionA a{margin-right: 0px !important;}
+    .ativoo{
+        background: #E3FFF6;
+    }
+    #minhaTabela input {
+        height: 22px;
+    }
     .modal-dialog {
         width: 293px;
     }
@@ -69,22 +69,22 @@
 
         //=== BUSCAR REGISTRO
         $('#minhaTabela').on('dblclick','tr', function(){
-			var iten = $(this)[0]
-			var id = iten.children[0].textContent;
-			var codigo = iten.children[1].textContent;
-			var cheque = iten.children[2].textContent;
-			var cliente = iten.children[3].textContent;
-			var parcela = iten.children[4].textContent;
-			var data = iten.children[5].textContent;
+            var iten = $(this)[0]
+            var id = iten.children[0].textContent;
+            var codigo = iten.children[1].textContent;
+            var cheque = iten.children[2].textContent;
+            var cliente = iten.children[3].textContent;
+            var parcela = iten.children[4].textContent;
+            var data = iten.children[5].textContent;
             data = data.split('/');
             data = data[2]+"-"+data[1]+"-"+data[0]
-			var status = iten.children[6].textContent;
+            var status = iten.children[6].textContent;
 
-			//================== MODAL ======          
+            //================== MODAL ======          
                 var titulo = codigo+' - Parcela:[ '+parcela+' ]'
                 //chama o modal            
-    			$('#myModal').modal('show');
-    			//quando o modal abrir faça
+                $('#myModal').modal('show');
+                //quando o modal abrir faça
                 $('#myModal').on('shown.bs.modal', function () {
                     inputNome();
                     $("#cheque").val(cheque);
@@ -136,13 +136,12 @@
                 })
             //==== FIM MODAL ======
 
-		}); //fim do busca registro
+        }); //fim do busca registro
         
 });//fim jquary ready
 </script>
 
 <input type="text" id="transitory" name="transitory" style='display:none'>
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -169,10 +168,10 @@
                         <label for="recipient-name" class="control-label">Status</label>
                         <select class="form-control" id="status">
                           <option value="pendente">pendente</option>
-                          <option value="compensado">compensado</option>
+                          <!-- <option value="compensado">compensado</option> -->
                           <option value="repassado">repasse</option>   
-                          <!-- <option value="devolvido 1-vez">devolvido 1-vez</option>   -->
-                          <!-- <option value="devolvido 2-vez">devolvido 2-vez</option>   -->
+                          <option value="devolvido 1-vez">devolvido 1-vez</option>  
+                          <option value="devolvido 2-vez">devolvido 2-vez</option>  
                           <option value="devolvido ao cliente">devolvido ao cliente</option>           
                         </select>
                     </div> 
@@ -201,17 +200,17 @@
             <div class="col-md-4"> 
                 <ul class="list-group">
                   <li class="list-group-item">
-                    <span class="badge" id="lenLancamentos">14</span>
+                    <span class="badge">14</span>
                     <div class="containerRadio">
-                        <label class="radio laranja">
-                            <input type="radio" checked  name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
+                        <label class="radio">
+                            <input type="radio"   name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
                         </label>
                     </div>  
                   </li>
                   <li class="list-group-item">
                     <div class="containerRadio">
-                        <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Compensado
+                        <label class="radio verde">
+                            <input type="radio" checked  name="inlineRadioOptions" id="inlineRadio2" value="option2"> Compensado
                         </label>
                     </div>
                   </li>
@@ -280,7 +279,7 @@
                             <td>{{=i.cliente}}</td>
                             <td>{{=i.parcela}}</td>
                             <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
-                            <td class='laranja'>{{= i.statusLancament}}
+                            <td class='verde'>{{= i.statusLancament}}
                         </tr>
                     {{pass}}
                 </tbody>
