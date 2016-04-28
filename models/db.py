@@ -294,6 +294,7 @@ Parcelados = db.define_table('parcelados',
     Field('dataPagamento', 'datetime'),
     Field('data_criaca', 'datetime', default=request.now),
     Field('excluido', 'boolean', default=False),
+    Field('autor', db.auth_user, default=auth.user.id if auth.user else None)
     )
 
 
