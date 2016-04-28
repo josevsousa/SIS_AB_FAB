@@ -283,18 +283,19 @@ STATUS_LANCAMENTO = ('pendente','depositado','repassado','devolvido 1-vez','devo
 Parcelados = db.define_table('parcelados',
     Field('codigo'),
     Field('tipoVenda'),
-    Field('numeroCheque',default='000000000'),
+    Field('numeroChequ'),
     Field('cliente'),
     Field('representante', db.representantes),
     Field('parcela', label='Parcela'),
     Field('dataVencimento', 'datetime', label='Vencimento'),
     Field('valor', 'double', label='Valor R$'),
     Field('statusPagamento', 'boolean', default=False),
-    Field('statusLancamento', label='Lançamento', default='pendente', requires=IS_IN_SET(STATUS_LANCAMENTO)),
+    Field('statusLancament', label='Lançamento', default='pendente', requires=IS_IN_SET(STATUS_LANCAMENTO)),
     Field('dataPagamento', 'datetime'),
-    Field('data_criacao', 'datetime', default=request.now),
-    Field('excluido', 'boolean', default=False)
+    Field('data_criaca', 'datetime', default=request.now),
+    Field('excluido', 'boolean', default=False),
     )
+
 
 Itens = db.define_table('itens',
     Field('codigoVenda', readable=False),
