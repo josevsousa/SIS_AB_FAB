@@ -74,11 +74,10 @@
             var codigo = iten.children[1].textContent;
             var cheque = iten.children[2].textContent;
             var cliente = iten.children[3].textContent;
-            var parcela = iten.children[4].textContent;
-            var data = iten.children[5].textContent;
+            var parcela = iten.children[5].textContent;
+            var data = iten.children[6].textContent;
             data = data.split('/');
             data = data[2]+"-"+data[1]+"-"+data[0]
-            var status = iten.children[6].textContent;
 
             //================== MODAL ======          
                 var titulo = 'Cod venda: '+codigo;
@@ -126,9 +125,9 @@
                     var cliente_Modal = $('#cliente').val();
                     var data_Modal = $('#data').val();
                     var status_Modal = $('#status').val();
+                    var receptor = $('#receptor').val();
                     $(this).text('gravando...');
-                    $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal+';kkk');
-                    console.log(data_Modal);
+                    $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal+';'+receptor);
                     ajax('atualizarParcelados',['transitory']);
                     $("#myModal").modal('hide');
                 })
@@ -156,21 +155,21 @@
             <form id="model_form">
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Nº do Cheque:</label>
-                        <input type="text" class="form-control" id="cheque" value="">
+                        <input type="text" class="form-control" id="cheque">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Data parcela Nº <span id="parc"></span></label>
-                        <input type="date" class="form-control" id="data" value="">
+                        <input type="date" class="form-control" id="data">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Emitente do Cheque:</label>
-                        <input type="text" class="form-control" id="cliente" value="">
+                        <input type="text" class="form-control" id="cliente">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Status</label>
                         <select class="form-control" id="status">
+                          <option value="compensado">compensado</option>
                           <option value="pendente">pendente</option>
-                          <!-- <option value="compensado">compensado</option> -->
                           <option value="repassado">repasse</option>   
                           <option value="devolvido 1-vez">devolvido 1-vez</option>  
                           <option value="devolvido 2-vez">devolvido 2-vez</option>  
@@ -185,7 +184,7 @@
                 <div id="repasseCheque" style="display:none">
                     <div class="form-group">
                         <label for="recipient-name" class="control-label laranja">Receptor do cheque:</label>
-                        <input type="text" class="form-control" id="receptor" value="">
+                        <input type="text" class="form-control" id="receptor" >
                     </div>
                 </div>    
       </div>
@@ -268,6 +267,7 @@
                     <th>Código venda</th>
                     <th>Nº do Cheque</th>
                     <th>Emitente do Cheque</th>
+                    <th>Valor</th>
                     <th>Parcela</th>   
                     <th>Data do Vencimento</th>     
                     <th>Status lançamento</th>
@@ -279,6 +279,7 @@
                             <td>{{=i.codigo}}</td>
                             <td>{{=i.numeroChequ}}</td>
                             <td>{{=i.cliente}}</td>
+                            <td>{{=double_real(i.valor).real()}}</td>
                             <td>{{=i.parcela}}</td>
                             <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
                             <td class='verde'>{{= i.statusLancament}}

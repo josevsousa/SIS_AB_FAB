@@ -73,11 +73,10 @@
 			var codigo = iten.children[1].textContent;
 			var cheque = iten.children[2].textContent;
 			var cliente = iten.children[3].textContent;
-			var parcela = iten.children[4].textContent;
-			var data = iten.children[5].textContent;
+			var parcela = iten.children[5].textContent;
+			var data = iten.children[6].textContent;
             data = data.split('/');
-            data = data[2]+"-"+data[1]+"-"+data[0]
-			var status = iten.children[6].textContent;
+            data = data[2]+"-"+data[1]+"-"+data[0];
 
 			//================== MODAL ======          
                 var titulo = 'Cod venda: '+codigo;
@@ -90,21 +89,6 @@
                     $("#cheque").val(cheque);
                     $("#data").val(data);
                     $("#cliente").val(cliente);
-                    // $("#status").val(status);
-                    
-                    // if (status == 'pendente'){
-                    //     status = 0;
-                    // }else if(status == 'depositado'){
-                    //     status = 1;
-                    // }else if(status == 'repassado'){
-                    //     status = 2;
-                    // }else if(status == 'devolvido 1-vez'){
-                    //     status = 3;
-                    // }else if(status == 'devolvido 2-vez'){
-                    //     status = 4;
-                    // }else{
-                    //     status = 5;
-                    // };
                     // $("#status").prop('selectedIndex',status);
                     $("#myModalLabel").html(titulo);
                 })
@@ -124,8 +108,10 @@
                     var cliente_Modal = $('#cliente').val();
                     var data_Modal = $('#data').val();
                     var status_Modal = $('#status').val();
+                    var receptor = $('#receptor').val();
+                    console.log(receptor);
                     $(this).text('gravando...');
-                    $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal+';kkk');
+                    $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal+';'+receptor);
                     console.log(data_Modal);
                     ajax('atualizarParcelados',['transitory']);
                     $("#myModal").modal('hide');
@@ -159,7 +145,7 @@
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Data parcela Nº <span id="parc"></span></label>
-                        <input type="date" class="form-control" id="data" value="">
+                        <input type="date" class="form-control" id="data" >
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Emitente do Cheque:</label>
@@ -184,7 +170,7 @@
                 <div id="repasseCheque" style="display:none">
                     <div class="form-group">
                         <label for="recipient-name" class="control-label laranja">Receptor do cheque:</label>
-                        <input type="text" class="form-control" id="receptor" value="">
+                        <input type="text" class="form-control" id="receptor">
                     </div>
                 </div>    
       </div>
@@ -267,6 +253,7 @@
                     <th>Código venda</th>
                     <th>Nº do Cheque</th>
                     <th>Emitente do Cheque</th>
+                    <th>Valor</th>
                     <th>Parcela</th>   
                     <th>Data do Vencimento</th>     
                     <th>Status lançamento</th>
@@ -278,6 +265,7 @@
                             <td>{{=i.codigo}}</td>
                             <td>{{=i.numeroChequ}}</td>
                             <td>{{=i.cliente}}</td>
+                            <td>{{=double_real(i.valor).real()}}</td>
                             <td>{{=i.parcela}}</td>
                             <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
                             <td class='laranja'>{{= i.statusLancament}}

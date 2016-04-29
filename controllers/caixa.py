@@ -310,17 +310,17 @@ def aguardaLancamento():
     # table = db(db.parcelados.id>0).select()
     table = db((Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'pendente')).select()
     return locals()
+
 @auth.requires_login()
 def compensado():
     # table = db(db.parcelados.id>0).select()
     table = db((Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'compensado')).select()
     return locals()
 
-
 #update
 def atualizarParcelados():
     index = request.vars.transitory
     index = index.split(';')
-    db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"))
+    db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
    
     
