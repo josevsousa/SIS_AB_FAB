@@ -295,7 +295,12 @@ Parcelados = db.define_table('parcelados',
     Field('data_criaca', 'datetime', default=request.now),
     Field('excluido', 'boolean', default=False),
     Field('autor', db.auth_user, default=auth.user.id if auth.user else None),
-    Field('repasse_nome')
+    Field('repasse_nome'),
+    Field('data_compensado','datetime'),
+    Field('data_devolvidoAoCliente','datetime'),
+    Field('data_repassado','datetime'),
+    Field('data_devolvido_primeiro','datetime'),
+    Field('data_devolvido_segundo','datetime')
     )
 
 

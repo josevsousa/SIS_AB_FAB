@@ -314,13 +314,43 @@ def aguardaLancamento():
 @auth.requires_login()
 def compensado():
     # table = db(db.parcelados.id>0).select()
-    table = db((Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'compensado')).select()
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'compensado') 
+    table = db(query).select()
+    return locals()
+
+@auth.requires_login()
+def repassado():
+    # table = db(db.parcelados.id>0).select()
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'repassado') 
+    table = db(query).select()
+    return locals()
+
+@auth.requires_login()
+def devolvidoAoCliente():
+    # table = db(db.parcelados.id>0).select()
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido ao cliente') 
+    table = db(query).select()
     return locals()
 
 #update
 def atualizarParcelados():
     index = request.vars.transitory
     index = index.split(';')
-    db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
+    from datetime import datetime
+    data = datetime.now()
+    # mesAno = hoje.strftime('%m/%Y')
+    # hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
+    if index[3] == 'compensado':
+        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_compensado=data)
+    elif index[3] == 'repassado':
+        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_repassado=data)
+    elif index[3] == 'devolvido ao cliente':
+        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_devolvidoAoCliente=data)
+    elif index[3] == 'devolvido 1-vez':
+        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_devolvido_primeiro=data)
+    else:
+        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_devolvido_segundo=data)
+        pass
+    # db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
    
     

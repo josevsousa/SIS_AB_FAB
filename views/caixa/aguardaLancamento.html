@@ -72,8 +72,8 @@
 			var id = iten.children[0].textContent;
 			var codigo = iten.children[1].textContent;
 			var cheque = iten.children[2].textContent;
-			var cliente = iten.children[3].textContent;
-			var parcela = iten.children[5].textContent;
+			var cliente = iten.children[4].textContent;
+			var parcela = iten.children[3].textContent;
 			var data = iten.children[6].textContent;
             data = data.split('/');
             data = data[2]+"-"+data[1]+"-"+data[0];
@@ -208,14 +208,14 @@
                   <li class="list-group-item">
                     <div class="containerRadio">
                         <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5"> Devolvido ao cliente
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option3"> Devolvido ao cliente
                         </label>
                     </div>  
                   </li>
                   <li class="list-group-item">
                     <div class="containerRadio">
                         <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option6"> Repassado
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option4"> Repassado
                         </label>
                     </div>
                   </li>
@@ -226,14 +226,14 @@
                   <li class="list-group-item">
                     <div class="containerRadio">
                         <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Devolvido 1-Vez
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option5"> Devolvido 1-Vez
                         </label>
                     </div>  
                   </li>
                   <li class="list-group-item">
                     <div class="containerRadio">
                         <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4"> Devolvido 2-Vez
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option6"> Devolvido 2-Vez
                         </label>
                     </div>
                   </li>
@@ -252,10 +252,11 @@
                     <th class="oculto">id</th>
                     <th>Código venda</th>
                     <th>Nº do Cheque</th>
+                    <th>Parcela</th>
                     <th>Emitente do Cheque</th>
-                    <th>Valor</th>
-                    <th>Parcela</th>   
-                    <th>Data do Vencimento</th>     
+                    <th>Valor</th>   
+                    <th>Vencimento (Data)</th> 
+                    <th>Compensado (Data)</th>    
                     <th>Status lançamento</th>
                 </tr> 
                 <tbody>
@@ -264,10 +265,11 @@
                             <td class="oculto">{{=i.id}}</td>
                             <td>{{=i.codigo}}</td>
                             <td>{{=i.numeroChequ}}</td>
+                            <td>{{=i.parcela}}</td>
                             <td>{{=i.cliente}}</td>
                             <td>{{=double_real(i.valor).real()}}</td>
-                            <td>{{=i.parcela}}</td>
                             <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
+                            <td>{{=i.data_compensado}}</td>
                             <td class='laranja'>{{= i.statusLancament}}
                         </tr>
                     {{pass}}
