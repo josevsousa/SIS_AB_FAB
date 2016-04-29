@@ -4,9 +4,6 @@
     div#campoNomeRepasse {
         margin-top: 7px;
     }
-    span#lenLancamentos{
-        background: #FF9D01;
-    }
     .debito{
         color: red;
         font-weight: 600;
@@ -16,7 +13,7 @@
         font-weight: 600;
     }
     .laranja{
-        color:#FF9D00;
+        color:#0010FF;
         font-weight: 600;        
     }
 	.containerRadio {
@@ -154,10 +151,10 @@
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Status</label>
                         <select class="form-control" id="status">
+                          <option value="devolvido 1-vez">devolvido 1-vez</option>  
                           <option value="pendente">pendente</option>
                           <option value="compensado">compensado</option>
                           <option value="repassado">repasse</option>   
-                          <!-- <option value="devolvido 1-vez">devolvido 1-vez</option>   -->
                           <!-- <option value="devolvido 2-vez">devolvido 2-vez</option>   -->
                           <option value="devolvido ao cliente">devolvido ao cliente</option>           
                         </select>
@@ -189,8 +186,8 @@
                   <li class="list-group-item">
                     <span class="badge" id="lenLancamentos">14</span>
                     <div class="containerRadio">
-                        <label class="radio laranja">
-                            <input type="radio" checked  name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
+                        <label class="radio">
+                            <input type="radio"  name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
                         </label>
                     </div>  
                   </li>
@@ -225,8 +222,8 @@
                 <ul class="list-group">
                   <li class="list-group-item">
                     <div class="containerRadio">
-                        <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option5"> Devolvido 1-Vez
+                        <label class="radio laranja">
+                            <input type="radio" checked name="inlineRadioOptions" id="inlineRadio3" value="option5"> Devolvido 1-Vez
                         </label>
                     </div>  
                   </li>
@@ -255,7 +252,8 @@
                     <th>Parcela</th>
                     <th>Emitente do Cheque</th>
                     <th>Valor</th>   
-                    <th>Vencimento (Data)</th>  
+                    <th>Vencimento (Data)</th> 
+                    <th>Devolvido (Data)</th>    
                     <th>Status lançamento</th>
                 </tr> 
                 <tbody>
@@ -268,6 +266,7 @@
                             <td>{{=i.cliente}}</td>
                             <td>{{=double_real(i.valor).real()}}</td>
                             <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
+                            <td>{{=i.data_devolvido_primeiro}}</td>
                             <td class='laranja'>{{= i.statusLancament}}
                         </tr>
                     {{pass}}

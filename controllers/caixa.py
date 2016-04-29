@@ -332,6 +332,20 @@ def devolvidoAoCliente():
     table = db(query).select()
     return locals()
 
+@auth.requires_login()
+def devolvido1():
+    # table = db(db.parcelados.id>0).select()
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido 1-vez') 
+    table = db(query).select()
+    return locals()
+
+@auth.requires_login()
+def devolvido2():
+    # table = db(db.parcelados.id>0).select()
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido 2-vez') 
+    table = db(query).select()
+    return locals()
+
 #update
 def atualizarParcelados():
     index = request.vars.transitory
