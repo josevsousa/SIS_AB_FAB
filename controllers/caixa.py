@@ -308,41 +308,41 @@ def excluirVendaRegistrada():
 @auth.requires_login()
 def aguardaLancamento():
     # table = db(db.parcelados.id>0).select()
-    table = db((Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'pendente')).select()
+    table = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'pendente') & (Parcelados.excluido == False)
     return locals()
 
 @auth.requires_login()
 def compensado():
     # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'compensado') 
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'compensado') & (Parcelados.excluido == False) 
     table = db(query).select()
     return locals()
 
 @auth.requires_login()
 def repassado():
     # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'repassado') 
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'repassado') & (Parcelados.excluido == False) 
     table = db(query).select()
     return locals()
 
 @auth.requires_login()
 def devolvidoAoCliente():
     # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido ao cliente') 
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido ao cliente') & (Parcelados.excluido == False) 
     table = db(query).select()
     return locals()
 
 @auth.requires_login()
 def devolvido1():
     # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido 1-vez') 
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido 1-vez') & (Parcelados.excluido == False) 
     table = db(query).select()
     return locals()
 
 @auth.requires_login()
 def devolvido2():
     # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido 2-vez') 
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido 2-vez') & (Parcelados.excluido == False) 
     table = db(query).select()
     return locals()
 
