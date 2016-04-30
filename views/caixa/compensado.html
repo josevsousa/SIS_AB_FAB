@@ -8,6 +8,7 @@
         color: red;
         font-weight: 600;
     }
+    #len{background-color:#0AAB2F; }
     .verde{
         color:#0AAB2F;
         font-weight: 600;
@@ -198,7 +199,6 @@
             <div class="col-md-4"> 
                 <ul class="list-group">
                   <li class="list-group-item">
-                    <span class="badge">14</span>
                     <div class="containerRadio">
                         <label class="radio">
                             <input type="radio"   name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
@@ -206,6 +206,7 @@
                     </div>  
                   </li>
                   <li class="list-group-item">
+                    <span class="badge" id="len">{{=qt}}</span>
                     <div class="containerRadio">
                         <label class="radio verde">
                             <input type="radio" checked  name="inlineRadioOptions" id="inlineRadio2" value="option2"> Compensado
