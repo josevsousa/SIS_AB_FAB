@@ -295,7 +295,6 @@ def cancelarVenda():
     session.__delitem__('representante')
     #redirect(URL('etapa_1?menu=caixa')) 
     #session.flash = 'Pedido Cancelado!'
-    
 
 def excluirVendaRegistrada():
     codigo = request.vars.transitory
@@ -303,7 +302,6 @@ def excluirVendaRegistrada():
     db(db.pendentes.codigo == codigo).update(status='Finalizado')
     db(db.parcelados.codigo == codigo).update(excluido=True)
     return ''
-
 
 @auth.requires_login()
 def aguardaLancamento():
