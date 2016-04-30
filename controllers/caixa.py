@@ -308,7 +308,8 @@ def excluirVendaRegistrada():
 @auth.requires_login()
 def aguardaLancamento():
     # table = db(db.parcelados.id>0).select()
-    table = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'pendente') & (Parcelados.excluido == False)
+    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'pendente') & (Parcelados.excluido == False)
+    table = db(query).select()
     return locals()
 
 @auth.requires_login()
