@@ -64,9 +64,9 @@ auth.define_tables(username=False, signature=False)
 
 # ## configure email: 'logging' or    o codigo esta no  models/e_mail.py
 mail = auth.settings.mailer
-mail.settings.server = 'smtp.gmail.com:25'
-mail.settings.sender = 'user'
-mail.settings.login = 'senha'
+mail.settings.server = 'smtp.gmail.com:587'
+mail.settings.sender = 'bina.m.silva@gmail.com'
+mail.settings.login = 'bina.m.silva@gmail.com:123sabSAB'
 
 
 # mail.settings.server = 'smtp.gmail.com:25'

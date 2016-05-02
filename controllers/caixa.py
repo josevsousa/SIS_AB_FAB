@@ -134,7 +134,7 @@ def fecharVenda():
 
     print '-----------------------------2'
     representante = session.representante
-    enviarEmail = 'N' 
+    enviarEmail = 'S' 
     # Parcela, DataVencimento, Valor
 
     # Parcela, DataVencimento, Valor
@@ -151,7 +151,7 @@ def fecharVenda():
         viewDesc = "<h3><b>Total</b> : R$ %.2f - <b>Desconto</b> : <span>R$ %.2f</span></h3>"%(valorT, float(valorDesconto))
 
     if enviarEmail == 'S':
-        enviarEmail(codigoVenda)    
+        enviar_email(codigoVenda)    
 
     temp_codigoVenda = session.codigo_venda
     session.__delitem__('codigo_venda')
@@ -179,19 +179,21 @@ def parcelado():
 
 
 
-def reenviarEmail():
+def reenviar_email():
     cod = request.vars.transitory
     enviar_email(cod)
-    
+
+
 def enviar_email(codigo):
     historico = db(db.historicoVendas.codigoVenda == '%s'%codigo).select('tipoVenda','valorVenda','valorDesconto','dataVenda','clienteEmail')
     desconto = historico[0].valorDesconto
     total = historico[0].valorVenda
     itens = crud.select(Itens, Itens.codigoVenda == '%s'%codigo,['codigoIten','quantidade','produto','valorUnidade','valorTotal'])
+    
     subTotal = (float(total)+float(desconto))
     tipoVenda = historico[0].tipoVenda 
-    email = historico[0].clienteEmail
-
+    # email = historico[0].clienteEmail
+    email = 'jose.vicente.de.sousa@gmail.com'
     emailSimples = "|---------------- RECIBO DE COMPRA ----------------|\n" \
     " ### ESSE DISPOSITIVO NAO E POSSIVEL VISUALIZAR OS DADOS ###\n" \
     " ### Por gentileza visualize no seu email."
@@ -202,33 +204,42 @@ def enviar_email(codigo):
         mostrarDesconto = '' 
     pass   
 
-    # comprovante do email com html
-    emailHTML = "<html><body>" \
-        "<div class='gl'><br>" \
-            "<div style='text-align:center'>" \
-                "<img src='../static/images/logoPrint.png' width='95pt'><hr>" \
-            "</div>" \
-            "<p><h3>Recibo ArtesanalBaby ( codigo : %s )</h3></p>" \
-            "<p>Recibo emitido em: %s</p>"\
-            "<div>" \
-                "<div class='table-responsive'>%s<script>$('.table-responsive table').addClass('table table-bordered');</script></div>" \
-                "%s" \
-                "<h4><b>SUB-TOTAL</b> = R$ %.2f  |  <b>Tipo pag</b> : %s </h4>" \
-            "</div><hr>" \
-            "<p>Nos visite: <a href='http://www.artesanalbaby.com.br'>www.artesanalbaby.com.br</a></p>"\
-            "<p><h3>Muito Obrigado pela compra! Volte sempre.</h3></p><br>" \
-        "</div></body></html>"%(codigo,(historico[0].dataVenda).strftime("%d/%m/%Y as %H:%M:%S"),itens,mostrarDesconto,float(total),tipoVenda) 
-   
+    #------------ edit HTML email
+    emailHTML = '<div style="padding: 20px 29px;border: 1px solid #D2D2D2;border-radius: 19px;"><div class="adM"><br></div>'\
+    '<div style="text-align:center;border-bottom: 1px solid #DADADA;padding-bottom: 17px !important;">'\
+        '<img src="https://dl.dropboxusercontent.com/u/11469395/ArtesanalBaby/logo/logo-lojinha.png" width="95pt" class="CToWUd">'\
+    '</div>'\
+    '<p></p>'\
+    '<h3 style="color: #F78100;text-align: center;">Romaneio ArtesanalBaby ( codigo : %s )</h3>'\
+    '<p></p>'\
+    '<p>Recibo emitido em: %s</p>'\
+        '<div>'\
+            '%s'\
+            '%s'\
+        '</div>'\
+        '<h4><b>SUB-TOTAL</b> = R$ %.2f  |  <b>Tipo pag</b> : %s </h4>'\
+            '<p style="border-bottom: 1px solid #DADADA;padding-bottom: 17px !important;">Nos visite: <a href="http://www.artesanalbaby.com.br" target="_blank">www.artesanalbaby.com.br</a></p>'\
+            '<p></p>'\
+            '<h3 style="color: #B1B1B1;text-align: center;">Muito Obrigado pela compra! Volte sempre.</h3>'\
+            '<div class="yj6qo"></div>'\
+            '<div class="adL">'\
+                '<p></p>'\
+               ' <br>'\
+            '</div>'\
+        '</div></div>'%(codigo,(historico[0].dataVenda).strftime("%d/%m/%Y as %H:%M:%S"),itens,mostrarDesconto,float(total),tipoVenda)    
+    #------------ fim edit HTML email 
+
     if mail:
         if mail.send(to=["%s"%email],
-            subject='Recibo ArtesanalBaby Cod:',
+            subject='Romaneio ArtesanalBaby Cod:%s'%session.codigo_Venda,
             message=[emailSimples, emailHTML]
         ):
             response.flash = 'Romaneio enviado a sucesso!'
         else:
             response.flash = 'Problema ao enviars o email!'
     else:
-        response.flash = 'Unable to send the email : email parameters not defined'  
+        response.flash = 'Unable to send the email : email parameters not defined' 
+     
 
 
 
