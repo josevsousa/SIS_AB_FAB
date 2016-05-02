@@ -19,6 +19,27 @@ def index():
     # response.flash = T("Seja bem vindo!  %s !"%(hoje.strftime('%d/%m/%Y')))
     return locals()
 
+# def contato():
+#     form = SQLFORM.factory(
+#         Field('nome', requires=IS_NOT_EMPTY()),
+#         Field('email', requires=IS_EMAIL(), label='E-mail'),
+#         Field('mensagem', 'text', requires=IS_NOT_EMPTY())
+#     )
+#     if form.process().accepted:
+#         if mail.send(
+#             to=['jose.vicente.de.sousa@gmail.com'] ,
+#             subject='Contato pelo site',
+#             reply_to = form.vars.email,
+#             message=form.vars.mensagem
+#         ):
+#             response.flash = 'Mensagem enviada'
+#         else:
+#             response.flash = 'Erros!'
+
+#     elif form.errors:
+#         response.flash = 'Erros no formulário!'
+#     return dict(form=form)
+    
 def updateSt():
     index = request.vars.transitory  
     index = index.split(';')

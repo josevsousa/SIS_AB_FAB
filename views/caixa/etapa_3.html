@@ -22,13 +22,6 @@ function gravarItensDB(){
 }
 $(document).ready(function(){
 	    $("#btFecharCaixa").on('click',function(){
-	    	gravarItensDB();
-
-	    	//gravar os parcelados
-	    	var tv = $(".tpv").val();
-
-	    	$('#transitory').val(itensDB+"!"+tv);//add o itensDB e o totalValor no #transitory
-	    	ajax('parcelado',['transitory']); //chama a função parcelado para gravar as parcelas	
 
 
 	    	// if ($(".tpv").val() == 'cheque') {
@@ -48,6 +41,11 @@ $(document).ready(function(){
 		    	if ($(".parcelarC").val() == '0') {
 		    		$(".parcelarC").addClass('titular_vazio').focus();
 		    	}else{
+		    		gravarItensDB();
+			    	var tv = $(".tpv").val();
+			    	$('#transitory').val(itensDB+"!"+tv);//add o itensDB e o totalValor no #transitory
+			    	ajax('parcelado',['transitory']); //chama a função parcelado para gravar as parcelas	
+
 					gravarCaix();
 		    	}
 		    }else{

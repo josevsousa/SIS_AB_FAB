@@ -64,11 +64,18 @@ auth.define_tables(username=False, signature=False)
 
 # ## configure email: 'logging' or    o codigo esta no  models/e_mail.py
 mail = auth.settings.mailer
-mail.settings.server = 'logging' or 'mail.seusite.com.br:587'
+mail.settings.server = 'smtp.gmail.com:25'
 mail.settings.sender = 'user'
 mail.settings.login = 'senha'
 
 
+# mail.settings.server = 'smtp.gmail.com:25'
+
+# mail.settings.tls = True
+
+# mail.settings.sender = 'pm...e@gmail.com'
+
+# mail.settings.login = 'pm...e@gmail.com:minhasenha' 
 
 ## configure auth policy
 auth.settings.actions_disabled = ['register'] # desabilita a ação de registrar usuários

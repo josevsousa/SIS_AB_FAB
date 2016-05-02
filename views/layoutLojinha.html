@@ -100,23 +100,19 @@
   
     <!--[if lt IE 8]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
     <div class="flash alert alert-dismissable">{{=response.flash or ''}}</div>
-  
-
-
-
-
-
     <!-- Navbar ======================================= -->
     <nav id="nav_home" class="lojinha_cor" >
       <div class="container">
-        {{=response.logo or ''}}
-        <ul class="nav navbar-nav navbar-right">
-          {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
-        </ul>
-        {{if response.menu:}}
-        {{=MENU(response.menu, _class='nav navbar-nav',_id='navHeader',li_class='dropdown',ul_class='dropdown-menu')}}
-        {{pass}}
-      </div>  
+          {{=response.logo or ''}}
+          <ul class="nav navbar-nav navbar-right">
+            {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
+          </ul>
+          {{if response.menu:}}
+          {{=MENU(response.menu, _class='nav navbar-nav',_id='navHeader',li_class='dropdown',ul_class='dropdown-menu')}}
+          {{pass}}
+          
+      </div> 
+
     </nav>  
 
     <!-- Masthead ===================================== -->    
