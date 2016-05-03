@@ -125,14 +125,14 @@ def fecharVenda():
     codigoVenda = session.codigo_venda
     idCliente = db(Clientes.nome == session.cliente ).select('id')[0].id
     
-    print '----------------------------- 1'   
+    # print '----------------------------- 1'   
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
     #parcelados = parcelado(index[5])
     # pegar o nome do representante e gravar o id no historico
 
-    print '-----------------------------2'
+    # print '-----------------------------2'
     representante = session.representante
     enviarEmail = 'S' 
     # Parcela, DataVencimento, Valor
@@ -150,7 +150,7 @@ def fecharVenda():
         valorT = (float(valorVenda) + float(valorDesconto))
         viewDesc = "<h3><b>Total</b> : R$ %.2f - <b>Desconto</b> : <span>R$ %.2f</span></h3>"%(valorT, float(valorDesconto))
 
-    if enviarEmail == 'S':
+    if enviarEmail == 'N':
         enviar_email(codigoVenda)    
 
     temp_codigoVenda = session.codigo_venda
@@ -205,12 +205,12 @@ def enviar_email(codigo):
     pass   
 
     #------------ edit HTML email
-    emailHTML = '<div style="padding: 20px 29px;border: 1px solid #D2D2D2;border-radius: 19px;"><div class="adM"><br></div>'\
+    emailHTML = '<div style="padding: 20px 29px;border: 1px solid #D2D2D2;border-radius: 11px;"><div class="adM"><br></div>'\
     '<div style="text-align:center;border-bottom: 1px solid #DADADA;padding-bottom: 17px !important;">'\
         '<img src="https://dl.dropboxusercontent.com/u/11469395/ArtesanalBaby/logo/logo-lojinha.png" width="95pt" class="CToWUd">'\
     '</div>'\
     '<p></p>'\
-    '<h3 style="color: #F78100;text-align: center;">Romaneio ArtesanalBaby ( codigo : %s )</h3>'\
+    '<h2 style="color: #F78100;text-align: center;">Romaneio ArtesanalBaby ( codigo : %s )</h2>'\
     '<p></p>'\
     '<p>Recibo emitido em: %s</p>'\
         '<div>'\
@@ -231,7 +231,7 @@ def enviar_email(codigo):
 
     if mail:
         if mail.send(to=["%s"%email],
-            subject='Romaneio ArtesanalBaby Cod:%s'%session.codigo_Venda,
+            subject='Romaneio ArtesanalBaby Cod:%s'%codigo,
             message=[emailSimples, emailHTML]
         ):
             response.flash = 'Romaneio enviado a sucesso!'
@@ -283,7 +283,6 @@ def historico_print():
     cod_venda = request.vars.cod 
     # historico da venda ( venda referente ao cod_venda )
     historico_venda = db(Historico.codigoVenda == "%s"%cod_venda).select() 
-    print "[ -- %s -- ]"%historico_venda
     # ok ate aqui
     # itens da venda 
     itens_venda =  db(Itens.codigoVenda == "%s"%cod_venda).select('codigoIten','quantidade','produto','valorUnidade','valorTotal')

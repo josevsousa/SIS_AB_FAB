@@ -97,5 +97,36 @@ dir(db(Parcelados.id>0).select())
 quit()
 db(db.curso_paython).select()
 db(db.curso_python).select()
+quit()
 
+mail.send(to=['jose.vicente.de.sousa@mail.com'],subjetct='teste email',message=['teste ok'])
+mail.send(to=['jose.vicente.de.sousa@mail.com'],subject='teste email',message=['teste ok'])
+mail.send(to=['jose.vicente.de.sousa@mail.com'],subject='teste email',message=['teste ok','ok ok ok'])
+mail.send('you@example.com',
+  'Message subject',
+  ('Plain text body', '<html>html body</html>'))
+mail.send('jose.vicente.de.sousa@gmail.com',
+  'Message subject',
+quit()
+mail.send('jose.vicente.de.sousa@gmail.com',
+  'Message subject'
+db(Itens.id>0)
+db(Itens.id>0).select()
+for iten in db(Itens.id>0).select():
+    print iten
+for iten in db(Itens.id>0).select():
+    print iten.codigoVenda
+for iten in db(Itens.codigoVenda == '160502211617').select():
+    print iten.codigoVenda
+for iten in db(Itens.codigoVenda == '160502211617').select():
+    print iten.tipoVenda
+for iten in db(Itens.codigoVenda == '160502211617').select():
+    print iten
+x = ''
+dir(x)
+x += 'ddd'
+x
+x += 'ff'
+x
+for iten in db(Itens.codigoVenda == '160502211617').select():s
 quit()
