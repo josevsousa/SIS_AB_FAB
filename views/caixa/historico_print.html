@@ -215,14 +215,9 @@
 	
 	<!-- parcelas -->
 	<div id='parcelado'>
-		{{print itens_parcelas}}
 		{{if itens_parcelas != "":}}
+
 		<table class='table parc table-striped table-bordered'>
-			<!-- <thead>
-				<th>Parc</th>
-				<th>Data</th>
-				<th>Valor</th>	
-			</thead> -->
 			<tbody>
 			{{for iten in itens_parcelas:}}
 				<tr>
@@ -246,12 +241,6 @@
 		{{else:}}
 		<table class='table calSemDesc table-bordered table-condensed'>
 		{{pass}}
-			<!-- <thead>
-				<tr>
-					<th>Descrição</th>
-					<th>Valor</th>
-				</tr>
-			</thead> -->
 		<tbody>
 				<tr>
 					<td class="col_1 tit">Pag</td>
