@@ -247,7 +247,7 @@ def enviar_email(codigo):
 @auth.requires_login()
 def historico():
     # data atual
-    from datetime import datetime
+    # from datetime import datetime
     hoje = datetime.now()
     mesAno = hoje.strftime('%m/%Y')
     hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
@@ -366,7 +366,7 @@ def devolvido2():
 def atualizarParcelados():
     index = request.vars.transitory
     index = index.split(';')
-    from datetime import datetime
+    # from datetime import datetime
     data = datetime.now()
     # mesAno = hoje.strftime('%m/%Y')
     # hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
@@ -392,13 +392,15 @@ def gridParcelas():
     valor = "%.2f"%(float(index[1])/qtde_parc)
     valor = double_real(valor).real() # valor total dividido pela quantidade de parcelas
     cliente = index[2]
-    
+    dataAtual = datetime.now()
     # confecção da grid pra a view
-    table = TABLE(THEAD(TR(TH('Parc',_class="grid_parcela"),TH('Nº cheque',_class="grid_cheque"),TH('Nome no cheque',_class='grid_dono'),TH('Data parcela',_class='grid_parcela'),TH('Valor parcela'))),_class="table table-striped table-condensed", _id="tab_calculo_parcelas")
+    table = TABLE(THEAD(TR(TH('Parc',_class="grid_parcela"),TH('Nº cheque',_class="grid_cheque"),TH('Nome no cheque',_class='grid_dono'),TH('Data parcela',_class='grid_data'),TH('Valor parcela'))),_class="table table-striped table-condensed", _id="tab_calculo_parcelas")
     tbody = TBODY()
     for i in range(qtde_parc):
+        dataAtual = (dataAtual + timedelta(30))
+        dataParc =  dataAtual.strftime('%d/%m/%Y')
         # monta a parcela
-        tbody.append(TR(TD(i+1,_class="grid_parcela"),TD(INPUT(_type='text',_value='00000000',_class='form-control inputGrid'),_class="grid_cheque"),TD(INPUT(_type='text',_value=cliente,_class='form-control inputGrid'),_class='grid_dono'),TD(INPUT(_type='date',_value='',_class='form-control inputGrid')),TD(INPUT(_type='text',_value=valor,_class='form-control inputGrid real'))))    
+        tbody.append(TR(TD(i+1,_class="grid_parcela"),TD(INPUT(_type='text',_value='00000000',_class='form-control inputGrid'),_class="grid_cheque"),TD(INPUT(_type='text',_value=cliente,_class='form-control inputGrid'),_class='grid_dono'),TD(INPUT(_type='text',_value=dataParc,_class='form-control inputGrid'),_class="grid_data"),TD(INPUT(_type='text',_value=valor,_class='form-control inputGrid real'))))    
     table.append(tbody)    
     return "%s%s"%(table,'<script>window.onload = carregar_masck();</script>')   
     

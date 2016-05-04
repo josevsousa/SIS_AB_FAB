@@ -2,13 +2,22 @@
 <link rel="stylesheet" href="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.css')}}">
 <script src="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.js')}}"></script>
 <style>
+    blockquote.control-label {
+        /* display: flex; */
+        /* background: aqua; */
+        /* width: 361px; */
+        position: fixed;
+        left: 219px;
+        top: 67px;
+    }
+
     #trModal>img {
         margin-left: 50%;
         display: none;
     /* font-size: 2px; */
     }
     .grid_data {
-        width: 100px;
+        width: 17%;
     }
     .grid_dono {
         width: 45%;
@@ -76,6 +85,7 @@ select#qtde_parcelas {
 <script>
     function carregar_masck(){
         $(".real").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
+        $(".grid_data input").datepicker();
     }
         
     $(document).ready(function(){
@@ -93,16 +103,6 @@ select#qtde_parcelas {
                 $(this).val(v.toUpperCase());
             });
         }; 
-
-        function carregar_data(e){
-            $(".dt").datepicker(e);
-        }
-        function contaMes(c){
-            var data = new Date();
-
-            return '2016-05-03';
-            //carregar_data(e)
-        }
 
         function inputQtde(cod, valor, cliente){
             /*
@@ -194,6 +194,7 @@ select#qtde_parcelas {
                     </div>
                      -->
                      <div class="form-group form-inline">
+                        <div class="boxSelect">
                         <label for="recipient-name" class="control-label">Qtde de parcelas : </label>
                         <select class="form-control" id="qtde_parcelas">
                           <option value="0">0</option>
@@ -201,8 +202,14 @@ select#qtde_parcelas {
                           <option value="2">2</option>
                           <option value="3">3</option>   
                           <option value="4">4</option>           
-                        </select>
+                        </select>   
+                        </div>
+                        <blockquote class="control-label">
+                          <p>Entre com a quantidade de parcelas.</p>
+                        </blockquote>
                     </div> 
+                     
+
                     <div id="trModal"class="form-group form-inline" >
                         <img src="{{=URL('static','images/loading-2.gif')}}" alt="">
                     </div>
