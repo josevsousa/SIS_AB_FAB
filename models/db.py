@@ -240,6 +240,7 @@ Historico = db.define_table('historicoVendas',
     Field('separado','boolean', default=False),
     Field('status_venda',default='Pendente'),
     Field('volume', 'integer', default=0),
+    Field('aguardandoLancamento','boolean',default=True),
     migrate = "historioVendas.table"
     ) 
 

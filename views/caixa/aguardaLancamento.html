@@ -1,5 +1,6 @@
 {{extend 'layoutLojinha.html'}}
-
+<link rel="stylesheet" href="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.css')}}">
+<script src="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.js')}}"></script>
 <style>
     div#campoNomeRepasse {
         margin-top: 7px;
@@ -43,11 +44,28 @@
 	#minhaTabela input {
     	height: 22px;
 	}
-    .modal-dialog {
-        width: 293px;
-    }
+.modal-dialog {
+    width: 80%;
+}
+select#qtde_parcelas {
+    width: 63px;
+}
 </style>
 <script>
+    var dt = new Date();
+    var ano = dt.getFullYear();
+    var mes = dt.getMonth()+1;
+    var dia = dt.getDay()+1;
+    if (mes < 10) {
+        mes = "0"+mes;
+    } 
+    if (dia < 10) {
+        dia = "0"+dia;
+    } 
+
+
+
+
 
     $(document).ready(function(){
         $('#minhaTabela').DataTable({
@@ -65,61 +83,101 @@
             });
         }; 
 
+        function carregar_masck(){
+            $(".real").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'', decimal:'.'});
+        }
+        function carregar_data(e){
+            $(".dt").datepicker(e);
+        }
+        function contaMes(c){
+            var data = new Date();
+
+            return '2016-05-03';
+            //carregar_data(e)
+        }
+
+        function inputQtde(cod, valor){
+            /*
+                var time = new Date('2014-03-14T23:54:00');
+                var outraData = new Date();
+                outraData.setDate(time.getDate() + 3); 
+            */
+            var valor = valor;
+            valor = valor.replace("R$ ","");
+            valor = valor.replace(".","");
+            valor = valor.replace(",",".")
+            valor = parseFloat(valor);
+            
+            $('#qtde_parcelas').on('change',function(){
+   
+                var qtdeP = $(this).val(); //qtde de parcelas pego do select
+                var valorD = (valor/qtdeP).toFixed(2);
+                var tr = ''; // tr vazia para montar os tds
+                var time = new Date();
+                var outraData = new Date(); 
+ 
+                //roda a qtde de parcelas
+                for (var i = 0; i < qtdeP; i++) {
+                    var e = i+1;    
+                    var d = new Date(outraData.setDate(time.getDate() + 30));
+                    console.log(d);
+
+                    tr += '<tr><td>'+(e)+
+                    '</td><td><input class="form-control" type="text" value="00000000" /></td>'+
+                    '</td><td><input class="form-control" type="text" value="jose vicente" /></td>'+
+                    '<td><input class="form-control dt" type="text" value="" /></td>'+
+                    '<td><input class="form-control real"  type="text" value="R$ '+valorD+'"/></td>'+
+                    '</tr>';
+
+                }
+                $('#trModal').html(tr);
+                carregar_data();
+                carregar_masck();
+            })    
+        }
 
         //=== BUSCAR REGISTRO
         $('#minhaTabela').on('dblclick','tr', function(){
 			var iten = $(this)[0]
-			var id = iten.children[0].textContent;
 			var codigo = iten.children[1].textContent;
-			var cheque = iten.children[2].textContent;
-			var cliente = iten.children[4].textContent;
-			var parcela = iten.children[3].textContent;
-			var data = iten.children[6].textContent;
-            data = data.split('/');
-            data = data[2]+"-"+data[1]+"-"+data[0];
-
-			//================== MODAL ======          
-                var titulo = 'Cod venda: '+codigo;
+			var valor = iten.children[4].textContent;
+			
+            //================== MODAL ======          
+                
+               var titulo = '<small>CÓDIGO:</small> '+codigo+ ' <small> TOTAL:</small> '+valor;
+                
                 //chama o modal            
     			$('#myModal').modal('show');
-    			//quando o modal abrir faça
+    			
+                //quando o modal abrir faça
                 $('#myModal').on('shown.bs.modal', function () {
-                    inputNome();
-                    $("#parc").text(parcela);
-                    $("#cheque").val(cheque);
-                    $("#data").val(data);
-                    $("#cliente").val(cliente);
+
+                    inputQtde(codigo, valor);
                     // $("#status").prop('selectedIndex',status);
                     $("#myModalLabel").html(titulo);
                 })
 
-                $('#status').on('click',function(){
-                    var status = $(this).val();
-                    if(status == 'repassado'){
-                        $('#repasseCheque').show(400);
-                    }else{
-                        $('#repasseCheque').hide(400);
-                    }
-                });    
-
                 //botao gravar do modal
                 $('#gravar').on('click',function(){
-                    var cheque_Modal = $('#cheque').val();
-                    var cliente_Modal = $('#cliente').val();
-                    var data_Modal = $('#data').val();
-                    var status_Modal = $('#status').val();
-                    var receptor = $('#receptor').val();
-                    console.log(receptor);
-                    $(this).text('gravando...');
-                    $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal+';'+receptor);
-                    console.log(data_Modal);
-                    ajax('atualizarParcelados',['transitory']);
+                    //pegar os campos do modal e passar para o ajax gravar no db
+
+                    // var cheque_Modal = $('#cheque').val();
+                    // var cliente_Modal = $('#cliente').val();
+                    // var data_Modal = $('#data').val();
+                    // var status_Modal = $('#status').val();
+                    // var receptor = $('#receptor').val();
+                    // $(this).text('gravando...');
+                    // $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal+';'+receptor);
+                    // console.log(data_Modal);
+                    // ajax('atualizarParcelados',['transitory']);
                     $("#myModal").modal('hide');
                 })
+                
                 //quando o modal fechar
                 $('#myModal').on('hide.bs.modal', function () {
                     location.reload();//reload na pagina pra carregar as alteracoes na tabela
                 })
+
             //==== FIM MODAL ======
 
 		}); //fim do busca registro
@@ -139,40 +197,40 @@
       </div>
       <div class="modal-body">
             <form id="model_form">
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label">Nº do Cheque:</label>
-                        <input type="text" class="form-control" id="cheque" value="">
-                    </div>
-                    <div class="form-group">
+                    <!--  <div class="form-group">
                         <label for="recipient-name" class="control-label">Data parcela Nº <span id="parc"></span></label>
                         <input type="date" class="form-control" id="data" >
                     </div>
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label">Emitente do Cheque:</label>
-                        <input type="text" class="form-control" id="cliente" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label">Status</label>
-                        <select class="form-control" id="status">
-                          <option value="pendente">pendente</option>
-                          <option value="compensado">compensado</option>
-                          <option value="repassado">repasse</option>   
-                          <!-- <option value="devolvido 1-vez">devolvido 1-vez</option>   -->
-                          <!-- <option value="devolvido 2-vez">devolvido 2-vez</option>   -->
-                          <option value="devolvido ao cliente">devolvido ao cliente</option>           
+                     -->
+                     <div class="form-group form-inline">
+                        <label for="recipient-name" class="control-label">Qtde de parcelas : </label>
+                        <select class="form-control" id="qtde_parcelas">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>   
+                          <option value="4">4</option>           
                         </select>
                     </div> 
 
    
                     <!-- fim repassado -->
                 </form>  
-
-                <div id="repasseCheque" style="display:none">
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label laranja">Receptor do cheque:</label>
-                        <input type="text" class="form-control" id="receptor">
-                    </div>
-                </div>    
+                <table class="table table-striped table-condensed" id="tab_calculo_parcelas">
+                    <thead>
+                        <tr>
+                            <th>Parc</th>
+                            <th>Nº cheque</th>
+                            <th>Nome no cheque</th>
+                            <th>Data Parcela</th>
+                            <th>Valor Parcela</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trModal">
+                       
+                    </tbody>
+                </table>
+  
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -251,24 +309,18 @@
                 <tr>
                     <th class="oculto">id</th>
                     <th>Código venda</th>
-                    <th>Nº do Cheque</th>
-                    <th>Parcela</th>
-                    <th>Emitente do Cheque</th>
-                    <th>Valor</th>   
-                    <th>Vencimento (Data)</th>  
-                    <th>Status lançamento</th>
+                    <th>Representante</th>
+                    <th>Cliente</th>
+                    <th>Valor da venda</th>
                 </tr> 
                 <tbody>
                     {{for i in table:}}
                         <tr>
                             <td class="oculto">{{=i.id}}</td>
-                            <td>{{=i.codigo}}</td>
-                            <td>{{=i.numeroChequ}}</td>
-                            <td>{{=i.parcela}}</td>
-                            <td>{{=i.cliente}}</td>
-                            <td>{{=double_real(i.valor).real()}}</td>
-                            <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
-                            <td class='laranja'>{{= i.statusLancament}}
+                            <td>{{=i.codigoVenda}}</td>
+                            <td>{{=db(db.representantes.id==i.representante).select('nome')[0].nome}}</td>
+                            <td>{{=db(db.clientes.id==i.clienteEmail).select('nome')[0].nome}}</td>
+                            <td>{{=double_real(i.valorVenda).real()}}</td>  
                         </tr>
                     {{pass}}
                 </tbody>

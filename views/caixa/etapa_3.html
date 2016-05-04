@@ -37,7 +37,7 @@ $(document).ready(function(){
 	    	// 	//gravarCaix()
 	    	// 	console.log("gravado com sucesso")
 	    	// }
-	    	if ($(".tpv").val() == 'cheque' || $(".tpv").val() == 'boleto') {
+	    	if ($(".tpv").val() == 'boleto') {
 		    	if ($(".parcelarC").val() == '0') {
 		    		$(".parcelarC").addClass('titular_vazio').focus();
 		    	}else{
@@ -114,7 +114,7 @@ $(document).ready(function(){
 	        $(".d").show(400);
 	        $("#titularNome").removeClass('titular_vazio');
 	        $(".titular").show(400);
-	        parcelar(true);
+	        parcelar(false);
 	        $('#comprovantePagSeg').text('').hide(400)
 	      }else{
 	      	$("#titularNome").removeClass('titular_vazio');
