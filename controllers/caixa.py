@@ -383,4 +383,22 @@ def atualizarParcelados():
         pass
     # db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
    
+def gridParcelas():
+    index = request.vars.transitory
+    index = index.split(';')
+
+    # dados recebidos
+    qtde_parc = int(index[0]) # quantidade de parcelas
+    valor = "%.2f"%(float(index[1])/qtde_parc)
+    valor = double_real(valor).real() # valor total dividido pela quantidade de parcelas
+    cliente = index[2]
+    
+    # confecção da grid pra a view
+    table = TABLE(THEAD(TR(TH('Parc',_class="grid_parcela"),TH('Nº cheque',_class="grid_cheque"),TH('Nome no cheque',_class='grid_dono'),TH('Data parcela',_class='grid_parcela'),TH('Valor parcela'))),_class="table table-striped table-condensed", _id="tab_calculo_parcelas")
+    tbody = TBODY()
+    for i in range(qtde_parc):
+        # monta a parcela
+        tbody.append(TR(TD(i+1,_class="grid_parcela"),TD(INPUT(_type='text',_value='00000000',_class='form-control inputGrid'),_class="grid_cheque"),TD(INPUT(_type='text',_value=cliente,_class='form-control inputGrid'),_class='grid_dono'),TD(INPUT(_type='date',_value='',_class='form-control inputGrid')),TD(INPUT(_type='text',_value=valor,_class='form-control inputGrid real'))))    
+    table.append(tbody)    
+    return "%s%s"%(table,'<script>window.onload = carregar_masck();</script>')   
     

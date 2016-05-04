@@ -12,6 +12,7 @@ class double_real(object):
         self.valor = valor
 
     # BR R$    
+    # double_real(session.sTotal).real()
     def real(self):
         valor = '%.2f'%(float(self.valor)) #converte o valor em string e completa a casa decimal em 2
         valor = valor.replace('.','') # tira a virgula da string

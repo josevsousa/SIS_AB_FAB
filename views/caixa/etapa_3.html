@@ -115,7 +115,8 @@ $(document).ready(function(){
 	        $("#titularNome").removeClass('titular_vazio');
 	        $(".titular").show(400);
 	        parcelar(false);
-	        $('#comprovantePagSeg').text('').hide(400)
+	        $('#comprovantePagSeg').text('').hide(400);
+	        $('#parcelado').hide(400);
 	      }else{
 	      	$("#titularNome").removeClass('titular_vazio');
 	        zerarDesconto();
@@ -259,7 +260,7 @@ $(document).ready(function(){
 		            '<th class="parcelado_parcela">Parc</th>'+
 		            '<th class="parcelado_data">Data</th>'+
 		            '<th class="parcelado_valor">Valor</th>'+
-		            '<th class="parcelado_cliente">Nome no Cheque</th>'+
+		            '<th class="parcelado_cliente">Cliente</th>'+
 		          '</thead>'+
 		          '<tbody id="tableItens">'+
 		          '</tbody>'+
