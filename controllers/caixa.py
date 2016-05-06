@@ -278,6 +278,8 @@ def historico():
     
     return dict(formListar=formListar, mesAtual=mesAno, form=form)
 
+ 
+
 def historico_print():
     # codigo da venda
     cod_venda = request.vars.cod 

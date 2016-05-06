@@ -98,7 +98,6 @@ quit()
 db(db.curso_paython).select()
 db(db.curso_python).select()
 quit()
-
 mail.send(to=['jose.vicente.de.sousa@mail.com'],subjetct='teste email',message=['teste ok'])
 mail.send(to=['jose.vicente.de.sousa@mail.com'],subject='teste email',message=['teste ok'])
 mail.send(to=['jose.vicente.de.sousa@mail.com'],subject='teste email',message=['teste ok','ok ok ok'])
@@ -129,4 +128,7 @@ x
 x += 'ff'
 x
 for iten in db(Itens.codigoVenda == '160502211617').select():s
+quit()
+x()
+excluirVendaRegistrada()
 quit()
