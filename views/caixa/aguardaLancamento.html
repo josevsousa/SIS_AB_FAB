@@ -87,10 +87,16 @@ select#qtde_parcelas {
 <script>
     function carregar_masck(){
         $(".real").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
-        $(".grid_data input").datepicker();
+        $(".grid_data input").datepicker({
+          altFormat: "yy-mm-dd"
+        });
+
+
     }
-        
+
+
     $(document).ready(function(){
+
         $('#minhaTabela').DataTable({
             // "scrollX": true,
             "order": [ 0, 'desc' ],
@@ -131,6 +137,7 @@ select#qtde_parcelas {
         $('#minhaTabela').on('dblclick','tr', function(){
 			var iten = $(this)[0]
 			var codigo = iten.children[1].textContent;
+            // var representante = iten.children[2].textContent;
             var cliente = iten.children[3].textContent;
 			var valor = iten.children[4].textContent;
 			
@@ -153,16 +160,29 @@ select#qtde_parcelas {
                 //botao gravar do modal
                 $('#gravar').on('click',function(){
                     //pegar os campos do modal e passar para o ajax gravar no db
-
-                    // var cheque_Modal = $('#cheque').val();
-                    // var cliente_Modal = $('#cliente').val();
-                    // var data_Modal = $('#data').val();
-                    // var status_Modal = $('#status').val();
-                    // var receptor = $('#receptor').val();
-                    // $(this).text('gravando...');
-                    // $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal+';'+receptor);
-                    // console.log(data_Modal);
-                    // ajax('atualizarParcelados',['transitory']);
+                 
+                    // gravar no python
+                    var rows = $('#tab_calculo_parcelas tbody tr');
+                    var cont = rows.length;
+                    //rows
+                    var iten = '';
+                    for (var i = 0; i < cont; i++) {
+                        if (i != 0) {
+                            iten += '@';
+                        }
+                        var row = rows[i];
+                        var parcela = row.cells[0].textContent;
+                        var numero_cheque = row.cells[1].children[0].value;
+                        var nome = row.cells[2].children[0].value;
+                        var data = row.cells[3].children[0].value;
+                        var valor = row.cells[4].children[0].value;
+                        valor = valor.replace('R$ ','').replace('.','').replace(',','.');
+                        iten += numero_cheque+";"+nome+";"+data+";"+valor;
+                        
+                    }
+                    // $('#tab_calculo_parcelas tbody').val('');
+                    $('#transitory').val(codigo+"|"+iten);
+                    ajax('gravarParcelas',['transitory'])
                     $("#myModal").modal('hide');
                 })
                 
@@ -178,7 +198,7 @@ select#qtde_parcelas {
 });//fim jquary ready
 </script>
 
-<input type="text" id="transitory" name="transitory" style='display:none'>
+<input type="text" id="transitory"  name="transitory" style='display:none'>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

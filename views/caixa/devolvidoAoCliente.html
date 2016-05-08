@@ -255,21 +255,19 @@
                     <th>Emitente do Cheque</th>
                     <th>Valor</th>   
                     <th>Data do Vencimento</th>   
-                    <th>Data da devolução</th>  
-                    <th>Status lançamento</th>
+                    <th>Data da devolução</th>
                 </tr> 
                 <tbody>
                     {{for i in table:}}
                         <tr>
                             <td class="oculto">{{=i.id}}</td>
-                            <td>{{=i.codigo}}</td>
-                            <td>{{=i.numeroChequ}}</td>
+                            <td>{{=i.codigo_venda}}</td>
+                            <td>{{=i.numero_cheque}}</td>
                             <td>{{=i.parcela}}</td>
-                            <td>{{=i.cliente}}</td>
+                            <td>{{=i.proprietario}}</td>
                             <td>{{=double_real(i.valor).real()}}</td>
-                            <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
-                            <td>{{=i.data_devolvidoAoCliente}}</td>
-                            <td class='debito'>{{= i.statusLancament}}
+                            <td>{{=(i.data_vencimento).strftime("%d/%m/%Y")}}</td>
+                            <td>{{=i.data_up}}</td>
                         </tr>
                     {{pass}}
                 </tbody>

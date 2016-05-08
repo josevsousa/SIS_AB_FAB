@@ -159,23 +159,7 @@ def fecharVenda():
     session.__delitem__('representante') 
     pass
 #--------------------------------    
-def parcelado():
-    index = request.vars.transitory
-    index = index.split('!')
-    tabela = index[0].split('@')
-    tipoVenda = index[1];
-    #cliente = db(Clientes.nome == session.cliente ).select('id')[0].id
-    repres = session.representante
-    for linha in tabela:
-        linha = linha.split(',')
-        parcela = linha[0]
-        dataParcela = "%s 00:00:00"%linha[1]
-        valorParcela = linha[2]
-        codigoVenda = session.codigo_venda     
-        #representante = session.representante
-        #gravar no db parcelados
-        Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=linha[3], representante=repres, parcela=parcela, dataVencimento=dataParcela, valor=valorParcela)
-        pass
+
 
 
 
@@ -288,11 +272,13 @@ def historico_print():
     # ok ate aqui
     # itens da venda 
     itens_venda =  db(Itens.codigoVenda == "%s"%cod_venda).select('codigoIten','quantidade','produto','valorUnidade','valorTotal')
-    
+
+
     # ver se a venda foi parcelada
     if historico_venda[0].tipoVenda == 'cheque' or historico_venda[0].tipoVenda == 'boleto':
         # enviar a tabela com as parcelas para a view
-        itens_parcelas = db(Parcelados.codigo == "%s"%cod_venda).select('parcela','dataVencimento','valor')
+        itens_parcelas = db(Parcelando.codigo_venda == "%s"%cod_venda).select('parcela','data_vencimento','valor')
+
     else:
         itens_parcelas = ""
         pass    
@@ -317,8 +303,6 @@ def excluirVendaRegistrada():
 
 @auth.requires_login()
 def aguardaLancamento():
-    # table = db(db.parcelados.id>0).select()
-    #query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'pendente') & (Parcelados.excluido == False)
     query = (Historico.tipoVenda=='cheque') & (Historico.aguardandoLancamento==True)
     table = db(query).select()
     qt = len(table)
@@ -326,40 +310,35 @@ def aguardaLancamento():
 
 @auth.requires_login()
 def compensado():
-    # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'compensado') & (Parcelados.excluido == False) 
+    query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'compensado') 
     table = db(query).select()
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def repassado():
-    # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'repassado') & (Parcelados.excluido == False) 
+    query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'repassado') 
     table = db(query).select()
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def devolvidoAoCliente():
-    # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido ao cliente') & (Parcelados.excluido == False) 
+    query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'devolvido ao cliente') 
     table = db(query).select()
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def devolvido1():
-    # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido 1-vez') & (Parcelados.excluido == False) 
+    query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'devolvido 1-vez') 
     table = db(query).select()
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def devolvido2():
-    # table = db(db.parcelados.id>0).select()
-    query = (Parcelados.id>0) & (Parcelados.tipoVenda == 'cheque') & (Parcelados.statusLancament == 'devolvido 2-vez') & (Parcelados.excluido == False) 
+    query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'devolvido 2-vez') 
     table = db(query).select()
     qt = len(table)
     return locals()
@@ -373,17 +352,17 @@ def atualizarParcelados():
     # mesAno = hoje.strftime('%m/%Y')
     # hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
     if index[3] == 'compensado':
-        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_compensado=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
     elif index[3] == 'repassado':
-        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_repassado=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
     elif index[3] == 'devolvido ao cliente':
-        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_devolvidoAoCliente=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
     elif index[3] == 'devolvido 1-vez':
-        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_devolvido_primeiro=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
     else:
-        db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5],data_devolvido_segundo=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
         pass
-    # db(db.parcelados.id == index[0]).update(numeroChequ=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
+    # db(db.parcelados.id == index[0]).update(numero_cheque=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
    
 def gridParcelas():
     index = request.vars.transitory
@@ -400,9 +379,60 @@ def gridParcelas():
     tbody = TBODY()
     for i in range(qtde_parc):
         dataAtual = (dataAtual + timedelta(30))
-        dataParc =  dataAtual.strftime('%d/%m/%Y')
+        dataParc =  dataAtual.strftime('%d-%m-%Y')
         # monta a parcela
         tbody.append(TR(TD(i+1,_class="grid_parcela"),TD(INPUT(_type='text',_value='00000000',_class='form-control inputGrid'),_class="grid_cheque"),TD(INPUT(_type='text',_value=cliente,_class='form-control inputGrid'),_class='grid_dono'),TD(INPUT(_type='text',_value=dataParc,_class='form-control inputGrid'),_class="grid_data"),TD(INPUT(_type='text',_value=valor,_class='form-control inputGrid real'))))    
     table.append(tbody)    
+    # return table   
     return "%s%s"%(table,'<script>window.onload = carregar_masck();</script>')   
+
+def gravarParcelas():
+    index = request.vars.transitory
+    index = index.split('|')
+    codigo = index[0]
+    parcelas = index[1]
+    dataAtual = datetime.now()
+    #gravar as parcelas
+    table = parcelas.replace(',','.').split('@')
+    n_parcela = 1
+    # print table 
+    for row in table:
+        cells = row.split(';')
+        n_cheque = cells[0]
+        nome = cells[1].strip() #tira espaços vazios no inicio e fim da palavra
+        dt = cells[2].split('-')
+        dt = "%s-%s-%s 00:00:00"%(dt[2],dt[1],dt[0])
+        valor = float(cells[3])
+        print "[%s] %s %s %s %s %s"%(codigo,n_parcela,n_cheque,nome,dt,valor)
+        Parcelando.insert(parcela=n_parcela,codigo_venda=codigo,tipo='cheque', status='compensado',data_vencimento=dt,proprietario=nome,numero_cheque=n_cheque,valor=valor,data_up=dataAtual)
+        # Parcelados.insert(numeroChequ=n_cheque,cliente=nome,dataVencimento=dt,valor=valor,representante=6,statusLancament='compensado',data_compensado=dataAtual)
+        # print "Parcelados.insert(codigo='%s',tipoVenda='cheque',numeroChequ='%s',cliente='%s',dataVencimento='%s',valor='%s',representante='%s',statusLancament='compensado',data_compensado='%s')"%(codigo,n_cheque,nome,dt,valor,'6',dataAtual)
+        n_parcela += 1
     
+    # table = ''
+    # alterar o historico de vendas
+    # print codigo
+    db(db.historicoVendas.codigoVenda=="%s"%codigo).update(aguardandoLancamento = False)
+    
+    pass    
+
+def parcelado():
+    index = request.vars.transitory
+    index = index.split('!')
+    tabela = index[0].split('@')
+    tipoVenda = index[1];
+  
+
+    for linha in tabela:
+        linha = linha.split(',')
+        parcela = linha[0]
+        dataParcela = "%s 00:01:01"%linha[1]
+        valorParcela = linha[2]
+        codigoVenda = session.codigo_venda     
+        proprietario = linha[3]
+        dataAtual = datetime.now()
+        
+        #gravar no db parcelados
+        # Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=linha[3], parcela=parcela, dataVencimento=dataParcela, valor=valorParcela)
+        Parcelando.insert(parcela=parcela,codigo_venda=codigoVenda,tipo='boleto', status='pendente',data_vencimento=dataParcela,proprietario=linha[3],valor=valorParcela,data_up=dataAtual)
+        pass    

@@ -40,8 +40,8 @@
                 console.log(inicio+" : "+final);
                 $('#aviso').html(
                     "<button type='button' aria-hidden='true' class='close'>×</button>"+
-                    "<span data-notify='message'>"+"This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification. So you don't have to worry about the style."+
-                    "</span>").show(500).delay(4000).hide(400);
+                    "<span data-notify='message'>"+"As datas de inicio e fim no formato dd/mm/aaaa são obrigatórias."+
+                    "</span>").show(500).delay(6000).hide(400);
             } else {
                 console.log(inicio+" : "+final);
                 $(location).attr('href',"table?inicial="+inicio+"&final="+final);
@@ -71,13 +71,28 @@
     form#buscaHist {
           margin-bottom: 10px;
     }
+    h3.tit_hist {
+        padding-left: 14px;
+    }
     div#tituloTable {
         width: 231px;
         float: left;
     }
     #buscaHist input {
-    border: 1px solid #C1C1C1;
-}
+        border: 1px solid #C1C1C1;
+    }
+    input[type="search"] {
+        border: 1px solid #CCC5B9;
+        border-radius: 3px;
+        padding: 5px;
+    }
+    select {
+        background-color: #FFFCF5;
+        padding: 4px;
+        border-radius: 4px;
+        border: 1px solid #CCC5B9;
+        margin: 0 7px;
+    }
 </style>
 <input type="text" id="transitory" name="transitory" style="display:none">
 <!-- <a href="#" id="t">AQUIIII</a> -->
@@ -257,9 +272,9 @@
                                                     {{else:}}
                                                         <td class="td-actions text-right" style="">
                                                         <a href="#" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs print" data-original-title="Tela Print">
-                                                    <i class="fa fa-print"></i>
-                                                </a>
-                                                            <a rel="tooltip" disabled title="" class="del btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)" data-original-title="Remove"><i class="fa fa-remove"></i>
+                                                                <i class="fa fa-print"></i>
+                                                            </a>
+                                                            <a rel="tooltip" disabled title="" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)" data-original-title="Remove"><i class="fa fa-remove"></i>
                                                             </a>
                                                         </td>
                                                     {{pass}}    

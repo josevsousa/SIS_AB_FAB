@@ -226,10 +226,11 @@
 			<tbody>
 			{{for iten in itens_parcelas:}}
 				<tr>
+					<!-- {{=iten.data_vencimento}} -->
 					<td>{{=iten.parcela}}</td> 
-					<td>{{=(iten.dataVencimento).strftime("%d/%m/%Y")}}</td> 
-					<!-- <td>{{#="R$ %.2f"%float(iten.valor)}}</td>  -->
+					<td>{{=iten.data_vencimento}}</td> 
 					<td>{{=double_real(float(iten.valor)).real()}}</td>
+					
 				</tr>
 			{{pass}}	
 			</tbody>

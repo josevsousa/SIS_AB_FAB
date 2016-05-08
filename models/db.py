@@ -287,30 +287,42 @@ Pendentes = db.define_table('pendentes',
     Field('dataSeparado','datetime')
     )
 # Pendentes.status.requires = IS_IN_SET(STATUS, error_message="Status invalido!!!")
-STATUS_LANCAMENTO = ('pendente','depositado','repassado','devolvido 1-vez','devolvido 2-vez','devolvido ao cliente')
+STATUS_LANCAMENTO = ('pendente','compensado','repassado','devolvido 1-vez','devolvido 2-vez','devolvido ao cliente')
 Parcelados = db.define_table('parcelados',
     Field('codigo'),
     Field('tipoVenda'),
     Field('numeroChequ', label='Nº do Cheque', default='00000000'),
     Field('cliente'),
-    Field('representante', db.representantes),
     Field('parcela', label='Parcela'),
     Field('dataVencimento', 'datetime', label='Vencimento'),
     Field('valor', 'double', label='Valor R$'),
     Field('statusPagamento', 'boolean', default=False),
-    Field('statusLancament', label='Lançamento', default='pendente', requires=IS_IN_SET(STATUS_LANCAMENTO)),
+    Field('statusLancament', label='Lançamento', default='pendente'),
     Field('dataPagamento', 'datetime', label='Data da Compensação'),
     Field('data_criaca', 'datetime', default=request.now),
     Field('excluido', 'boolean', default=False),
-    Field('autor', db.auth_user, default=auth.user.id if auth.user else None),
     Field('repasse_nome'),
     Field('data_compensado','datetime'),
     Field('data_devolvidoAoCliente','datetime'),
     Field('data_repassado','datetime'),
     Field('data_devolvido_primeiro','datetime'),
-    Field('data_devolvido_segundo','datetime')
+    Field('data_devolvido_segundo','datetime'),
     )
-
+STATUS_PARCELANDO = ('pendente','compensado','repassado','devolvido 1-vez','devolvido 2-vez','devolvido ao cliente')
+Parcelando = db.define_table(
+    'parcelando',
+    Field('tipo'),
+    Field('status',requires = IS_IN_SET(STATUS_PARCELANDO, error_message="Status invalido!")),
+    Field('data_up','datetime'),
+    Field('codigo_venda'),
+    Field('numero_cheque', default='00000000'),
+    Field('parcela'),
+    Field('valor','double'),
+    Field('proprietario'),
+    Field('receptor'),
+    Field('data_vencimento','datetime'),
+    Field('autor', db.auth_user, default=auth.user.id if auth.user else None)
+    )
 
 Itens = db.define_table('itens',
     Field('codigoVenda', readable=False),

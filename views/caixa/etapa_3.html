@@ -1,7 +1,7 @@
 {{extend 'layoutLojinha.html'}}
 <script>
 var itensDB = '';//grid das parcelas
-function gravarItensDB(){
+function montarItensDB(){
 	var itens = tableItens.rows;
 	var l = '@';
 	var t = itens.length;
@@ -41,15 +41,15 @@ $(document).ready(function(){
 		    	if ($(".parcelarC").val() == '0') {
 		    		$(".parcelarC").addClass('titular_vazio').focus();
 		    	}else{
-		    		gravarItensDB();
+		    		montarItensDB();
 			    	var tv = $(".tpv").val();
 			    	$('#transitory').val(itensDB+"!"+tv);//add o itensDB e o totalValor no #transitory
 			    	ajax('parcelado',['transitory']); //chama a função parcelado para gravar as parcelas	
 
-					gravarCaix();
+					 gravarCaix();
 		    	}
 		    }else{
-		    	gravarCaix();
+		    	 gravarCaix();
 		    }		
 		});
 

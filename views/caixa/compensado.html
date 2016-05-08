@@ -269,20 +269,18 @@
                     <th>Valor</th>   
                     <th>Vencimento</th> 
                     <th>Compensação</th>     
-                    <th>Status lançamento</th>
                 </tr> 
                 <tbody>
                     {{for i in table:}}
                         <tr>
                             <td class="oculto">{{=i.id}}</td>
-                            <td>{{=i.codigo}}</td>
-                            <td>{{=i.numeroChequ}}</td>
+                            <td>{{=i.codigo_venda}}</td>
+                            <td>{{=i.numero_cheque}}</td>
                             <td>{{=i.parcela}}</td>
-                            <td>{{=i.cliente}}</td>
+                            <td>{{=i.proprietario}}</td>
                             <td>{{=double_real(i.valor).real()}}</td>
-                            <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
-                            <td>{{=(i.data_compensado)}}</td>
-                            <td class='verde'>{{= i.statusLancament}}
+                            <td>{{=(i.data_vencimento).strftime("%d/%m/%Y")}}</td>
+                            <td>{{=(i.data_up)}}</td>
                         </tr>
                     {{pass}}
                 </tbody>

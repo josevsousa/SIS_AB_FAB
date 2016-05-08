@@ -114,10 +114,8 @@
                     var data_Modal = $('#data').val();
                     var status_Modal = $('#status').val();
                     var receptor = $('#receptor').val();
-                    console.log(receptor);
                     $(this).text('gravando...');
                     $('#transitory').val(id+';'+cheque_Modal+';'+cliente_Modal+';'+status_Modal+';'+data_Modal+';'+receptor);
-                    console.log(data_Modal);
                     ajax('atualizarParcelados',['transitory']);
                     $("#myModal").modal('hide');
                 })
@@ -263,21 +261,19 @@
                     <th>Valor</th>   
                     <th>Data do Vencimento</th>
                     <th>Data do Repasse</th>     
-                    <th>Status lançamento</th>
                 </tr> 
                 <tbody>
                     {{for i in table:}}
                         <tr>
                             <td class="oculto">{{=i.id}}</td>
-                            <td>{{=i.codigo}}</td>
-                            <td>{{=i.numeroChequ}}</td>
+                            <td>{{=i.codigo_venda}}</td>
+                            <td>{{=i.numero_cheque}}</td>
                             <td>{{=i.parcela}}</td>
-                            <td>{{=i.cliente}}</td>
-                            <td class="destaque">{{=i.repasse_nome}}</td>
+                            <td>{{=i.proprietario}}</td>
+                            <td class="destaque">{{=i.receptor}}</td>
                             <td>{{=double_real(i.valor).real()}}</td>
-                            <td>{{=(i.dataVencimento).strftime("%d/%m/%Y")}}</td>
-                            <td>{{=i.data_repassado}}</td>
-                            <td class='azul'>{{= i.statusLancament}}
+                            <td>{{=(i.data_vencimento).strftime("%d/%m/%Y")}}</td>
+                            <td>{{=i.data_up}}</td>
                         </tr>
                     {{pass}}
                 </tbody>

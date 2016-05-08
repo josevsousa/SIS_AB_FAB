@@ -319,6 +319,7 @@
 'starts with': 'starts with',
 'state': 'estado',
 'Statistics': 'Estatísticas',
+'Status invalido!': 'Status invalido!',
 'Statuspagamento': 'Statuspagamento',
 'Stylesheet': 'Folha de estilo',
 'Submit': 'enviar',
