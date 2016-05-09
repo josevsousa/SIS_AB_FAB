@@ -149,3 +149,5 @@ print db(db.parcelando.codigo_venda == '160507025523').select('data_vencimento')
 dt = db(db.parcelando.codigo_venda == '160507025523').select('data_vencimento')[0].data_vencimento
 dt
 quit()
+quit)_
+quit()

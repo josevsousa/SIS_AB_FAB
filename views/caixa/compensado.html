@@ -73,10 +73,10 @@
             var cheque = iten.children[2].textContent;
             var cliente = iten.children[4].textContent;
             var parcela = iten.children[3].textContent;
-            var data = iten.children[6].textContent;
+            var data = iten.children[6].children[0].textContent;
             data = data.split('/');
             data = data[2]+"-"+data[1]+"-"+data[0];
-
+            
             //================== MODAL ======          
                 var titulo = 'Cod venda: '+codigo;
 
@@ -279,7 +279,17 @@
                             <td>{{=i.parcela}}</td>
                             <td>{{=i.proprietario}}</td>
                             <td>{{=double_real(i.valor).real()}}</td>
-                            <td>{{=(i.data_vencimento).strftime("%d/%m/%Y")}}</td>
+                            <td>
+                                {{  dataAtual = datetime.now()
+                                    vencimento = (i.data_vencimento).strftime('%Y-%m-%d')
+                                    vencimento = datetime.strptime(vencimento,'%Y-%m-%d')
+                                    if(vencimento < dataAtual):
+                                }}
+                                {{=DIV((i.data_vencimento).strftime("%d/%m/%Y"),_class="verde")}}
+                                {{else:}}
+                                {{=DIV((i.data_vencimento).strftime("%d/%m/%Y"),_class="laranja")}}
+                                {{pass}}
+                            </td>
                             <td>{{=(i.data_up)}}</td>
                         </tr>
                     {{pass}}
