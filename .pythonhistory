@@ -140,3 +140,12 @@ db(db.parecelados.codigo == '160504464918')
 Parcelados.insert(codigo='160504464918',tipoVenda='cheque',numeroChequ='00000000',cliente='M. L. CRIANCA & CIA LTDA',dataVencimento=' 2016-07-05 00:00:00',valor='192.00',representante='6',statusLancament='compensado',data_compensado='2016-05-06 17:00:52.322811')
 db(db.parecelados.codigo == '160504464918')
 quit()
+db(db.parcelando.codigo == '160507025523')
+db(db.parcelando.codigo_venda == '160507025523')
+print db(db.parcelando.codigo_venda == '160507025523')
+print db(db.parcelando.codigo_venda == '160507025523').select()
+print db(db.parcelando.codigo_venda == '160507025523').select('data_vencimento')
+print db(db.parcelando.codigo_venda == '160507025523').select('data_vencimento')[0].data_vencimento
+dt = db(db.parcelando.codigo_venda == '160507025523').select('data_vencimento')[0].data_vencimento
+dt
+quit()

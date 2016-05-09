@@ -278,7 +278,7 @@ def historico_print():
     if historico_venda[0].tipoVenda == 'cheque' or historico_venda[0].tipoVenda == 'boleto':
         # enviar a tabela com as parcelas para a view
         itens_parcelas = db(Parcelando.codigo_venda == "%s"%cod_venda).select('parcela','data_vencimento','valor')
-
+        
     else:
         itens_parcelas = ""
         pass    
