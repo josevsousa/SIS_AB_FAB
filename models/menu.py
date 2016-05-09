@@ -56,8 +56,8 @@ if 'auth' in globals():
                   (T('Vendas'),False, None, [
                     (T('Caixa'), False, URL('caixa', 'etapa_1?menu=caixa'), []),
                     (T('historico'), False, URL('caixa', 'historico?menu=caixa'), []),
-                    (T('Controle Cheque'), False, URL('caixa', 'historico?menu=caixa'), []),
-                    # (T('Controle Cheque'), False, URL('caixa', 'aguardaLancamento?menu=caixa'), []),
+                    #(T('Controle Cheque'), False, URL('caixa', 'historico?menu=caixa'), []),
+                    (T('Controle Cheque'), False, URL('caixa', 'aguardaLancamento?menu=caixa'), []),
                   ]),
                   (T('Clientes'), False, URL('clientes', 'listarClientes?menu=clientes'), []),
                   (T('Funcionários'), False, URL('funcionarios', 'listarFuncionarios?menu=funcionarios'), []),

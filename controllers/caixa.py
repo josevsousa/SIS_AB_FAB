@@ -403,7 +403,7 @@ def gravarParcelas():
         dt = cells[2].split('-')
         dt = "%s-%s-%s 00:00:00"%(dt[2],dt[1],dt[0])
         valor = float(cells[3])
-        print "[%s] %s %s %s %s %s"%(codigo,n_parcela,n_cheque,nome,dt,valor)
+        # print "[%s] %s %s %s %s %s"%(codigo,n_parcela,n_cheque,nome,dt,valor)
         Parcelando.insert(parcela=n_parcela,codigo_venda=codigo,tipo='cheque', status='compensado',data_vencimento=dt,proprietario=nome,numero_cheque=n_cheque,valor=valor,data_up=dataAtual)
         # Parcelados.insert(numeroChequ=n_cheque,cliente=nome,dataVencimento=dt,valor=valor,representante=6,statusLancament='compensado',data_compensado=dataAtual)
         # print "Parcelados.insert(codigo='%s',tipoVenda='cheque',numeroChequ='%s',cliente='%s',dataVencimento='%s',valor='%s',representante='%s',statusLancament='compensado',data_compensado='%s')"%(codigo,n_cheque,nome,dt,valor,'6',dataAtual)
