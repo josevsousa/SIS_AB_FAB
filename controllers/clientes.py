@@ -44,4 +44,7 @@ def deletar():
 	return ''
 
 
+def atualizar():
+	return locals()
+
 

@@ -35,6 +35,7 @@ DEVELOPMENT_MENU = True
 
 
 
+
 #########################################################################
 ## provide shortcuts for development. remove in production
 #########################################################################
@@ -43,6 +44,30 @@ def _():
     # shortcuts
     app = request.application
     ctr = request.controller
+
+    # MENU BARRA LATERAL
+    response.barraL = UL(_class='nav')
+    if ctr == 'daschboard':
+      response.barraL.append(LI(A(I(_class='ti-panel'),P('dashboard'),_href='#'),_class='active'))
+    else:
+      response.barraL.append(LI(A(I(_class='ti-panel'),P('dashboard'),_href='#')))  
+      pass
+    if ctr == 'clientes':
+      response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/atualizar'),_class='active'))
+    else:
+      response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/atualizar')))
+      pass
+    if ctr == 'vendas':
+      response.barraL.append(LI(A(I(_class='ti-pie-chart'),P('vendas'),_href='../vendas/historico'),_class='active'))
+    else:
+      response.barraL.append(LI(A(I(_class='ti-pie-chart'),P('vendas'),_href='../vendas/historico')))  
+      pass
+    if ctr == 'alerta':
+      response.barraL.append(LI(A(I(_class='ti-bell'),P('alerta'),_href='#'),_class='active'))
+    else:
+      response.barraL.append(LI(A(I(_class='ti-bell'),P('alerta'),_href='#')))  
+      pass
+    # FIM MENU BARRA LATERAL
 
 if 'auth' in globals():
     if not auth.is_logged_in():  

@@ -3,7 +3,7 @@
     $(document).ready(function(){
         $('#minhaTabela').DataTable({
             // "scrollX": true,
-            "order": [ 6, 'desc' ],
+            "order": [ 5, 'desc' ],
             "language": {
               "url": "{{=URL('static','js/tradutorTable.json')}}"
             }
@@ -20,7 +20,8 @@
                 // $("#transitory").val(i+";"+v);//envia para o value do input
                 $("#transitory").val(v);//envia para o value do input
                 ajax('excluirVendaRegistrada',['transitory']);//chama funcao do python
-                $(location).attr('href',"table");//redireciona a pagina
+                $(location).attr('href',"historico");//redireciona a pagina
+
             }else{
                 console.log("Registro mantido!")
             };          
@@ -30,8 +31,18 @@
         $('.print').on('click',function(){
             var td = $(this).parent().parent().children()[0];
             var cod = td.textContent;
-            $(location).attr('href',"../caixa/historico_print?cod="+cod);//redireciona a pagina
+            var URL = 'http://127.0.0.1:8000/SIS_AB_FAB/vendas/imprimir?cod='+cod;
+            // $(location).attr('href',"../vendas/imprimir?cod="+cod);//redireciona a pagina
+            var width = 880;
+            var height = 920;
+             
+            var left = 70;
+            var top = 30;
+             
+            window.open(URL,'janela', 'width='+width+', height='+height+', top='+top+', left='+left+', scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
         });
+
+
 
         buscarHist.addEventListener('click',function(){
             var inicio = data_inicio.value;
@@ -44,7 +55,7 @@
                     "</span>").show(500).delay(6000).hide(400);
             } else {
                 console.log(inicio+" : "+final);
-                $(location).attr('href',"table?inicial="+inicio+"&final="+final);
+                $(location).attr('href',"historico?inicial="+inicio+"&final="+final);
             }
         });
         // $('#buscaHist').on('click',function(){
@@ -55,6 +66,10 @@
 </script>
 
 <style>
+span.ti-new-window {
+    font-weight: 500;
+    color: #009C98;
+}
     div#minhaTabela_length, div#minhaTabela_info {
         margin-left: 18px;
     }
@@ -111,51 +126,7 @@
                     Creative Tim
                 </a>
             </div>
-
-            <ul class="nav">
-                <li>
-                    <a href="dashboard.html">
-                        <i class="ti-panel"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="user.html">
-                        <i class="ti-user"></i>
-                        <p>User Profile</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="table.html">
-                        <i class="ti-view-list-alt"></i>
-                        <p>Table List</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="typography.html">
-                        <i class="ti-text"></i>
-                        <p>Typography</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons.html">
-                        <i class="ti-pencil-alt2"></i>
-                        <p>Icons</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="maps.html">
-                        <i class="ti-map"></i>
-                        <p>Maps</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="notifications.html">
-                        <i class="ti-bell"></i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
-            </ul>
+            {{=response.barraL}}
         </div>
     </div>
 
@@ -177,21 +148,15 @@
                         <span class="icon-bar bar3"></span>
                     </button>
                     
-                    <h3 class="tit_hist">Histórico {{=mesAtual}}</h3>
+                    <h3 class="tit_hist">Histórico </h3>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="ti-panel"></i>
-                                <p>Stats</p>
-                            </a>
-                        </li>
-                        <li class="dropdown">
+                         <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="ti-bell"></i>
                                     <p class="notification">5</p>
-                                    <p>Notifications</p>
+                                    <p>Alertas</p>
                                     <b class="caret"></b>
                               </a>
                               <ul class="dropdown-menu">
@@ -202,12 +167,12 @@
                                 <li><a href="#">Another notification</a></li>
                               </ul>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="#">
                                 <i class="ti-settings"></i>
                                 <p>Settings</p>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
 
                 </div>
@@ -217,6 +182,7 @@
 
         <div class="content">
             <div class="container-fluid">
+
                 <div class="row">
                     <div class="col-md-12">
                         
@@ -244,8 +210,8 @@
                                             <th>Codigo</th>
                                             <th>Representante</th>
                                             <th>Tipo</th>
-                                            <th>Valor pago</th>
-                                            <th>Desconto</th>
+                                            <th style="display:none">Valor pago</th>
+                                            <!-- <th>Desconto</th> -->
                                             <th>Cliente</th>
                                             <th>Data Venda</th>
                                             <th></th>
@@ -257,23 +223,21 @@
                                                         <td>{{=venda.codigoVenda}}</td>
                                                         <td>{{=db(db.representantes.id == venda.representante ).select('nome')[0].nome }}</td>
                                                         <td>{{=venda.tipoVenda}}</td>
-                                                        <td>{{=double_real(venda.valorVenda).real()}}</td>
-                                                        <td>{{=double_real(venda.valorDesconto).real()}}</td>
+                                                        <td style="display:none">{{=double_real(venda.valorVenda).real()}}</td>
+                                                        <!-- <td>{{#=double_real(venda.valorDesconto).real()}}</td> -->
                                                         <td>{{=db(Clientes.id == venda.clienteEmail).select('nome')[0].nome}}</td>
                                                         <td>{{=venda.dataVenda}}</td>
                                                     {{if auth.has_membership('admin'):}}    
                                                         <td class="td-actions text-right" style="">
-                                                        <a href="#" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs print" data-original-title="Tela Print">
-                                                    <i class="fa fa-print"></i>
+                                                        <a href="#" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs print" data-original-title="Visualizar">
+                                                    <span class="ti-new-window"></span>
                                                 </a>
                                                             <a rel="tooltip" title="" class="del btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)" data-original-title="Remove"><i class="fa fa-remove"></i>
                                                             </a>
                                                         </td>
                                                     {{else:}}
                                                         <td class="td-actions text-right" style="">
-                                                        <a href="#" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs print" data-original-title="Tela Print">
-                                                                <i class="fa fa-print"></i>
-                                                            </a>
+                                                        <a href="#" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs print" data-original-title="Visualizar">
                                                             <a rel="tooltip" disabled title="" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)" data-original-title="Remove"><i class="fa fa-remove"></i>
                                                             </a>
                                                         </td>

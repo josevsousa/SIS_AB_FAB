@@ -1,0 +1,333 @@
+{{extend 'dashboard.html'}}
+<script>
+    $(document).ready(function(){
+        $('#minhaTabela').DataTable({
+            // "scrollX": true,
+            "order": [ 6, 'desc' ],
+            "language": {
+              "url": "{{=URL('static','js/tradutorTable.json')}}"
+            }
+            
+        }); 
+     
+        //=== DELETAR ITEN
+        $(".del").on('click',function(){
+            var c = confirm("Tem certeza que deseja deletar a Venda?")
+            if (c == true) {
+                // var i = $(this).parent().parent().index(); //pega posicao da row
+                var v = $(this).parent().parent()[0].children[0].textContent;//pega valor da celula 4 da row
+                console.log(v);
+                // $("#transitory").val(i+";"+v);//envia para o value do input
+                $("#transitory").val(v);//envia para o value do input
+                ajax('excluirVendaRegistrada',['transitory']);//chama funcao do python
+                $(location).attr('href',"table");//redireciona a pagina
+            }else{
+                console.log("Registro mantido!")
+            };          
+        });
+
+        //=== BUSCAR REGISTRO
+        $('.print').on('click',function(){
+            var td = $(this).parent().parent().children()[0];
+            var cod = td.textContent;
+            $(location).attr('href',"../caixa/historico_print?cod="+cod);//redireciona a pagina
+        });
+
+        buscarHist.addEventListener('click',function(){
+            var inicio = data_inicio.value;
+            var final = data_fim.value;
+            if (inicio == '' || final == '') {
+                console.log(inicio+" : "+final);
+                $('#aviso').html(
+                    "<button type='button' aria-hidden='true' class='close'>×</button>"+
+                    "<span data-notify='message'>"+"As datas de inicio e fim no formato dd/mm/aaaa são obrigatórias."+
+                    "</span>").show(500).delay(6000).hide(400);
+            } else {
+                console.log(inicio+" : "+final);
+                $(location).attr('href',"table?inicial="+inicio+"&final="+final);
+            }
+        });
+        // $('#buscaHist').on('click',function(){
+        //     $(location).attr('href',"table?inicial=2016-04-01&final=2016-04-10");//redireciona 
+        // });
+
+  });
+</script>
+
+<style>
+    div#minhaTabela_length, div#minhaTabela_info {
+        margin-left: 18px;
+    }
+    div#minhaTabela_filter, div#minhaTabela_paginate {
+        margin-right: 19px;
+    }   
+    table#minhaTabela {
+        margin-bottom: 9px;
+    }
+    td {
+        padding: 4px 11px!important;
+    }
+    
+    form#buscaHist {
+          margin-bottom: 10px;
+    }
+    h3.tit_hist {
+        padding-left: 14px;
+    }
+    div#tituloTable {
+        width: 231px;
+        float: left;
+    }
+    #buscaHist input {
+        border: 1px solid #C1C1C1;
+    }
+    input[type="search"] {
+        border: 1px solid #CCC5B9;
+        border-radius: 3px;
+        padding: 5px;
+    }
+    select {
+        background-color: #FFFCF5;
+        padding: 4px;
+        border-radius: 4px;
+        border: 1px solid #CCC5B9;
+        margin: 0 7px;
+    }
+</style>
+<input type="text" id="transitory" name="transitory" style="display:none">
+<!-- <a href="#" id="t">AQUIIII</a> -->
+
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
+
+    <!--
+        Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+        Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+    -->
+
+    <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="http://www.creative-tim.com" class="simple-text">
+                    Creative Tim
+                </a>
+            </div>
+            {{=response.barraL}}
+        </div>
+    </div>
+
+
+
+    <div class="main-panel">
+        <div id="aviso" style='display:none' class="alert alert-warning alert-with-icon" data-notify="container"></div>
+          <nav class="navbar navbar-default">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    
+                    <h3 class="tit_hist">Atualizar</h3>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                         <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="ti-bell"></i>
+                                    <p class="notification">5</p>
+                                    <p>Alertas</p>
+                                    <b class="caret"></b>
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li><a href="#">Notification 1</a></li>
+                                <li><a href="#">Notification 2</a></li>
+                                <li><a href="#">Notification 3</a></li>
+                                <li><a href="#">Notification 4</a></li>
+                                <li><a href="#">Another notification</a></li>
+                              </ul>
+                        </li>
+                        <!-- <li>
+                            <a href="#">
+                                <i class="ti-settings"></i>
+                                <p>Settings</p>
+                            </a>
+                        </li> -->
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="content">
+            <div class="container-fluid">
+<div class="row">
+                    <div class="col-lg-4 col-md-5">
+                        <div class="card card-user">
+                            <div class="image">
+                                <img src="{{=URL('static','assets/img/background.jpg')}}" alt="...">
+                            </div>
+                            <div class="content">
+                                <div class="author">
+                                  <img class="avatar border-white" src="{{=URL('static','assets/img/faces/face-2.jpg')}}" alt="...">
+                                  <h4 class="title">{{=auth.user.first_name}}<br>
+                                     <a href="#"><small>{{=auth.user.email}}</small></a>
+                                  </h4>
+                                </div>
+                                <p class="description text-center">
+                                    "I like the way you work it <br>
+                                    No diggity <br>
+                                    I wanna bag it up"
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="text-center">
+                                <div class="row">
+                                    <div class="col-md-3 col-md-offset-1">
+                                        <h5>12<br><small>Files</small></h5>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5>2GB<br><small>Used</small></h5>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h5>24,6$<br><small>Spent</small></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-lg-8 col-md-7">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Edit Profile</h4>
+                            </div>
+                            <div class="content">
+
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label>Company</label>
+                                                <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="Artesanal Baby">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Username</label>
+                                                <input type="text" class="form-control border-input" placeholder="Username" value="michael23">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Email address</label>
+                                                <input type="email" class="form-control border-input" placeholder="Email" value="{{=auth.user.email}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>First Name</label>
+                                                <input type="text" class="form-control border-input" placeholder="Company" value="{{=auth.user.first_name}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Last Name</label>
+                                                <input type="text" class="form-control border-input" placeholder="Last Name" value="{{=auth.user.last_name}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <input type="text" class="form-control border-input" placeholder="Home Address" value="Melbourne, Australia">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                <input type="text" class="form-control border-input" placeholder="City" value="Melbourne">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Country</label>
+                                                <input type="text" class="form-control border-input" placeholder="Country" value="Australia">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Postal Code</label>
+                                                <input type="number" class="form-control border-input" placeholder="ZIP Code">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>About Me</label>
+                                                <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike">
+                                                {{=auth.user}}
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-info btn-fill btn-wd">Update Profile</button>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>    
+        </div>
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul>
+
+                        <li>
+                            <a href="http://www.creative-tim.com">
+                                Creative Tim
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://blog.creative-tim.com">
+                               Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.creative-tim.com/license">
+                                Licenses
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="copyright pull-right">
+                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+</div>
+
+

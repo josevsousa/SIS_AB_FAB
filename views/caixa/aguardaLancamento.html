@@ -41,6 +41,7 @@
     span#lenLancamentos{
         background: #FF9D01;
     }
+
     .debito{
         color: red;
         font-weight: 600;
@@ -83,6 +84,11 @@
 select#qtde_parcelas {
     width: 63px;
 }
+.validaCodigo{
+    border-color: #E91E63;
+    box-shadow: none;
+    background: #FFF1F6;
+}
 </style>
 <script>
     function carregar_masck(){
@@ -94,8 +100,22 @@ select#qtde_parcelas {
 
     }
 
-
     $(document).ready(function(){
+
+        $('#add_venda_a_lista').on('click',function(){
+            
+            if ($('#codigo').val() == '') {
+                $('#codigo').addClass('validaCodigo');
+            } else {
+                $('#codigo').removeClass('validaCodigo');
+                $(this).text('Trabalhando');
+                ajax('addVenaLista',['codigo'],location.reload())
+
+            }
+            $('#codigo').on('keyup',function(){
+                $('#codigo').removeClass('validaCodigo');
+            })
+        })
 
         $('#minhaTabela').DataTable({
             // "scrollX": true,
@@ -248,7 +268,7 @@ select#qtde_parcelas {
     </div>
   </div>
 </div><!-- fim do Modal -->
-<div class="container animated fadeIn">
+<div class="container ">
 	<div class="row"> 
         <form id="opcaoCheque">
             <div class="col-md-4"> 
@@ -308,7 +328,14 @@ select#qtde_parcelas {
             </div>     
         </form>
     </div> 
-    <h4>Tela de lançamento de cheques <small>Clique duas (2) vezes para atualizar o fechamento! </small></h4>   
+    <h4>Tela de lançamento de cheques <small>Clique duas (2) vezes para lançar os cheques! ou clique aqui para add um pedido a lista </small><!-- <a class="btn btn-default del btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a> -->   </h4>
+   <!--  <div class="form-inline">
+      <div class="form-group">
+        <label for="codigo">Código :</label>
+        <input type="number" class="form-control" id="codigo" name="codigo" placeholder="000000000000">
+      </div>
+      <button type="text" id="add_venda_a_lista" class="btn btn-success">Adcionar</button>
+    </div> -->
     <hr>
     <div class="row">
         <div class="col-md-12">

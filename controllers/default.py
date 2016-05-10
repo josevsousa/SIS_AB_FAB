@@ -17,6 +17,7 @@ def index():
     if auth.has_membership('admin'):
         redirect(URL('caixa','etapa_1?menu=caixa')) 
     # response.flash = T("Seja bem vindo!  %s !"%(hoje.strftime('%d/%m/%Y')))
+    grid = 'jose'
     return locals()
 
 # def contato():

@@ -58,6 +58,10 @@ service = Service()
 plugins = PluginManager()
 crud = Crud(db)
 
+auth.settings.extra_fields['auth_user'] = [
+    Field('avatar', 'upload')
+    ]
+
 
 ## create all tables needed by auth if not custom tables
 auth.define_tables(username=False, signature=False)

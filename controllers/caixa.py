@@ -308,6 +308,21 @@ def aguardaLancamento():
     qt = len(table)
     return locals()
 
+# def addVenaLista():
+#     index = request.vars.codigo
+#     query = (db.historicoVendas.codigoVenda == index) & (db.historicoVendas.tipoVenda == 'cheque') & (db.historicoVendas.aguardandoLancamento != True)
+#     cod = db(query)
+ 
+#     # se o codigo existir
+#     if cod:
+#         db(db.historicoVendas.codigoVenda == index).update(aguardandoLancamento=True)
+#         session.flash = 'Venda adcionada!'
+#     else:
+#         session.flash = 'Código não existe! Ou compensado.'    
+
+
+
+
 @auth.requires_login()
 def compensado():
     query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'compensado') 
