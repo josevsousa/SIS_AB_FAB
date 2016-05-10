@@ -6,7 +6,7 @@
 		//confirmar o envio do romaneio ao cliente	
 		var c = confirm("será enviado um emal com esse romaneio ao cliente ok?")
 	        if (c == true) {
-	          ajax('reenviarEmail',['transitory']);
+	          // ajax('reenviarEmail',['transitory']);
 	        }
 		})
 
@@ -234,7 +234,9 @@
 					<td>{{=iten.parcela}}</td> 
 					{{
 					dt = (iten.data_vencimento)
-					dt = dt.split(' ')
+					print dt
+					dt = dt.split('&nbsp;')
+					print dt
 					dt = dt[0].split('-')
 					dt = '%s/%s/%s'%(dt[2],dt[1],dt[0])
 					}}
