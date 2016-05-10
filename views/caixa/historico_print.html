@@ -233,13 +233,11 @@
 					<!-- {{=iten.data_vencimento}} -->
 					<td>{{=iten.parcela}}</td> 
 					{{
+					
 					dt = (iten.data_vencimento)
-					print dt
-					dt = dt.split('&nbsp;')
-					print dt
-					dt = dt[0].split('-')
-					dt = '%s/%s/%s'%(dt[2],dt[1],dt[0])
-					}}
+					dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
+					dt = dt.strftime('%d/%m/%Y')
+						}}
 					<td>{{=dt}}</td> 
 					<td>{{=double_real(float(iten.valor)).real()}}</td>
 					
