@@ -30,9 +30,7 @@
         //=== BUSCAR REGISTRO
         $('.print').on('click',function(){
             var td = $(this).parent().parent().children()[0];
-            var cod = td.textContent;
-            var URL = 'http://127.0.0.1:8000/SIS_AB_FAB/vendas/imprimir?cod='+cod;
-            // $(location).attr('href',"../vendas/imprimir?cod="+cod);//redireciona a pagina
+            var URL = "//{{='%s/%s/%s/imprimir?cod='%(request.env.http_host,request.application,request.controller)}}"+td.textContent;
             var width = 880;
             var height = 920;
              

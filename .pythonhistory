@@ -151,3 +151,17 @@ dt
 quit()
 quit)_
 quit()
+print env
+print session.env
+env
+request.env
+request.env.HTTP_ACCEPT
+print request.env.HTTP_ACCEPT
+print request.env:HTTP_ACCEPT
+print request.env.HTTP_REFERER
+print request.env.HTTP_REFERER()
+print request.HTTP_REFERER
+print request.env.http_host
+print request.applications
+print request.application
+quit()
