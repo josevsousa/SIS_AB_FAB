@@ -317,7 +317,7 @@ Parcelando = db.define_table(
     'parcelando',
     Field('tipo'),
     Field('status',requires = IS_IN_SET(STATUS_PARCELANDO, error_message="Status invalido!")),
-    Field('data_up','datetime'),
+    Field('data_aguardandoLancamento','datetime'),
     Field('codigo_venda'),
     Field('numero_cheque', default='00000000'),
     Field('banco'),
@@ -326,7 +326,7 @@ Parcelando = db.define_table(
     Field('proprietario'),
     Field('receptor'),
     Field('data_vencimento','datetime'),
-    Field('autor', db.auth_user, default=auth.user.id if auth.user else None)
+    auth.signature,
     )
 
 Itens = db.define_table('itens',

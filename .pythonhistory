@@ -165,3 +165,11 @@ print request.env.http_host
 print request.applications
 print request.application
 quit()
+db(db.clientes.id>0).select('nome')
+db(db.clientes.id>0).select('nome')[0]
+db(db.clientes.id>0).select('nome')[0].nome
+nome = db(db.clientes.id>0).select('nome')[0].nome
+nome.split('')
+nome.split(' ')
+nome.split(' ')[0]
+quit()

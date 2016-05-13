@@ -1,3 +1,4 @@
+@auth.requires_login()
 def historico():
     hoje = datetime.now()
     mesAno = hoje.strftime('%m/%Y')

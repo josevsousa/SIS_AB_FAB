@@ -30,11 +30,10 @@
         });     
 
         // ================= FORMULARIO CLIENTES ===========
-        $( "#btForm" ).on('click',function(){
-          $('#btForm').text('trabalhando...')  
-          ajax('formClientes',['#transitory'],'painel_cadastro')
-          $('#painel_cadastro').slideDown(800);
-          // $('#btForm').text('Cadastrar').addClass('cadastrar').removeClass('btn-default').addClass('btn-success');
+        $( "#form_clientes" ).submit(function( event ) {
+          $('.painel_cadastro').slideDown(800);
+          $('#btForm').text('Cadastrar').addClass('cadastrar').removeClass('btn-default').addClass('btn-success');
+          event.preventDefault();
         });
 
   });
@@ -139,7 +138,7 @@
     </div>
 
 
-    <input id="transitory" name="transitory" style='display:none'>jose</input>
+
     <div class="main-panel d">
         <div id="aviso" style='display:none' class="alert alert-warning alert-with-icon" data-notify="container"></div>
           <nav class="navbar navbar-default">
@@ -247,21 +246,89 @@
 
                             </div>
                             <div class="content">
-                                <!--painel_cadastro--> 
-                                <div id="painel_cadastro"> 
-                                    
+                               <!--painel_cadastro--> 
+                               <div class="painel_cadastro" style="display:none"> 
+                                <form id="form_clientes">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label>Company</label>
+                                                <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="Artesanal Baby">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Username</label>
+                                                <input type="text" class="form-control border-input" placeholder="Username" value="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Email address</label>
+                                                <input type="email" class="form-control border-input" placeholder="Email" value="{{=auth.user.email}}">
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>First Name</label>
+                                                <input type="text" class="form-control border-input" placeholder="Company" value="{{=auth.user.first_name}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Last Name</label>
+                                                <input type="text" class="form-control border-input" placeholder="Last Name" value="{{=auth.user.last_name}}">
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <input type="text" class="form-control border-input" placeholder="Home Address" value="Melbourne, Australia">
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                <input type="text" class="form-control border-input" placeholder="City" value="Melbourne">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Country</label>
+                                                <input type="text" class="form-control border-input" placeholder="Country" value="Australia">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Postal Code</label>
+                                                <input type="number" class="form-control border-input" placeholder="ZIP Code">
+                                            </div>
+                                        </div>
+                                    </div>
 
-
-
-
-
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>About Me</label>
+                                                <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--fim do painel_cadastro-->    
                                     <div class="text-center">
                                         <button type="text" id="btForm" class=" btn btn-default btn-fill btn-wd">+ Adcionar</button>
                                     </div>
-                                </div><!--fim do painel_cadastro--> 
+                                    <div class="clearfix"></div>
+                                </form>
                             </div>
                         </div>
                     </div><!-- fim da coluna direita -->    
