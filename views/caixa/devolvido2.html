@@ -154,7 +154,7 @@
                         <select class="form-control" id="status">
                           <option value="devolvido 2-vez">devolvido 2-vez</option> <!-- 
                           <option value="devolvido 1-vez">devolvido 1-vez</option>  --> 
-                          <option value="pendente">pendente</option>
+                          <!-- <option value="pendente">pendente</option> -->
                           <option value="compensado">compensado</option>
                           <option value="repassado">repasse</option>    
                           <option value="devolvido ao cliente">devolvido ao cliente</option>           
@@ -250,6 +250,7 @@
                     <th class="oculto">id</th>
                     <th>Código venda</th>
                     <th>Nº do Cheque</th>
+                    <th>Banco</th>
                     <th>Parcela</th>
                     <th>Emitente do Cheque</th>
                     <th>Valor</th>   
@@ -262,6 +263,7 @@
                             <td class="oculto">{{=i.id}}</td>
                             <td>{{=i.codigo_venda}}</td>
                             <td>{{=i.numero_cheque}}</td>
+                            <td>{{=i.banco}}</td>
                             <td>{{=i.parcela}}</td>
                             <td>{{=i.proprietario}}</td>
                             <td>{{=double_real(i.valor).real()}}</td>

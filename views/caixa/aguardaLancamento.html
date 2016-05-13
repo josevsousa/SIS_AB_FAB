@@ -22,10 +22,13 @@
         width: 17%;
     }
     .grid_dono {
-        width: 45%;
+        width: 29%;
     }
     .grid_cheque {
         width: 15%;
+    }
+    .grid_banco{
+        width: 18%;
     }
     .grid_parcela {
         width: 45px;
@@ -79,7 +82,7 @@
     	height: 22px;
 	}
 .modal-dialog {
-    width: 770px;
+    width: 80%;
 }
 select#qtde_parcelas {
     width: 63px;
@@ -88,6 +91,12 @@ select#qtde_parcelas {
     border-color: #E91E63;
     box-shadow: none;
     background: #FFF1F6;
+}
+select#banco {
+    height: 26px;
+    font-size: 13px;
+    width: 100%;
+    padding-top: 4px;
 }
 </style>
 <script>
@@ -193,16 +202,17 @@ select#qtde_parcelas {
                         var row = rows[i];
                         var parcela = row.cells[0].textContent;
                         var numero_cheque = row.cells[1].children[0].value;
-                        var nome = row.cells[2].children[0].value;
-                        var data = row.cells[3].children[0].value;
-                        var valor = row.cells[4].children[0].value;
+                        var banco = row.cells[2].children[0].value;
+                        var nome = row.cells[3].children[0].value;
+                        var data = row.cells[4].children[0].value;
+                        var valor = row.cells[5].children[0].value;
                         valor = valor.replace('R$ ','').replace('.','').replace(',','.');
-                        iten += numero_cheque+";"+nome+";"+data+";"+valor;
-                        
+                        iten += numero_cheque+";"+nome+";"+data+";"+valor+";"+banco;
+                        console.log(iten)
                     }
                     // $('#tab_calculo_parcelas tbody').val('');
                     $('#transitory').val(codigo+"|"+iten);
-                    ajax('gravarParcelas',['transitory'])
+                        ajax('gravarParcelas',['transitory'])
                     $("#myModal").modal('hide');
                 })
                 

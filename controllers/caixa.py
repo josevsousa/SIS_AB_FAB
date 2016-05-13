@@ -303,7 +303,7 @@ def excluirVendaRegistrada():
 
 @auth.requires_login()
 def aguardaLancamento():
-    query = (Historico.tipoVenda=='cheque') & (Historico.aguardandoLancamento==True)
+    query = (Historico.tipoVenda=='cheque') & (Historico.aguardandoLancamento==True) & (Historico.deletado==False)
     table = db(query).select()
     qt = len(table)
     return locals()
@@ -367,15 +367,15 @@ def atualizarParcelados():
     # mesAno = hoje.strftime('%m/%Y')
     # hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
     if index[3] == 'compensado':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
     elif index[3] == 'repassado':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
     elif index[3] == 'devolvido ao cliente':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
     elif index[3] == 'devolvido 1-vez':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
     else:
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
         pass
     # db(db.parcelados.id == index[0]).update(numero_cheque=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
    
@@ -390,13 +390,13 @@ def gridParcelas():
     cliente = index[2]
     dataAtual = datetime.now()
     # confecção da grid pra a view
-    table = TABLE(THEAD(TR(TH('Parc',_class="grid_parcela"),TH('Nº cheque',_class="grid_cheque"),TH('Nome no cheque',_class='grid_dono'),TH('Data parcela',_class='grid_data'),TH('Valor parcela'))),_class="table table-striped table-condensed", _id="tab_calculo_parcelas")
+    table = TABLE(THEAD(TR(TH('Parc',_class="grid_parcela"),TH('Nº cheque',_class="grid_cheque"),TH('Banco',_class="grid_banco"),TH('Nome no cheque',_class='grid_dono'),TH('Data parcela',_class='grid_data'),TH('Valor parcela'))),_class="table table-striped table-condensed", _id="tab_calculo_parcelas")
     tbody = TBODY()
     for i in range(qtde_parc):
         dataAtual = (dataAtual + timedelta(30))
         dataParc =  dataAtual.strftime('%d-%m-%Y')
         # monta a parcela
-        tbody.append(TR(TD(i+1,_class="grid_parcela"),TD(INPUT(_type='text',_value='00000000',_class='form-control inputGrid'),_class="grid_cheque"),TD(INPUT(_type='text',_value=cliente,_class='form-control inputGrid'),_class='grid_dono'),TD(INPUT(_type='text',_value=dataParc,_class='form-control inputGrid'),_class="grid_data"),TD(INPUT(_type='text',_value=valor,_class='form-control inputGrid real'))))    
+        tbody.append(TR(TD(i+1,_class="grid_parcela"),TD(INPUT(_type='text',_value='00000000',_class='form-control inputGrid'),_class="grid_cheque"),TD(SELECT(OPTION('Nossa Caixa',_value='nossa_caixa'),OPTION('Santander',_value='santander'),OPTION('Caixa Econômica',_value='caixa_economica'),OPTION('banco do Brasil',_value='banco_do_Brasil'),OPTION('Itau',_value='Itau'),OPTION('bradesco',_value='bradesco'),_class="form-control", _id="banco"),_class='grid_banco'),TD(INPUT(_type='text',_value=cliente,_class='form-control inputGrid'),_class='grid_dono'),TD(INPUT(_type='text',_value=dataParc,_class='form-control inputGrid'),_class="grid_data"),TD(INPUT(_type='text',_value=valor,_class='form-control inputGrid real'))))    
     table.append(tbody)    
     # return table   
     return "%s%s"%(table,'<script>window.onload = carregar_masck();</script>')   
@@ -410,7 +410,6 @@ def gravarParcelas():
     #gravar as parcelas
     table = parcelas.replace(',','.').split('@')
     n_parcela = 1
-    # print table 
     for row in table:
         cells = row.split(';')
         n_cheque = cells[0]
@@ -418,8 +417,9 @@ def gravarParcelas():
         dt = cells[2].split('-')
         dt = "%s-%s-%s 00:00:00"%(dt[2],dt[1],dt[0])
         valor = float(cells[3])
+        banco = cells[4]
         # print "[%s] %s %s %s %s %s"%(codigo,n_parcela,n_cheque,nome,dt,valor)
-        Parcelando.insert(parcela=n_parcela,codigo_venda=codigo,tipo='cheque', status='compensado',data_vencimento=dt,proprietario=nome,numero_cheque=n_cheque,valor=valor,data_up=dataAtual)
+        Parcelando.insert(parcela=n_parcela,codigo_venda=codigo,tipo='cheque', status='compensado',data_vencimento=dt,proprietario=nome,numero_cheque=n_cheque,valor=valor,data_up=dataAtual,banco=banco)
         # Parcelados.insert(numeroChequ=n_cheque,cliente=nome,dataVencimento=dt,valor=valor,representante=6,statusLancament='compensado',data_compensado=dataAtual)
         # print "Parcelados.insert(codigo='%s',tipoVenda='cheque',numeroChequ='%s',cliente='%s',dataVencimento='%s',valor='%s',representante='%s',statusLancament='compensado',data_compensado='%s')"%(codigo,n_cheque,nome,dt,valor,'6',dataAtual)
         n_parcela += 1
@@ -427,6 +427,7 @@ def gravarParcelas():
     # table = ''
     # alterar o historico de vendas
     # print codigo
+    
     db(db.historicoVendas.codigoVenda=="%s"%codigo).update(aguardandoLancamento = False)
     
     pass    

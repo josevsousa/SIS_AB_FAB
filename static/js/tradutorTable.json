@@ -6,7 +6,7 @@
 	"sInfoEmpty":    "Mostrando de 0 botão 0 de 0 registos",
 	"sInfoFiltered": "(filtrado de _MAX_ registos no total)",
 	"sInfoPostFix":  "",
-	"sSearch":       "Procurar:",
+	"sSearch":       "Buscar:",
 	"sUrl":          "",
 	"oPaginate": {
 	    "sFirst":    "Primeiro",

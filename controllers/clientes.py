@@ -24,7 +24,8 @@ def listarClientes():
 	
 	return dict(formListar=clientes)
 
-
+def teste():
+    return locals()
 
 # ===================================================
 #select

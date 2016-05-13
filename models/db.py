@@ -320,6 +320,7 @@ Parcelando = db.define_table(
     Field('data_up','datetime'),
     Field('codigo_venda'),
     Field('numero_cheque', default='00000000'),
+    Field('banco'),
     Field('parcela'),
     Field('valor','double'),
     Field('proprietario'),

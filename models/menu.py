@@ -44,7 +44,8 @@ def _():
     # shortcuts
     app = request.application
     ctr = request.controller
-
+    fun = request.function
+    
     # MENU BARRA LATERAL
     response.barraL = UL(_class='nav')
     if ctr == 'daschboard':
@@ -52,6 +53,10 @@ def _():
     else:
       response.barraL.append(LI(A(I(_class='ti-panel'),P('dashboard'),_href='#')))  
       pass
+    if ctr == 'cadastros':
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('cadastros'),_href='../cadastros/clientes'),_class='active'))
+    else:
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('cadastros'),_href='../cadastros/clientes'))) 
     if ctr == 'clientes':
       response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/atualizar'),_class='active'))
     else:
@@ -65,9 +70,29 @@ def _():
     if ctr == 'alerta':
       response.barraL.append(LI(A(I(_class='ti-bell'),P('alerta'),_href='#'),_class='active'))
     else:
-      response.barraL.append(LI(A(I(_class='ti-bell'),P('alerta'),_href='#')))  
+      response.barraL.append(LI(A(I(_class='ti-bell'),P('alerta'),_href='#'))) 
       pass
     # FIM MENU BARRA LATERAL
+
+    # SUB MENU
+    response.subMenu = UL()
+    if fun == 'clientes':
+      response.subMenu.append(LI(A('Clientes',_href='clientes'),_class='subMenuAtivo'))
+      response.subMenu.append(LI(' / '))
+    else:
+      response.subMenu.append(LI(A('Clientesss',_href='clientes')))
+      response.subMenu.append(LI(' / '))
+    if ctr == 'representantes':
+      response.subMenu.append(LI(A('Representantes',_href='representantes'),_class='subMenuAtivo'))
+      response.subMenu.append(LI(' / '))
+    else:
+      response.subMenu.append(LI(A('Representantes',_href='representantes')))
+      response.subMenu.append(LI(' / '))
+    if ctr == 'funcionarios':
+      response.subMenu.append(LI(A('Funcionários',_href='funcionarios'),_class='subMenuAtivo'))
+    else:
+      response.subMenu.append(LI(A('Funcionários',_href='funcionarios')))
+    # FIM SUB MENU
 
 if 'auth' in globals():
     if not auth.is_logged_in():  

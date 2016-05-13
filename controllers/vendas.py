@@ -18,6 +18,7 @@ def excluirVendaRegistrada():
     db(db.pendentes.codigo == codigo).update(status='Finalizado')
     db(db.parcelados.codigo == codigo).update(excluido=True)
     return ''
+    
 
 
 def imprimir():
