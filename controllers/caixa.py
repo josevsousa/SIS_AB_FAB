@@ -367,15 +367,15 @@ def atualizarParcelados():
     # mesAno = hoje.strftime('%m/%Y')
     # hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
     if index[3] == 'compensado':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
     elif index[3] == 'repassado':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
     elif index[3] == 'devolvido ao cliente':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
     elif index[3] == 'devolvido 1-vez':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
     else:
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data,banco=index[6])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5],data_up=data)
         pass
     # db(db.parcelados.id == index[0]).update(numero_cheque=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
    
