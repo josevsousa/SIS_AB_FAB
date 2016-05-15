@@ -392,7 +392,7 @@ def gridParcelas():
         dataAtual = (dataAtual + timedelta(30))
         dataParc =  dataAtual.strftime('%Y-%m-%d')
         # monta a parcela
-        tbody.append(TR(TD(i+1,_class="grid_parcela"),TD(INPUT(_type='text',_value='00000000',_class='form-control inputGrid'),_class="grid_cheque"),TD(SELECT(OPTION('Nossa Caixa',_value='nossa_caixa'),OPTION('Santander',_value='santander'),OPTION('Caixa Econômica',_value='caixa_economica'),OPTION('banco do Brasil',_value='banco_do_Brasil'),OPTION('Itau',_value='Itau'),OPTION('bradesco',_value='bradesco'),_class="form-control", _id="banco"),_class='grid_banco'),TD(INPUT(_type='text',_value=cliente,_class='form-control inputGrid'),_class='grid_dono'),TD(INPUT(_type='date',_value=dataParc,_class='form-control inputGrid')),TD(INPUT(_type='text',_value=valor,_class='form-control inputGrid real'))))    
+        tbody.append(TR(TD(i+1,_class="grid_parcela"),TD(INPUT(_type='text',_value='00000000',_class='form-control inputGrid'),_class="grid_cheque"),TD(SELECT(OPTION('Nossa Caixa',_value='nossa_caixa'),OPTION('Santander',_value='santander'),OPTION('Caixa Econômica',_value='caixa_economica'),OPTION('banco do Brasil',_value='banco_do_Brasil'),OPTION('HSBC',_value='HSBC'),OPTION('Itau',_value='Itau'),OPTION('bradesco',_value='bradesco'),_class="form-control", _id="banco"),_class='grid_banco'),TD(INPUT(_type='text',_value=cliente,_class='form-control inputGrid'),_class='grid_dono'),TD(INPUT(_type='date',_value=dataParc,_class='form-control inputGrid')),TD(INPUT(_type='text',_value=valor,_class='form-control inputGrid real'))))    
     table.append(tbody)    
     # return table   
     return "%s%s"%(table,'<script>window.onload = carregar_masck();</script>')   
