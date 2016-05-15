@@ -140,7 +140,7 @@ db.produtos.codigo_produto.requires = IS_NOT_IN_DB(db, db.produtos.codigo_produt
 #     )
 # db.autoCompletProdutos.nome_produto.widget = SQLFORM.widgets.autocomplete(request, db.produtos.nome_produto, limitby=(0,5), min_length=2)
 
-OPERADORA = (' - ','TIM','OI','VIVO','CLARO','FIXO','NENHUMA')
+OPERADORA = (' operadora ','TIM','OI','VIVO','CLARO','FIXO','NENHUMA')
 UF = ( " - ","AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RO", "RS", "RR", "SC", "SE", "SP", "TO" )
 TIPO = ('Pessoa_física','Pessoa_jurídica')
 CATEGORIA = ('cliente','fornecedor','funcionario')
@@ -170,30 +170,32 @@ CATEGORIA = ('cliente','fornecedor','funcionario')
 # Cadastros.uf.requires = IS_IN_SET(UF, error_message="UF inválido!!!")  
 # Cadastros.categoria.requires = IS_IN_SET(CATEGORIA, error_message="Categoria inválida!!!") 
 
-
+# Field('nome',label='Nome',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='first name')), 
+TIPO = ('Pessoa física','Pessoa jurídica')    
 Clientes = db.define_table('clientes',
-    Field('tipo'),
-    Field('nome',label='Nome'), 
-    Field('apelido', label='Apelido'),
-    Field('celular', label='Cel.'),
-    Field('operadora', default=' - '),
-    Field('fixo', label='Tel.'),
-    Field('email',label='E-mail'),
-    Field('cnpj_cpf', label='CNPJ/CPF'),
+    Field('tipo',requires = IS_IN_SET(TIPO, error_message="Tipo invalido!")),
+    Field('nome',label='Nome',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='nome')), 
+    # Field('apelido', label='Apelido'),
+    Field('celular', label='Celular',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='celular')),
+    Field('operadora', default=' operadora '),
+    Field('fixo', label='Telefone',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='telefone')),
+    Field('email',label='E-mail',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='e-mail')),
+    Field('cnpj_cpf', label='CNPJ/CPF',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cnpj/cpf')),
     # Field('cpf', label='CPF'),
-    Field('insc', label='INSC'),
-    Field('cep', label='CEP'),
-    Field('endereco', label='Endereço'),
-    Field('numero' ,label='Número'),
-    Field('uf', label='UF', default=' - '),
-    Field('cidade', label='Cidade'),
-    Field('bairro', label='Bairro'),
+    Field('insc', label='INSC',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='insc')),
+    Field('cep', label='CEP',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cep')),
+    Field('endereco', label='Endereço',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='endereço')),
+    Field('numero' ,label='Número',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='número')),
+    Field('uf', label='UF', default=' - ',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='uf')),
+    Field('cidade', label='Cidade',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cidade')),
+    Field('bairro', label='Bairro',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='bairro')),
     Field('dataGravado','datetime', default=request.now, label="Data"),
     Field('foto_cliente','upload', label='Foto'),
     migrate = "clientes.table"
     )
+
 # db.clientes.cpf.requires = IS_CPF(), IS_NOT_IN_DB(db, db.clientes.cpf, error_message="CEP já existe") 
-db.clientes.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.clientes.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
+# db.clientes.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.clientes.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
 # db.clientes.email.requires = IS_EMAIL(error_message='Email inválido!!')
 db.clientes.nome.requires = IS_NOT_IN_DB(db, db.clientes.nome, error_message = 'Usuario invalido')
 db.clientes.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
@@ -313,6 +315,7 @@ Parcelados = db.define_table('parcelados',
     Field('data_devolvido_segundo','datetime'),
     )
 STATUS_PARCELANDO = ('pendente','compensado','repassado','devolvido 1-vez','devolvido 2-vez','devolvido ao cliente')
+
 Parcelando = db.define_table(
     'parcelando',
     Field('tipo'),
@@ -328,6 +331,8 @@ Parcelando = db.define_table(
     Field('data_vencimento','datetime'),
     auth.signature,
     )
+
+
 
 Itens = db.define_table('itens',
     Field('codigoVenda', readable=False),

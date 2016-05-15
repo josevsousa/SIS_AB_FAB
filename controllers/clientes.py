@@ -24,8 +24,67 @@ def listarClientes():
 	
 	return dict(formListar=clientes)
 
-def teste():
+@auth.requires_login()
+def todos():
+    grid = db(db.clientes.id>0).select('id','nome','foto_cliente')
+    # formClientesAdd = crud.update(db.clientes,request.args(0))
+    formCreate = crud.create(db.clientes)
+
     return locals()
+
+@auth.requires_login()
+def cadastrar():
+	form = crud.create(db.clientes)
+	return dict(form=form)    
+
+
+@auth.requires_login()
+def editar():
+    codigo = request.vars.codigo
+    form = crud.update(db.clientes, codigo)
+    
+    # pegar a foto do cliente
+
+    # form = crud.update(db.clientes, cod)
+    # crud.settings.delete_next = URL('caixa')
+    # form = 'jose'
+    # return "%s %s"%(form,"<script> aplicar_estilo_form();</script>")
+    return dict(form=form)
+
+@auth.requires_login()
+def buscar_cliente():
+	#codigo do cliente recebido
+	cod = request.vars.transitory
+	#cadastro do cliente recebido
+	cliente = db(db.clientes.id == cod).select()
+
+	#busca avatar do cliente
+	img = URL('default','download',args=cliente[0].foto_cliente)
+	if img == "/SIS_AB_FAB/default/download//":
+		img = URL('static','assets/img/faces/face-0.png')
+	else:
+		img = URL('default','download',args=cliente[0].foto_cliente)
+		pass
+
+	cracha = DIV(
+		DIV(
+			IMG(_src=img,_class="avatar border-white"),
+			H4('nome',BR(),H5('email@email.com'),_class="title"),
+			_class="author"),
+			P('(22) 2222-2222',_class="description text-center"),
+		_class="content")
+
+	# cracha = DIV(
+	# 	DIV(
+	# 		IMG(_src=img,_class="avatar border-white"),
+	# 		H4(A(SMALL('email@cliente'),_href="#"),_class="title"),_class="author"),
+	# 	_class="content")
+
+	return cracha	
+
+
+
+
 
 # ===================================================
 #select

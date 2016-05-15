@@ -58,9 +58,9 @@ def _():
     else:
       response.barraL.append(LI(A(I(_class='ti-id-badge'),P('cadastros'),_href='../cadastros/clientes'))) 
     if ctr == 'clientes':
-      response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/atualizar'),_class='active'))
+      response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/todos'),_class='active'))
     else:
-      response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/atualizar')))
+      response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/todos')))
       pass
     if ctr == 'vendas':
       response.barraL.append(LI(A(I(_class='ti-pie-chart'),P('vendas'),_href='../vendas/historico'),_class='active'))

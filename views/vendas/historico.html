@@ -10,6 +10,12 @@
             
         }); 
 
+        //tela do ipad
+        var larguraPagina = screen.width;//largura da tela
+        if (larguraPagina < 1024 ) {
+            $('#minhaTabela tr td:nth-child(2), #minhaTabela tr th:nth-child(2), #minhaTabela tr td:nth-child(3), #minhaTabela tr th:nth-child(3)').hide()
+        }
+
 
         // .animate({ scrollTop: pos }, 'slow', 'swing');
         //=== DELETAR ITEN
