@@ -46,6 +46,7 @@
                 $('.title_cadastro').css('font-size','large');
                 $('.btVoltar').removeClass('oculto');
                 $('.d').animate({scrollTop:110}, 'slow');
+                $('table').css('table-layout','fixed');
             }else{
                $('.d').animate({scrollTop:0}, 'slow'); 
             }
@@ -161,6 +162,13 @@ div#foto {
 }
 h3.tit_hist {
     margin-left: 13px;
+}
+table{
+    width: 100% !important;
+    /*table-layout: fixed;*/
+}
+td.w2p_fc {
+    padding: 0px !important;
 }
 </style>
 <input type="text" id="transitory" name="transitory" style="display:none">

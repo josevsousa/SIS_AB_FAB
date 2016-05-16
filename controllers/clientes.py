@@ -69,20 +69,74 @@ def buscar_cliente():
 	cracha = DIV(
 		DIV(
 			IMG(_src=img,_class="avatar border-white"),
-			H4('nome',BR(),H5('email@email.com'),_class="title"),
+			H4('%s'%cliente[0].nome,BR(),H5('%s'%cliente[0].email),_class="title"),
 			_class="author"),
-			P('(22) 2222-2222',_class="description text-center"),
+			P('%s'%cliente[0].fixo,_class="description text-center"),
+			DIV(
+				FORM(
+					DIV(
+						DIV(
+							DIV(
+								LABEL('cnpj/cpf'),
+								INPUT(_type="text", _class="form-control border-input", _value='%s'%cliente[0].cnpj_cpf),
+								_class="form-group"),
+							_class="col-md-7"),
+						DIV(
+							DIV(
+								LABEL('insc'),
+								INPUT(_type="text", _class="form-control border-input", _value='%s'%cliente[0].insc),
+								_class="form-group"),
+							_class="col-md-5"),
+						_class="row"),
+					DIV(
+						DIV(
+							DIV(
+								LABEL('endereço'),
+								INPUT(_type="text", _class="form-control border-input", _value='%s N: %s'%(cliente[0].endereco,cliente[0].numero)),
+								_class="form-group"),
+							_class="col-md-12"),
+						_class="row"),
+					DIV(
+						DIV(
+							DIV(
+								LABEL('cidade'),
+								INPUT(_type="text", _class="form-control border-input", _value='%s'%cliente[0].cidade),
+								_class="form-group"),
+							_class="col-md-6"),
+						DIV(
+							DIV(
+								LABEL('bairro'),
+								INPUT(_type="text", _class="form-control border-input", _value='%s'%cliente[0].bairro),
+								_class="form-group"),
+							_class="col-md-6"),
+						_class="row"),
+					),
+				_class="content"),
+			HR(),
+			DIV(
+				DIV(
+					A('editar',_href="editar?codigo=%s"%cod, _class="btn btn-default btn-wd"),
+					_id="edicao",
+					_class="col-md-12"),
+				_class="row text-center"),
 		_class="content")
-
-	# cracha = DIV(
-	# 	DIV(
-	# 		IMG(_src=img,_class="avatar border-white"),
-	# 		H4(A(SMALL('email@cliente'),_href="#"),_class="title"),_class="author"),
-	# 	_class="content")
 
 	return cracha	
 
-
+                                    # <div class="row">
+                                    #     <div class="col-md-6">
+                                    #         <div class="form-group">
+                                    #             <label>First Name</label>
+                                    #             <input type="text" class="form-control border-input" placeholder="Company" value="{{=auth.user.first_name}}">
+                                    #         </div>
+                                    #     </div>
+                                    #     <div class="col-md-6">
+                                    #         <div class="form-group">
+                                    #             <label>Last Name</label>
+                                    #             <input type="text" class="form-control border-input" placeholder="Last Name" value="{{=auth.user.last_name}}">
+                                    #         </div>
+                                    #     </div>
+                                    # </div>
 
 
 

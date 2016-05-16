@@ -1,4 +1,7 @@
 {{extend 'dashboard.html'}}
+
+    <!-- Animation library for notifications   -->
+    <link href="{{=URL('static','assets/css/animate.min.css')}}" rel="stylesheet"/>
 <script>
     $(document).ready(function(){
         $('#minhaTabela').DataTable({
@@ -18,7 +21,7 @@
 
         $('#minhaTabela').on('click','tr',function(){
             var cod = this.children[0].textContent;
-
+            $('#add_novo_user').removeClass('oculto');
             // // alterando IMG entre IMG
             // var src = this.children[1].children[0].src;
             // $('.avatar')[0].src = src;
@@ -50,7 +53,7 @@
                 $('.listaCLientes, .w2p_fl').hide();
                 $('.title_cadastro').css('font-size','large');
                 $('.btVoltar').removeClass('oculto');
-                $('.d').animate({scrollTop:110}, 'slow');
+                $('.d').animate({scrollTop:102}, 'slow');
             }else{
                $('.d').animate({scrollTop:0}, 'slow'); 
             }
@@ -81,6 +84,7 @@ div#foto {
 }
 #foto img {
     width: 46px;
+    height: 46px;
 }
 /*----------*/
     .oculto{
@@ -142,6 +146,7 @@ div#foto {
     }
     img.img-circle.img-no-padding.img-responsive {
         width: 35px;
+        height: 35px;
         display: -webkit-inline-box;
         margin: 0 5px !important;
     }
@@ -167,7 +172,11 @@ div#foto {
 #edicao a{
     margin-top: 13px;
 }
-
+a#add_novo_user {
+    position: absolute;
+    right: 25px;
+    top: 19px;
+}
 </style>
 <input type="text" id="transitory" name="transitory" style="display:none">
 <!-- <a href="#" id="t">AQUIIII</a> -->
@@ -253,6 +262,7 @@ div#foto {
                         <div class="card">
                             <div class="header">
                                 <h4 class="title">Lista de Clientes</h4>
+                                <a href="cadastrar" id="add_novo_user" class="btn btn-success oculto">Novo</a>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table id="minhaTabela" class="table table-striped">
@@ -303,16 +313,15 @@ div#foto {
                                     <div class="author">
                                       <img class="avatar border-white" src="{{=URL('static','assets/img/faces/face-0.png')}}" alt="...">
                                         <div class="conteudo-1">
-                                            <h4 class="title">cliente<br>
-                                                <a href="#"><small>dados cadastrais</small></a>
+                                            <h4 class="title">Novo cliente<br>
+                                                <a href="#"><small>Cadastre um novo cliente</small></a>
                                             </h4>
                                         </div>
                                     </div>
-                                    <p class="description text-center">
-                                        CLIQUE EM UM CLIENTE AO LADO <br>
-                                        <!-- No diggity <br> -->
-                                        <!-- I wanna bag it up" -->
-                                    </p>
+                                <hr>
+                                    <div class="col-md-12 text-center" id="edicao">
+                                        <a href="cadastrar" class="btn btn-default btn-wd">novo</a>
+                                    </div>
                                 </div>
                             </div>    
                         </div>

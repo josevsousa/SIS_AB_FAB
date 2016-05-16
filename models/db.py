@@ -173,7 +173,7 @@ CATEGORIA = ('cliente','fornecedor','funcionario')
 # Field('nome',label='Nome',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='first name')), 
 TIPO = ('Pessoa física','Pessoa jurídica')    
 Clientes = db.define_table('clientes',
-    Field('tipo',requires = IS_IN_SET(TIPO, error_message="Tipo invalido!")),
+    Field('tipo', default='Pessoa jurídica' ,requires = IS_IN_SET(TIPO, error_message="Tipo invalido!")),
     Field('nome',label='Nome',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='nome')), 
     # Field('apelido', label='Apelido'),
     Field('celular', label='Celular',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='celular')),
