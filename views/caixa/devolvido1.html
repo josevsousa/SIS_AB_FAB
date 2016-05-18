@@ -50,12 +50,16 @@
     $(document).ready(function(){
         $('#minhaTabela').DataTable({
             // "scrollX": true,
-            "order": [ 0, 'desc' ],
+            // "paging": false,
+            // "ordering": true,
+            //"info":     false
+            "order": [ 7, 'asc' ],
             "language": {
               "url": "{{=URL('static','js/tradutorTable.json')}}"
             }
             
         });
+
         function inputNome(){ 
             $('#cliente').keyup(function(){
                 var v = $(this).val();
@@ -267,7 +271,7 @@
                             <td>{{=i.parcela}}</td>
                             <td>{{=i.proprietario}}</td>
                             <td>{{=double_real(i.valor).real()}}</td>
-                            <td>{{=(i.data_vencimento).strftime("%d/%m/%Y")}}</td>
+                            <td>{{=(i.data_vencimento).strftime("%Y-%m-%d")}}</td>
                             <td>{{=i.modified_on}}</td>
                         </tr>
                     {{pass}}

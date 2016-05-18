@@ -31,7 +31,7 @@ def todos():
     formCreate = crud.create(db.clientes)
 
     return locals()
-
+    
 @auth.requires_login()
 def cadastrar():
 	form = crud.create(db.clientes)

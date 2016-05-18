@@ -7,7 +7,8 @@
 	$(document).ready(function(){
 
         $('#minhaTabela').DataTable({
-            // "scrollX": true,
+            // "scrollY": true,
+            // "paging": false,
             "order": [ 6, 'desc' ],
             "language": {
               "url": "{{=URL('static','js/tradutorTable.json')}}"

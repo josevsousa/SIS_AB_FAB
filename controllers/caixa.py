@@ -269,6 +269,10 @@ def historico_print():
     cod_venda = request.vars.cod 
     # historico da venda ( venda referente ao cod_venda )
     historico_venda = db(Historico.codigoVenda == "%s"%cod_venda).select() 
+
+    dataVenda = historico_venda[0].dataVenda
+    dataVenda = dataVenda.strftime('%d/%m/%Y %H:%M:%S')
+
     # ok ate aqui
     # itens da venda 
     itens_venda =  db(Itens.codigoVenda == "%s"%cod_venda).select('codigoIten','quantidade','produto','valorUnidade','valorTotal')
@@ -282,7 +286,7 @@ def historico_print():
     else:
         itens_parcelas = ""
         pass    
-    return dict(historico_venda=historico_venda,itens_venda=itens_venda, itens_parcelas=itens_parcelas) 
+    return dict(historico_venda=historico_venda,itens_venda=itens_venda, itens_parcelas=itens_parcelas,dataVenda=dataVenda) 
 
 def cancelarVenda():  
     # limpar itens do db
@@ -321,40 +325,38 @@ def aguardaLancamento():
 #         session.flash = 'Código não existe! Ou compensado.'    
 
 
-
-
 @auth.requires_login()
 def compensado():
     query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'compensado') 
-    table = db(query).select()
+    table = db(query).select(orderby='data_vencimento')
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def repassado():
     query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'repassado') 
-    table = db(query).select()
+    table = db(query).select(orderby='data_vencimento')
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def devolvidoAoCliente():
     query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'devolvido ao cliente') 
-    table = db(query).select()
+    table = db(query).select(orderby='data_vencimento')
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def devolvido1():
     query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'devolvido 1-vez') 
-    table = db(query).select()
+    table = db(query).select(orderby='data_vencimento')
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def devolvido2():
     query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'devolvido 2-vez') 
-    table = db(query).select()
+    table = db(query).select(orderby='data_vencimento')
     qt = len(table)
     return locals()
 
@@ -412,7 +414,6 @@ def gravarParcelas():
         nome = cells[1].strip() #tira espaços vazios no inicio e fim da palavra
         dt = cells[2].split('-')
         dt = "%s-%s-%s 01:01:01"%(dt[0],dt[1],dt[2])
-        print dt
         valor = float(cells[3])
         banco = cells[4]
         # print "[%s] %s %s %s %s %s"%(codigo,n_parcela,n_cheque,nome,dt,valor)

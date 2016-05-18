@@ -51,7 +51,10 @@
     $(document).ready(function(){
         $('#minhaTabela').DataTable({
             // "scrollX": true,
-            "order": [ 0, 'desc' ],
+            // "paging": false,
+            // "ordering": true,
+            //"info":     false
+            "order": [ 7, 'asc' ],
             "language": {
               "url": "{{=URL('static','js/tradutorTable.json')}}"
             }
@@ -287,9 +290,9 @@
                                     vencimento = datetime.strptime(vencimento,'%Y-%m-%d')
                                     if(vencimento < dataAtual):
                                 }}
-                                {{=DIV((i.data_vencimento).strftime("%d/%m/%Y"),_class="verde")}}
+                                {{=DIV((i.data_vencimento).strftime("%Y-%m-%d"),_class="verde")}}
                                 {{else:}}
-                                {{=DIV((i.data_vencimento).strftime("%d/%m/%Y"),_class="laranja")}}
+                                {{=DIV((i.data_vencimento).strftime("%Y-%m-%d"),_class="laranja")}}
                                 {{pass}}
                             </td>
                             <td>{{=(i.modified_on)}}</td>

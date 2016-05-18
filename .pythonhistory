@@ -167,9 +167,85 @@ print request.application
 quit()
 db(db.clientes.id>0).select('nome')
 db(db.clientes.id>0).select('nome')[0]
-db(db.clientes.id>0).select('nome')[0].nome
+db(db.clientes.id>0).select('nome')[0].n
 nome = db(db.clientes.id>0).select('nome')[0].nome
 nome.split('')
 nome.split(' ')
 nome.split(' ')[0]
+quit()
+print db(Clientes.id == 13).select()
+print db(Clientes.id == 13).select('foto_cliente')
+print db(Clientes.id == 13).select('foto_cliente')[0]
+print db(Clientes.id == 13).select('foto_cliente')[0].foto_cliente
+img = db(Clientes.id == 13).select('foto_cliente')
+print img.foto_cliente
+print img
+print img[0]
+print img[0].foto_cliente
+img = db(Clientes.id == 13).select('foto_cliente')[0].foto_cliente
+print img
+img = db(Clientes.id == 13).select()
+img.foto_cliente
+img[0]
+img[0].foto_cliente
+img = db(Clientes.id == 1388).select()
+img[0].foto_cliente
+img = db(Clientes.id == 1388).select()
+print img
+print img[0].foto_cliente
+img = db(Clientes.id == 1).select()
+print img[0].foto_cliente
+img = db(Clientes.id == 13).select()
+print img[0].foto_cliente
+print dir(img[0].foto_cliente)
+print (img[0].foto_cliente).format
+print (img[0].foto_cliente).format()
+img = db(Clientes.id == 1).select()
+print (img[0].foto_cliente).format()
+print (img[0].foto_cliente).__getitem__
+
+print if  (img[0].foto_cliente)
+if (img[0].foto_cliente)
+if (img[0].foto_cliente):
+    "dd"
+pass
+if (img[0].foto_cliente):
+    "ddd"
+if is (img[0].foto_cliente):
+if IndexError (img[0].foto_cliente):
+    "ddd"
+if  (img[0].foto_cliente):
+    "ddd"
+img = db(Clientes.id == 13).select()
+img[0].foto_cliente
+(img[0].foto_cliente).is_string
+dir(img[0].foto_cliente)
+(img[0].foto_cliente).isalnum()
+(img[0].foto_cliente).isalpha()
+(img[0].foto_cliente).istitle()
+(img[0].foto_cliente).__str__()
+img = db(Clientes.id == 1).select()
+(img[0].foto_cliente).__str__()
+db(db.parcelando.id == 768)
+db(db.parcelando.id == 769)
+db(db.parcelando.id == 770)
+db(db.parcelando.id == 771)
+db(db.parcelando.id == 772)
+db(db.parcelando.id == 773)
+db(db.parcelando.id == 774)
+db(db.parcelando.id == 775)
+db(db.parcelando.id == 776)
+db(db.parcelando.id == 777)
+db(db.parcelando.id == 900)
+print db(db.parcelando.id == 900)
+print db(db.parcelando.id == 900).select('codigo_venda')
+print db(db.parcelando.id == 900).select('codigo_venda')[0].codigo_venda
+print db(db.parcelando.id == 768).select('codigo_venda')[0].codigo_venda
+print db(db.parcelando.id == 769).select('codigo_venda')[0].codigo_venda
+print db(db.parcelando.id == 770).select('codigo_venda')[0].codigo_venda
+print db(db.parcelando.id == 780).select('codigo_venda')[0].codigo_venda
+print db(db.parcelando.id == 779).select('codigo_venda')[0].codigo_venda
+print db(db.parcelando.id == 778).select('codigo_venda')[0].codigo_venda
+print db(db.parcelando.id == 779).select('codigo_venda')[0].codigo_venda
+print db(db.parcelando.id == 779).sele
 quit()
