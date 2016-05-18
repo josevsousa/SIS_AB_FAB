@@ -328,14 +328,14 @@ def aguardaLancamento():
 @auth.requires_login()
 def compensado():
     query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'compensado') 
-    table = db(query).select(orderby='data_vencimento')
+    table = db(query).select()
     qt = len(table)
     return locals()
 
 @auth.requires_login()
 def repassado():
     query = (Parcelando.tipo == 'cheque') & (Parcelando.status == 'repassado') 
-    table = db(query).select(orderby='data_vencimento')
+    table = db(query).select()
     qt = len(table)
     return locals()
 
@@ -365,17 +365,17 @@ def atualizarParcelados():
     index = request.vars.transitory
     index = index.split(';')
     if index[3] == 'compensado':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 01:01:01"),receptor=index[5])
     elif index[3] == 'repassado':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 01:01:01"),receptor=index[5])
     elif index[3] == 'devolvido ao cliente':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 01:01:01"),receptor=index[5])
     elif index[3] == 'devolvido 1-vez':
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 01:01:01"),receptor=index[5])
     else:
-        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 00:00:00"),receptor=index[5])
+        db(db.parcelando.id == index[0]).update(numero_cheque=index[1],proprietario=index[2],status=index[3],data_vencimento=(index[4]+" 01:01:01"),receptor=index[5])
         pass
-    # db(db.parcelados.id == index[0]).update(numero_cheque=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 00:00:00"),repasse_nome=index[5])
+    # db(db.parcelados.id == index[0]).update(numero_cheque=index[1],cliente=index[2],statusLancament=index[3],dataVencimento=(index[4]+" 01:01:01"),repasse_nome=index[5])
    
 def gridParcelas():
     index = request.vars.transitory
