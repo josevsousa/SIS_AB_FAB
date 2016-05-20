@@ -61,6 +61,19 @@
 </script>
 
 <style>
+/*new logo*/
+img#logo-new_theme{
+    width: 101px !important;
+    padding: 0px 6px !important;
+    font-size: 18px !important; 
+}
+.sidebar .logo, .sidebar[data-background-color="white"] .logo, .off-canvas-sidebar .logo, .off-canvas-sidebar[data-background-color="white"] .logo {
+    border-bottom: 1px solid rgba(102, 97, 91, 0.3) !important;
+    display: -webkit-box !important;
+    margin: 0 auto !important;
+    text-align: -webkit-center !important;
+}
+/*fim new logo*/
 div#painel_cadastro .generic-widget,  div#painel_cadastro .string {
     width: 100%;
 }
@@ -201,7 +214,7 @@ span.cracha {
     <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="http://www.creative-tim.com" class="simple-text">
-                    Creative Tim
+                    {{=response.logo.new_theme}}
                 </a>
             </div>
             {{=response.barraL}}
@@ -276,6 +289,7 @@ span.cracha {
                                     <tr>
                                         <th class="oculto">x</th>
                                         <th>Nome do funcionário </th>
+                                        <th>Matrícula</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -284,6 +298,7 @@ span.cracha {
                                             nome = funcionario.nome
                                             nome = nome.split(' ')
                                             nome = "%s"%(nome[0]) 
+                                            cod = funcionario.matricula
                                         }}
 
                                         <tr>
@@ -299,6 +314,7 @@ span.cracha {
                         <!-- ==========foto=========== -->
                                                 {{=nome}}
                                             </td>
+                                            <td>{{=cod}}</td>
                                         </tr>
                                     {{pass}}   
                                     </tbody>

@@ -24,7 +24,7 @@
         $('#painel_cadastro input[type=text], #painel_cadastro select').addClass('form-control border-input');
         $('input[type=submit]').addClass('btn btn-info btn-fill btn-wd');
         $('#clientes_dataGravado__row, #delete_record__row').hide();
-
+        mask_full();
                 // $('#clientes_foto_cliente__row, .w2p_fl').hide();
     }
     function controla_telas(){
@@ -44,6 +44,19 @@
 </script>
 
 <style>
+/*new logo*/
+img#logo-new_theme{
+    width: 101px !important;
+    padding: 0px 6px !important;
+    font-size: 18px !important; 
+}
+.sidebar .logo, .sidebar[data-background-color="white"] .logo, .off-canvas-sidebar .logo, .off-canvas-sidebar[data-background-color="white"] .logo {
+    border-bottom: 1px solid rgba(102, 97, 91, 0.3) !important;
+    display: -webkit-box !important;
+    margin: 0 auto !important;
+    text-align: -webkit-center !important;
+}
+/*fim new logo*/
 div#painel_cadastro .generic-widget,  div#painel_cadastro .string {
     width: 100%;
 }
@@ -143,9 +156,9 @@ div#foto {
         position: absolute;
         top: 9px;
     }
-    select#clientes_operadora {
+/*    select#clientes_operadora {
         color: #DDDDDE;
-    }
+    }*/
     .text-center.bt_navegar {
     margin-bottom: 11px;
 }
@@ -179,7 +192,7 @@ div#foto img {
     <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="http://www.creative-tim.com" class="simple-text">
-                    Creative Tim
+                    {{=response.logo.new_theme}}
                 </a>
             </div>
             {{=response.barraL}}

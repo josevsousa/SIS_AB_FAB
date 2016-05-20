@@ -31,7 +31,7 @@ def listarRepresentantes():
 
 @auth.requires_login()
 def todos():
-    grid = db(db.representantes.id>0).select('id','nome','foto_representante')
+    grid = db(db.representantes.id>0).select('id','nome','foto_representante','matricula')
     # formrepresentantesAdd = crud.update(db.representantes,request.args(0))
     formCreate = crud.create(db.representantes)
 
@@ -40,6 +40,7 @@ def todos():
 @auth.requires_login()
 def cadastrar():
 	form = crud.create(db.representantes)
+
 	return dict(form=form)    
 
 @auth.requires_login()
@@ -75,7 +76,7 @@ def buscar_representante():
 			IMG(_src=img,_class="avatar border-white"),
 			H4('%s'%representante[0].nome,BR(),SPAN('%s'%representante[0].matricula,_class='matricula'),_class='title'),
 			_class="author"),
-			P('%s'%(representante[0].fixo),_class="description text-center"),
+			P('%s [ %s ]'%(representante[0].celular,representante[0].operadora),_class="description text-center"),
 			DIV(
 				FORM(
 					DIV(

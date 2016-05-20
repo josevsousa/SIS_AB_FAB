@@ -29,7 +29,6 @@ def todos():
     grid = db(db.clientes.id>0).select('id','nome','foto_cliente')
     # formClientesAdd = crud.update(db.clientes,request.args(0))
     formCreate = crud.create(db.clientes)
-
     return locals()
     
 @auth.requires_login()

@@ -73,6 +73,19 @@
 </script>
 
 <style>
+/*new logo*/
+img#logo-new_theme{
+    width: 101px !important;
+    padding: 0px 6px !important;
+    font-size: 18px !important; 
+}
+.sidebar .logo, .sidebar[data-background-color="white"] .logo, .off-canvas-sidebar .logo, .off-canvas-sidebar[data-background-color="white"] .logo {
+    border-bottom: 1px solid rgba(102, 97, 91, 0.3);
+    display: -webkit-box;
+    margin: 0 auto;
+    text-align: -webkit-center;
+}
+/*fim new logo*/
 span.ti-new-window {
     font-weight: 500;
     color: #009C98;
@@ -130,7 +143,7 @@ span.ti-new-window {
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="http://www.creative-tim.com" class="simple-text">
-                    Creative Tim
+                    {{=response.logo.new_theme}}
                 </a>
             </div>
             {{=response.barraL}}

@@ -10,6 +10,8 @@
 #                   _id="web2py-logo")
 
 response.logo = IMG(_src=URL('static','images/logo-lojinha.png'),_class="navbar-brand", _id="logo-lojinha")
+response.logo.new_theme = IMG(_src=URL('static','images/logo-lojinha.png'),_class="navbar-brand", _id="logo-new_theme")
+
 
 response.title = request.application.replace('_',' ').title()
 response.subtitle = ''

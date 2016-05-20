@@ -26,7 +26,7 @@ def listarFuncionarios():
 
 @auth.requires_login()
 def todos():
-    grid = db(db.funcionarios.id>0).select('id','nome','foto_funcionario')
+    grid = db(db.funcionarios.id>0).select('id','nome','foto_funcionario','matricula')
     # formClientesAdd = crud.update(db.clientes,request.args(0))
     formCreate = crud.create(db.funcionarios)
 

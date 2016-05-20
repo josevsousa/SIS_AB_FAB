@@ -3,6 +3,13 @@
     margin-right: 23px;
    /* width: 84px;
     height: 56px;*/
+
+}
+
+
+.sidebar .logo, .off-canvas-sidebar .logo {
+    margin: 0 20px !important;
+    display: -webkit-box !important;
 }
 .dataTables_wrapper{
     margin-bottom: 10px
