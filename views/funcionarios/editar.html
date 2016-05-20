@@ -23,8 +23,7 @@
     function aplicar_estilo_form(){        
         $('#painel_cadastro input[type=text], #painel_cadastro select').addClass('form-control border-input');
         $('input[type=submit]').addClass('btn btn-info btn-fill btn-wd');
-        $('#clientes_dataGravado__row, #delete_record__row').hide();
-
+        $('#funcionarios_dataGravado__row, #delete_record__row,#funcionarios_matricula__row').hide();
                 // $('#clientes_foto_cliente__row, .w2p_fl').hide();
     }
     function controla_telas(){
@@ -32,7 +31,7 @@
             var largura_tela = screen.width;//largura da tela
             //tela do ipad
             if ((largura_tela < 770) || (largura_navegador < 990)){
-                $('.listaCLientes, .w2p_fl, #clientes_foto_cliente__row').hide();
+                $('.listafuncionarios, .w2p_fl, #funcionarios_foto_funcionario__row').hide();
                 $('.title_cadastro').css('font-size','large');
                 $('.btVoltar').removeClass('oculto');
                 $('.d').animate({scrollTop:110}, 'slow');
@@ -158,7 +157,7 @@ table{
 td.w2p_fc {
     padding: 0px !important;
 }
-#clientes_foto_cliente__row{display:none;}
+#funcionarios_foto_funcionario__row {display:none;}
 div#foto img {
     width: 50px;
     height: 50px;
@@ -246,7 +245,7 @@ div#foto img {
                       <!-- ==========foto=========== -->
                             <div id="foto">
                                 
-                        <td class="oculto">{{foto = db(db.clientes.id==request.vars.codigo).select('foto_cliente')[0].foto_cliente}}</td>
+                        <td class="oculto">{{foto = db(db.funcionarios.id==request.vars.codigo).select('foto_funcionario')[0].foto_funcionario}}</td>
                         <!-- ==========foto=========== -->
                             {{if foto:}}
                                 {{=IMG(_src=URL('default','download',args=foto),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
@@ -256,7 +255,7 @@ div#foto img {
                         <!-- ==========foto=========== -->
                             </div>
                       <!-- ==========foto=========== -->
-                                <h4 class="title_cadastro">Editar dados do cliente!</h4>
+                                <h4 class="title_cadastro">Editar dados do funcionário!</h4>
 
                             </div>
                             <div class="content">

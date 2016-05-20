@@ -78,13 +78,13 @@ def buscar_cliente():
 						DIV(
 							DIV(
 								LABEL('cnpj/cpf'),
-								INPUT(_type="text", _class="form-control border-input", _value='%s'%cliente[0].cnpj_cpf),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%cliente[0].cnpj_cpf),
 								_class="form-group"),
 							_class="col-md-7"),
 						DIV(
 							DIV(
 								LABEL('insc'),
-								INPUT(_type="text", _class="form-control border-input", _value='%s'%cliente[0].insc),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%cliente[0].insc),
 								_class="form-group"),
 							_class="col-md-5"),
 						_class="row"),
@@ -92,7 +92,7 @@ def buscar_cliente():
 						DIV(
 							DIV(
 								LABEL('endereço'),
-								INPUT(_type="text", _class="form-control border-input", _value='%s N: %s'%(cliente[0].endereco,cliente[0].numero)),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s N: %s'%(cliente[0].endereco,cliente[0].numero)),
 								_class="form-group"),
 							_class="col-md-12"),
 						_class="row"),
@@ -100,13 +100,13 @@ def buscar_cliente():
 						DIV(
 							DIV(
 								LABEL('cidade'),
-								INPUT(_type="text", _class="form-control border-input", _value='%s'%cliente[0].cidade),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%cliente[0].cidade),
 								_class="form-group"),
 							_class="col-md-6"),
 						DIV(
 							DIV(
 								LABEL('bairro'),
-								INPUT(_type="text", _class="form-control border-input", _value='%s'%cliente[0].bairro),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%cliente[0].bairro),
 								_class="form-group"),
 							_class="col-md-6"),
 						_class="row"),

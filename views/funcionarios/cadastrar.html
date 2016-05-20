@@ -16,6 +16,16 @@
                         
         }); 
 
+        $('#minhaTabela').on('click','tr',function(){
+            var cod = this.children[0].textContent;
+
+            // alterando IMG entre IMG
+            var src = this.children[1].children[0].src;
+            $('#foto img')[0].src = src;
+
+            // $('.title_cadastro').text('Cliente cadastrado.')
+            
+        });
         controla_telas();
         aplicar_estilo_form();
     });
@@ -23,7 +33,12 @@
     function aplicar_estilo_form(){        
         $('#painel_cadastro input[type=text], #painel_cadastro select').addClass('form-control border-input');
         $('input[type=submit]').addClass('btn btn-info btn-fill btn-wd');
-        $('#clientes_dataGravado__row, #delete_record__row').hide();
+        $('#funcionarios_dataGravado__row, #delete_record__row').hide();
+
+        {{max = db.funcionarios.matricula.max()
+            x = int(db().select(max).first()[max])+1
+        }}
+        $('#funcionarios_matricula').val('{{=str(x).zfill(4)}}')
 
                 // $('#clientes_foto_cliente__row, .w2p_fl').hide();
     }
@@ -32,10 +47,11 @@
             var largura_tela = screen.width;//largura da tela
             //tela do ipad
             if ((largura_tela < 770) || (largura_navegador < 990)){
-                $('.listaCLientes, .w2p_fl, #clientes_foto_cliente__row').hide();
+                $('.listaCLientes, .w2p_fl').hide();
                 $('.title_cadastro').css('font-size','large');
                 $('.btVoltar').removeClass('oculto');
                 $('.d').animate({scrollTop:110}, 'slow');
+                $('table').css('table-layout','fixed');
             }else{
                $('.d').animate({scrollTop:0}, 'slow'); 
             }
@@ -154,16 +170,11 @@ h3.tit_hist {
 }
 table{
     width: 100% !important;
+    /*table-layout: fixed;*/
 }
 td.w2p_fc {
     padding: 0px !important;
 }
-#clientes_foto_cliente__row{display:none;}
-div#foto img {
-    width: 50px;
-    height: 50px;
-}
-
 </style>
 <input type="text" id="transitory" name="transitory" style="display:none">
 <!-- <a href="#" id="t">AQUIIII</a> -->
@@ -201,7 +212,7 @@ div#foto img {
                     </button>
                     
                     <nav id='subMenuGeral'>
-                        <h3 class="tit_hist">Editar cadastro </h3>
+                        <h3 class="tit_hist">Cadastrar novo funcionário</h3>
                     </nav>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -235,6 +246,7 @@ div#foto img {
 
 
         <div class="content">
+       
             <!-- container-fluid -->
             <div class="container-fluid">
                 <div class="row">
@@ -245,18 +257,10 @@ div#foto img {
                             <div class="header">
                       <!-- ==========foto=========== -->
                             <div id="foto">
-                                
-                        <td class="oculto">{{foto = db(db.clientes.id==request.vars.codigo).select('foto_cliente')[0].foto_cliente}}</td>
-                        <!-- ==========foto=========== -->
-                            {{if foto:}}
-                                {{=IMG(_src=URL('default','download',args=foto),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
-                            {{else:}}
-                                {{=IMG(_src=URL('static','assets/img/faces/face-0.png'),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
-                            {{pass}}
-                        <!-- ==========foto=========== -->
+                                 {{=IMG(_src=URL('static','assets/img/faces/face-0.png'),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
                             </div>
                       <!-- ==========foto=========== -->
-                                <h4 class="title_cadastro">Editar dados do cliente!</h4>
+                                <h4 class="title_cadastro">Dodos do novo funcionário!</h4>
 
                             </div>
                             <div class="content">

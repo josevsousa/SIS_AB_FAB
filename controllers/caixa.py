@@ -125,14 +125,12 @@ def fecharVenda():
     codigoVenda = session.codigo_venda
     idCliente = db(Clientes.nome == session.cliente ).select('id')[0].id
     
-    # print '----------------------------- 1'   
     tipoVenda = index[0]
     valorVenda = index[1]
     valorDesconto = index[2]
     #parcelados = parcelado(index[5])
     # pegar o nome do representante e gravar o id no historico
 
-    # print '-----------------------------2'
     representante = session.representante
     enviarEmail = 'S' 
     # Parcela, DataVencimento, Valor
@@ -438,18 +436,14 @@ def parcelado():
     index = index.split('!')
     tabela = index[0].split('@')
     tipoVenda = index[1];
-  
-
-    for linha in tabela:
-        linha = linha.split(',')
-        parcela = linha[0]
-        dataParcela = "%s 00:01:01"%linha[1]
+    
+    codigoVenda = session.codigo_venda
+    for t in tabela:
+        linha = t.split(',')
+        parcela = linha[0] 
+        data = linha[1]
         valorParcela = linha[2]
-        codigoVenda = session.codigo_venda     
         proprietario = linha[3]
-        dataAtual = datetime.now()
-        
-        #gravar no db parcelados
-        # Parcelados.insert(codigo=codigoVenda, tipoVenda=tipoVenda, cliente=linha[3], parcela=parcela, dataVencimento=dataParcela, valor=valorParcela)
-        Parcelando.insert(parcela=parcela,codigo_venda=codigoVenda,tipo='boleto', status='pendente',data_vencimento=dataParcela,proprietario=linha[3],valor=valorParcela,data_up=dataAtual)
+        dataParcela = "%s 01:01:01"%data
+        Parcelando.insert(parcela=parcela,codigo_venda=codigoVenda,tipo='boleto', status='pendente',data_vencimento=dataParcela,proprietario=linha[3],valor=valorParcela)
         pass    

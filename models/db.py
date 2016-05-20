@@ -140,8 +140,8 @@ db.produtos.codigo_produto.requires = IS_NOT_IN_DB(db, db.produtos.codigo_produt
 #     )
 # db.autoCompletProdutos.nome_produto.widget = SQLFORM.widgets.autocomplete(request, db.produtos.nome_produto, limitby=(0,5), min_length=2)
 
-OPERADORA = (' operadora ','TIM','OI','VIVO','CLARO','FIXO','NENHUMA')
-UF = ( " - ","AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RO", "RS", "RR", "SC", "SE", "SP", "TO" )
+OPERADORA = ('operadora','TIM','OI','VIVO','CLARO','FIXO','NENHUMA')
+UF = ( " uf ","AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RO", "RS", "RR", "SC", "SE", "SP", "TO" )
 TIPO = ('Pessoa_física','Pessoa_jurídica')
 CATEGORIA = ('cliente','fornecedor','funcionario')
 
@@ -171,9 +171,8 @@ CATEGORIA = ('cliente','fornecedor','funcionario')
 # Cadastros.categoria.requires = IS_IN_SET(CATEGORIA, error_message="Categoria inválida!!!") 
 
 # Field('nome',label='Nome',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='first name')), 
-TIPO = ('Pessoa física','Pessoa jurídica')    
 Clientes = db.define_table('clientes',
-    Field('tipo', default='Pessoa jurídica' ,requires = IS_IN_SET(TIPO, error_message="Tipo invalido!")),
+    Field('tipo', default='Pessoa_jurídica'),
     Field('nome',label='Nome',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='nome')), 
     # Field('apelido', label='Apelido'),
     Field('celular', label='Celular',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='celular')),
@@ -207,19 +206,19 @@ db.clientes.tipo.requires = IS_IN_SET(TIPO, error_message="Tipo inválido!!!")
 Funcionarios = db.define_table('funcionarios',
     Field('tipo', default='Pessoa_física'),
     Field('matricula', label='Matrícula'),
-    Field('nome',label='Nome'), 
-    Field('celular', label='Celulares'),
+    Field('nome',label='Nome',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='nome')), 
+    Field('celular', label='Celulares',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='celular')),
     # Field('Cel',"list:string"),
-    Field('operadora', default=' - '),
-    Field('fixo', label='Tel:..'),
-    Field('email',label='E-mail'),
-    Field('cnpj_cpf', label='CNPJ/CPF'),
-    Field('cep', label='CEP'),
-    Field('endereco', label='Endereço'),
-    Field('numero' ,label='Número'),
-    Field('cidade', label='Cidade'),
-    Field('uf', label='UF', default=' - '),
-    Field('bairro', label='Bairro'),
+    Field('operadora', default=' - ',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='operadora')),
+    Field('fixo', label='Tel:..',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='telefone')),
+    Field('email',label='E-mail',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='e-mail')),
+    Field('cnpj_cpf', label='CNPJ/CPF',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cnpj/cpf')),
+    Field('cep', label='CEP',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cep')),
+    Field('endereco', label='Endereço',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='endereco')),
+    Field('numero' ,label='Número',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='número')),
+    Field('cidade', label='Cidade',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cidade')),
+    Field('uf', label='UF', default=' uf '),
+    Field('bairro', label='Bairro',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='bairro')),
     Field('dataGravado','datetime', default=request.now, label="Data"),
     Field('foto_funcionario','upload', label='Foto'),
     migrate = "funcionarios.table"
@@ -251,25 +250,24 @@ Historico = db.define_table('historicoVendas',
     ) 
 
 Representantes = db.define_table('representantes',
-    Field('tipo'),
-    Field('nome',label='Nome'), 
+    Field('tipo', default='Pessoa_física'),
+    Field('nome',label='Nome',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='nome')), 
     Field('matricula', label='Matrícula'),
-    Field('celular', label='Celula 1'),
-    Field('operadora', label='Operadora 1', default=' - '),
-    Field('celular_2', label='Celula 2'),
-    Field('operadora_2', label='Operadora 2', default=' - '),
+    Field('celular', label='Celula 1',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='celular - 1')),
+    Field('operadora', label='Op - 1', default='operadora'),
+    Field('celular_2', label='Celula 2',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='celular - 2')),
+    Field('operadora_2', label='Op - 2', default='operadora'),
     # Field('Cel',"list:string"),
-    Field('fixo', label='Tel:..'),
-    Field('email',label='E-mail'),
-    Field('cnpj_cpf', label='CNPJ/CPF'),
-    Field('insc', label='INSC'),
-    Field('cep', label='CEP'),
-    Field('endereco', label='Endereço'),
-    Field('numero' ,label='Número'),
-    Field('uf', label='UF', default=' - '),
-    Field('cidade', label='Cidade'),
-    Field('bairro', label='Bairro'),
-    Field('apelido', label='Apelido'),
+    Field('fixo', label='Tel:..',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='telefone')),
+    Field('email',label='E-mail',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='e-mail')),
+    Field('cnpj_cpf', label='CNPJ/CPF',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cnpj/cpf')),
+    Field('insc', label='INSC',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='insc')),
+    Field('cep', label='CEP',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cep')),
+    Field('endereco', label='Endereço',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='endereco')),
+    Field('numero' ,label='Número',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='número')),
+    Field('uf', label='UF', default=' uf '),
+    Field('cidade', label='Cidade',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='cidade')),
+    Field('bairro', label='Bairro',widget=lambda field,value: SQLFORM.widgets.string.widget(field, value, _placeholder='bairro')),
     Field('dataGravado','datetime', default=request.now, label="Data"),
     Field('foto_representante','upload', label='Foto'),
     migrate = "representante.table"

@@ -11,9 +11,12 @@
         }); 
 
         //tela do ipad
-        var larguraPagina = screen.width;//largura da tela
-        if (larguraPagina < 1024 ) {
+        var w = screen.width;
+        console.log(w);
+        if (w < 1024 ) {
             $('#minhaTabela tr td:nth-child(2), #minhaTabela tr th:nth-child(2), #minhaTabela tr td:nth-child(3), #minhaTabela tr th:nth-child(3)').hide()
+        }else if (w < 414 ) {
+             $('#minhaTabela tr td:nth-child(2), #minhaTabela tr th:nth-child(2), #minhaTabela tr td:nth-child(3), #minhaTabela tr th:nth-child(3), #minhaTabela tr td:nth-child(4), #minhaTabela tr th:nth-child(4), #minhaTabela tr td:nth-child(5), #minhaTabela tr th:nth-child(5), #minhaTabela tr td:nth-child(6), #minhaTabela tr th:nth-child(6)').hide()           
         }
 
 
@@ -54,13 +57,11 @@
             var inicio = data_inicio.value;
             var final = data_fim.value;
             if (inicio == '' || final == '') {
-                console.log(inicio+" : "+final);
                 $('#aviso').html(
                     "<button type='button' aria-hidden='true' class='close'>×</button>"+
                     "<span data-notify='message'>"+"As datas de inicio e fim no formato dd/mm/aaaa são obrigatórias."+
                     "</span>").show(500).delay(6000).hide(400);
             } else {
-                console.log(inicio+" : "+final);
                 $(location).attr('href',"historico?inicial="+inicio+"&final="+final);
             }
         });
