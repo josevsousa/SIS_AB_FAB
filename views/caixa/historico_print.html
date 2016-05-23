@@ -232,7 +232,14 @@
 				<tr>
 					<!-- {{=iten.data_vencimento}} -->
 					<td>{{=iten.parcela}}</td> 
-					<td>{{=iten.data_vencimento}}</td> 
+					<td>
+					{{
+                    dt = "%s"%iten.data_vencimento
+                    dt = dt[0:10]
+                    dt = dt.split('-')
+                    = "%s/%s/%s"%(dt[2],dt[1],dt[0])
+                    }}
+					</td> 
 					<td>{{=double_real(float(iten.valor)).real()}}</td>
 					
 				</tr>
