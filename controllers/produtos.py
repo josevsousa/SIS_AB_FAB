@@ -99,4 +99,81 @@ def deletar():
 
 # ===================================================
 
+@auth.requires_login()
+def cadastrar():
+	form = crud.create(db.produtos)
+	return dict(form=form)    
 
+
+@auth.requires_login()
+def todos():
+    grid = db(db.produtos.id>0).select()
+    # formrepresentantesAdd = crud.update(db.representantes,request.args(0))
+    formCreate = crud.create(db.produtos)
+
+    return locals()
+
+@auth.requires_login()
+def editar():
+    codigo = request.vars.codigo
+    form = crud.update(db.produtos, codigo)
+    
+    
+    # pegar a foto do cliente
+
+    # form = crud.update(db.clientes, cod)
+    # crud.settings.delete_next = URL('caixa')
+    # form = 'jose'
+    # return "%s %s"%(form,"<script> aplicar_estilo_form();</script>")
+    return dict(form=form)
+
+@auth.requires_login()
+def buscar_produto():
+	#codigo do produto recebido
+	cod = request.vars.transitory
+	#cadastro do produto recebido
+	produto = db(db.produtos.id == cod).select()
+
+
+	#busca avatar do produto
+	img = URL('default','download',args=produto[0].foto_produto)
+	print img
+	if img == "/SIS_AB_FAB/default/download":
+		img = URL('static','assets/img/faces/noFotoo.png')
+	else:
+		img = URL('default','download',args=produto[0].foto_produto)
+		pass
+
+
+	cracha = DIV(
+		DIV(
+			IMG(_src=img,_class="avatar border-white"),
+			H4('%s'%produto[0].nome_produto,BR(),SPAN('%s'%produto[0].codigo_produto,_class='cracha'),_class='title'),
+			_class="author"),
+			DIV(
+				FORM(
+					DIV(
+						DIV(
+							DIV(
+								LABEL('Valor'),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%double_real(produto[0].preco_produto_lojinha).real()),
+								_class="form-group"),
+							_class="col-md-6"),
+						DIV(
+							DIV(
+								LABEL('Tamanho'),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%produto[0].tamanho),
+								_class="form-group"),
+							_class="col-md-6"),
+						_class="row"),
+					),
+				_class="content"),
+			HR(),
+			DIV(
+				DIV(
+					A('editar',_href="editar?codigo=%s"%cod, _class="btn btn-default btn-wd"),
+					_id="edicao",
+					_class="col-md-12"),
+				_class="row text-center"),
+		_class="content")
+	return cracha	

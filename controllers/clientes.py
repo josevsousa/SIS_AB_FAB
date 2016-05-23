@@ -90,6 +90,14 @@ def buscar_cliente():
 					DIV(
 						DIV(
 							DIV(
+								LABEL('email'),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%(cliente[0].email)),
+								_class="form-group"),
+							_class="col-md-12"),
+						_class="row"),
+					DIV(
+						DIV(
+							DIV(
 								LABEL('endereço'),
 								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s N: %s'%(cliente[0].endereco,cliente[0].numero)),
 								_class="form-group"),

@@ -50,33 +50,33 @@ def _():
     
     # MENU BARRA LATERAL
     response.barraL = UL(_class='nav')
-    if ctr == 'daschboard':
-      response.barraL.append(LI(A(I(_class='ti-panel'),P('dashboard'),_href='#'),_class='active'))
+    if ctr == 'home':
+      response.barraL.append(LI(A(I(_class='ti-panel'),P('controle'),_href='../home/index'),_class='active'))
     else:
-      response.barraL.append(LI(A(I(_class='ti-panel'),P('dashboard'),_href='#')))  
+      response.barraL.append(LI(A(I(_class='ti-panel'),P('controle'),_href='../home/index')))  
       pass
-    if ctr == 'representantes':
-      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('representar'),_href='../representantes/todos'),_class='active'))
+    if ctr == 'produtos':
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('Produtos'),_href='../produtos/todos'),_class='active'))
     else:
-      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('representar'),_href='../representantes/todos'))) 
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('Produtos'),_href='../produtos/todos'))) 
+    
+    if ctr == 'representantes':
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('represent...'),_href='../representantes/todos'),_class='active'))
+    else:
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('represent...'),_href='../representantes/todos'))) 
     if ctr == 'funcionarios':
       response.barraL.append(LI(A(I(_class='ti-id-badge'),P('funcionarios'),_href='../funcionarios/todos'),_class='active'))
     else:
       response.barraL.append(LI(A(I(_class='ti-id-badge'),P('funcionarios'),_href='../funcionarios/todos'))) 
     if ctr == 'clientes':
-      response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/todos'),_class='active'))
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('clientes'),_href='../clientes/todos'),_class='active'))
     else:
-      response.barraL.append(LI(A(I(_class='ti-layout-grid2-alt'),P('clientes'),_href='../clientes/todos')))
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('clientes'),_href='../clientes/todos')))
       pass
     if ctr == 'vendas':
       response.barraL.append(LI(A(I(_class='ti-pie-chart'),P('vendas'),_href='../vendas/historico'),_class='active'))
     else:
       response.barraL.append(LI(A(I(_class='ti-pie-chart'),P('vendas'),_href='../vendas/historico')))  
-      pass
-    if ctr == 'alerta':
-      response.barraL.append(LI(A(I(_class='ti-bell'),P('alerta'),_href='#'),_class='active'))
-    else:
-      response.barraL.append(LI(A(I(_class='ti-bell'),P('alerta'),_href='#'))) 
       pass
     # FIM MENU BARRA LATERAL
 

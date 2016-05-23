@@ -1,0 +1,292 @@
+{{extend 'layout_print.html'}}
+<script>
+    $(document).ready(function(){
+        //=== BUSCAR REGISTRO
+        $('.print').on('click',function(){
+            var td = $(this).parent().parent().children()[0];
+            var cod = td.textContent;
+            $(location).attr('href',"../caixa/historico_print?cod="+cod);//redireciona a pagina
+        });
+     
+  });
+</script>
+
+<style>
+    @media only print
+    {
+      /*  body * { display: none !important; }
+        body:after { content: "Don't waste paper!"; }*/
+        td, th, .headerPrint {
+            
+        }
+        .btFecharJanela, .btPrint, #nav_home, .btVolt, .alert-dismissable, .footer, #socialdrawer,#enviarEmail {display:none !important;}
+        .logoP {display:block !important;} 
+        .end{display:block !important;}
+        td, th, .headerPrint{
+            padding: 2px 8px !important;
+            /*border: 1px solid #000 !important;*/
+        }
+    }
+
+    #parcelado{
+        width: 360px;
+    }
+
+    /**/
+
+div#table_print {
+    padding: 21px;
+}
+body {
+    padding-top: 6px !important;
+}
+    .headerPrint {
+        position: relative;
+        width: 100%;
+        display: flex;
+        /*background: aliceblue;*/
+        padding: 6px;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+    .logo {
+        width: 33%;
+        margin-left: 49px;
+    }
+    .logo img {
+        width: 100%;    
+        margin-top: 13px;
+    }
+    .headerPrint>.titulo {
+        /*background: antiquewhite;*/
+        width: 100%;
+        text-align: center;
+    }
+    td.col_1{
+        font-weight: 700;
+        width: 10%;
+    }
+    td.col_2 {
+        width: 52%;
+    }
+    td.col_3{
+        font-weight: 700;
+        width: 10%;
+    }
+    td {
+        padding: 3px 12px !important;
+    }
+    td.r{
+        border-right-color: #fff !important;
+    }
+    td.tit {
+        background-color: #F9F9F9;
+    }
+    table.table.parc.table-striped.table-bordered {
+    width: 49% !important;
+    float: left;
+    margin-right: 2%;
+    }
+    #parcelado {
+        width: 100%;
+    }
+    table.table.cal.table-bordered {
+        width: 49% !important;
+    }
+    table.table.calSemDesc.table-bordered {
+        width: 100% !important;
+    }
+    td.col_1.tit.codven {
+        width: 12%;
+    }
+    td.col_2.codvenresp {
+        width: 23%;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<div id="table_print" class='animated fadeIn'>
+    <div style='display:block' class='logoP'>
+        <div class="headerPrint">
+            <div class="logo"><img src='../static/images/logoPrint.png' width='95pt'></div>
+            <div class="titulo">
+                <h2>Artesanal baby</h2>
+                <h3>www.artesanalbaby.com.br</h3>
+                <h4>artesanalbaby@hotmail.com</h4>
+                <h5>RUA BASILIO SILVA, 86 - ESTAÇÃO - SOUSA-PB - (83) 3522-2107</h5>
+            </div>
+                
+        </div>
+    </div>
+    <!-- <h3>Recibo ArtesanalBaby ( codigo : {{=historico_venda[0].codigoVenda}} )</h3><br>      -->
+    <div id='retornoCliente'>
+        <!-- <ul class='list-group'>
+            #{{#link = db(Clientes.email == historico_venda[0].clienteEmail).select('id')[0].id}}
+            #<li class='list-group-item'><strong>Cliente: </strong>
+            #{{#=historico_venda[0].clienteEmail}}
+            </li>
+            
+        </ul> -->
+        
+        <table class='table table-bordered'>
+            <!-- <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Qtde</th>
+                    <th>Produto</th>
+                    <th>Valor Unidade</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+ -->        <tbody>
+                <tr>
+                    <td class="col_1 tit codven">Cod</td>
+                    <td class="col_2 codvenresp">{{=historico_venda[0].codigoVenda}}</td>
+                    <td class="col_3 tit">Representante</td>
+                    <td class="col_4">{{=db(db.representantes.id == historico_venda[0].representante).select('matricula')[0].matricula}}</td>
+                </tr>
+
+            </tbody>
+        </table>    
+        <!-- o nome do cliente no historicoVendas esta no campo email' -->
+        {{cliente = db(Clientes.id == historico_venda[0].clienteEmail).select()}}
+        <table class='table table-bordered'>
+            <tbody>
+                <tr>
+                    <td class="col_1 tit">Cliente</td>
+                    <td class="col_2 ">{{=cliente[0].nome}}</td>
+                    <td class="col_3 tit">Tel</td>
+                    <td class="col_4">{{=cliente[0].fixo}}</td>
+                </tr>
+                <tr>
+                    <td class="col_1 tit">Bairro</td>
+                    <td class="col_2">{{=cliente[0].bairro}}</td>
+                    <td class="col_3 tit">Cep</td>
+                    <td class="col_4">{{=cliente[0].cep}}</td>
+                </tr>
+                <tr>
+                    <td class="col_1 tit">End</td>
+                    <td class="col_2">{{=cliente[0].endereco}}</td>
+                    <td class="col_3 tit">N&ordm;</td>
+                    <td class="col_4">{{=cliente[0].numero}}</td>
+                </tr>   
+                <tr>
+                    <td class="col_1 tit">Cidade</td>
+                    <td class="col_2">{{=cliente[0].cidade}}</td>
+                    <td class="col_3 tit">UF</td>
+                    <td class="col_4">{{=cliente[0].uf}}</td>
+                </tr>
+                <tr>
+                    <td class="col_1 tit">CNPJ</td>
+                    <td class="col_2">{{=cnpj_cpf_formt(cliente[0].cnpj_cpf).t()}}</td>
+                    <td class="col_3 tit">IE</td>
+                    <td class="col_4">{{=cliente[0].insc}}</td>
+                </tr>
+
+            </tbody>
+        </table>    
+    </div>
+    <!-- itens -->
+    
+        <table class='table table-bordered table-striped'>
+            <thead>
+                <tr>
+                    <th>Ref</th>
+                    <th>Descrição</th>
+                    <th>Quant</th>
+                    <th>Preço</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id='bodyPrint'>
+                {{for iten in itens_venda:}}
+                    <tr>
+                        <td>{{=iten.codigoIten}}</td>
+                        <td>{{=iten.produto}}</td>
+                        <td>{{=iten.quantidade}}</td>
+                        <!-- <td>{{#="R$ %.2f"%float(iten.valorUnidade)}}</td> -->
+                        <td>{{=double_real(float(iten.valorUnidade)).real()}}</td>
+                        <td>{{=double_real(float(iten.valorTotal)).real()}}</td>
+                        <!-- <td>{{#="R$ %.2f"%float(iten.valorTotal)}}</td> -->
+                    </tr>
+                {{pass}}
+            </tbody>
+        </table>
+
+    
+    <!-- parcelas -->
+    <div id='parcelado'>
+        {{if itens_parcelas != "":}}
+
+        <table class='table parc table-striped table-bordered'>
+            <tbody>
+            {{for iten in itens_parcelas:}}
+                <tr>
+                    <!-- {{=iten.data_vencimento}} -->
+                    <td>{{=iten.parcela}}</td> 
+                    {{
+                    dt = (iten.data_vencimento)
+                    dt = dt.split(' ')
+                    dt = dt[0].split('-')
+                    dt = '%s/%s/%s'%(dt[2],dt[1],dt[0])
+                    }}
+                    <td>{{=dt}}</td> 
+                    <td>{{=double_real(float(iten.valor)).real()}}</td>
+                    
+                </tr>
+            {{pass}}    
+            </tbody>
+        </table>
+        {{pass}}
+        {{
+            total = historico_venda[0].valorVenda
+            desconto = historico_venda[0].valorDesconto
+            sTotal = (float(desconto)+float(total))
+            tipoVenda = historico_venda[0].tipoVenda
+            if tipoVenda == 'cheque' or tipoVenda == 'boleto':
+        }}
+        <table class='table cal table-bordered table-condensed'>
+        {{else:}}
+        <table class='table calSemDesc table-bordered table-condensed'>
+        {{pass}}
+        <tbody>
+                <tr>
+                    <td class="col_1 tit">Pag</td>
+                    <td class="col_2">{{=historico_venda[0].tipoVenda}}</td>
+                </tr>
+                <tr>
+                    <td class="col_1 tit">T.Parcial</td>
+                    <!-- <td class="col_2">{{#="R$ %.2f"%sTotal}}</td> -->
+                    <td>{{=double_real(float(sTotal)).real()}}</td>
+                </tr>   
+                <tr>
+                    <td class="col_1 tit">Desc</td>
+                    <!-- <td class="col_2">{{#="R$ %.2f"%desconto}}</td> -->
+                    <td>{{=double_real(float(desconto)).real()}}</td>
+                </tr>
+                <tr>
+                    <td class="col_1 tit">T.Geral</td>
+                    <!-- <td class="col_2">{{#="R$ %.2f"%total}}</td> -->
+                    <td>{{=double_real(float(total)).real()}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+        
+    </div>
+    <hr>
+    <a href='javascript:window.print()' class='btn btn-info btPrint'>imprimir</a>
+    <a href='javascript:window.close()' class='btn btn-default btFecharJanela'>fechar janela</a>
+   
+</div><!-- fim do container -->
+<div class='end' style='display:none'><h4>www.artesanalbaby.com.br</h4></div>
+<br>

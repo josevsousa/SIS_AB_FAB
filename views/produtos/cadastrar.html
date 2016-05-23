@@ -16,6 +16,16 @@
                         
         }); 
 
+        $('#minhaTabela').on('click','tr',function(){
+            var cod = this.children[0].textContent;
+
+            // alterando IMG entre IMG
+            var src = this.children[1].children[0].src;
+            $('#foto img')[0].src = src;
+
+            // $('.title_cadastro').text('Cliente cadastrado.')
+            
+        });
         controla_telas();
         aplicar_estilo_form();
     });
@@ -23,8 +33,14 @@
     function aplicar_estilo_form(){        
         $('#painel_cadastro input[type=text], #painel_cadastro select').addClass('form-control border-input');
         $('input[type=submit]').addClass('btn btn-info btn-fill btn-wd');
-        $('#funcionarios_dataGravado__row, #delete_record__row,#funcionarios_matricula__row').hide();
-        mask_full();
+        $('#produtos_dataGravado__row, #delete_record__row').hide();
+
+        {{max = db.produtos.codigo_produto.max()
+            x = int(db().select(max).first()[max])+1
+        }}
+        $('#produtos_codigo_produto').val('{{=str(x).zfill(4)}}')
+        mask_full()
+
                 // $('#clientes_foto_cliente__row, .w2p_fl').hide();
     }
     function controla_telas(){
@@ -32,11 +48,11 @@
             var largura_tela = screen.width;//largura da tela
             //tela do ipad
             if ((largura_tela < 770) || (largura_navegador < 990)){
-                $('.listafuncionarios, .w2p_fl, #funcionarios_foto_funcionario__row').hide();
-                $('input#funcionarios_foto_funcionario').css('width','50%');
+                $('.listaCLientes, .w2p_fl').hide();
                 $('.title_cadastro').css('font-size','large');
                 $('.btVoltar').removeClass('oculto');
                 $('.d').animate({scrollTop:110}, 'slow');
+                $('table').css('table-layout','fixed');
             }else{
                $('.d').animate({scrollTop:0}, 'slow'); 
             }
@@ -157,9 +173,9 @@ div#foto {
         position: absolute;
         top: 9px;
     }
-/*    select#clientes_operadora {
+    select#clientes_operadora {
         color: #DDDDDE;
-    }*/
+    }
     .text-center.bt_navegar {
     margin-bottom: 11px;
 }
@@ -168,25 +184,11 @@ h3.tit_hist {
 }
 table{
     width: 100% !important;
+    /*table-layout: fixed;*/
 }
 td.w2p_fc {
     padding: 0px !important;
 }
-.w2p_fw span {
-    display: none;
-}
-
-.w2p_fw img{
-    border-radius: 50%;    
-    width: 100px;
-    height: 100px;
-}
-/*#funcionarios_foto_funcionario__row {display:none;}*/
-div#foto img {
-    width: 50px;
-    height: 50px;
-}
-
 </style>
 <input type="text" id="transitory" name="transitory" style="display:none">
 <!-- <a href="#" id="t">AQUIIII</a> -->
@@ -224,7 +226,7 @@ div#foto img {
                     </button>
                     
                     <nav id='subMenuGeral'>
-                        <h3 class="tit_hist">Editar cadastro </h3>
+                        <h3 class="tit_hist">Cadastrar novo produto</h3>
                     </nav>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -258,6 +260,7 @@ div#foto img {
 
 
         <div class="content">
+       
             <!-- container-fluid -->
             <div class="container-fluid">
                 <div class="row">
@@ -268,18 +271,10 @@ div#foto img {
                             <div class="header">
                       <!-- ==========foto=========== -->
                             <div id="foto">
-                                
-                        <td class="oculto">{{foto = db(db.funcionarios.id==request.vars.codigo).select('foto_funcionario')[0].foto_funcionario}}</td>
-                        <!-- ==========foto=========== -->
-                            {{if foto:}}
-                                {{=IMG(_src=URL('default','download',args=foto),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
-                            {{else:}}
-                                {{=IMG(_src=URL('static','assets/img/faces/face-0.png'),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
-                            {{pass}}
-                        <!-- ==========foto=========== -->
+                                 {{=IMG(_src=URL('static','assets/img/faces/noFotoo.png'),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
                             </div>
                       <!-- ==========foto=========== -->
-                                <h4 class="title_cadastro">Editar dados do funcionário!</h4>
+                                <h4 class="title_cadastro">Dodos do novo produto!</h4>
 
                             </div>
                             <div class="content">

@@ -60,7 +60,7 @@ def buscar_funcionario():
 
 	#busca avatar do funcionario
 	img = URL('default','download',args=funcionario[0].foto_funcionario)
-	if img == "/SIS_AB_FAB/default/download//":
+	if img == "/SIS_AB_FAB/default/download/":
 		img = URL('static','assets/img/faces/face-0.png')
 	else:
 		img = URL('default','download',args=funcionario[0].foto_funcionario)
@@ -87,6 +87,14 @@ def buscar_funcionario():
 								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%funcionario[0].matricula),
 								_class="form-group"),
 							_class="col-md-5"),
+						_class="row"),
+					DIV(
+						DIV(
+							DIV(
+								LABEL('email'),
+								INPUT(_type="text", _class="form-control border-input",_style='background-color: #F1F1F1', _disabled=True, _value='%s'%(funcionario[0].email)),
+								_class="form-group"),
+							_class="col-md-12"),
 						_class="row"),
 					DIV(
 						DIV(

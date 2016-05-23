@@ -33,6 +33,7 @@
             //tela do ipad
             if ((largura_tela < 770) || (largura_navegador < 990)){
                 $('.listarepresentantes, .w2p_fl, #representantes_foto_cliente__row').hide();
+                $('input#representantes_foto_representante').css('width','50%');
                 $('.title_cadastro').css('font-size','large');
                 $('.btVoltar').removeClass('oculto');
                 $('.d').animate({scrollTop:100}, 'slow');
@@ -172,7 +173,17 @@ table{
 td.w2p_fc {
     padding: 0px !important;
 }
-#representantes_foto_representante__row{display:none;}
+/*#representantes_foto_representante__row{display:none;}*/
+
+.w2p_fw span {
+    display: none;
+}
+.w2p_fw img{
+    border-radius: 50%;    
+    width: 100px;
+    height: 100px;
+}
+
 div#foto img {
     width: 50px;
     height: 50px;

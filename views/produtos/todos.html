@@ -1,4 +1,7 @@
 {{extend 'dashboard.html'}}
+
+    <!-- Animation library for notifications   -->
+    <link href="{{=URL('static','assets/css/animate.min.css')}}" rel="stylesheet"/>
 <script>
     $(document).ready(function(){
         $('#minhaTabela').DataTable({
@@ -16,27 +19,40 @@
                         
         }); 
 
-        controla_telas();
+        $('#minhaTabela').on('click','tr',function(){
+            var cod = this.children[0].textContent;
+            $('#add_novo_user').removeClass('oculto');
+            // // alterando IMG entre IMG
+            // var src = this.children[1].children[0].src;
+            // $('.avatar')[0].src = src;
+
+            
+            // $('.title_cadastro').text('funcionários cadastrado.')
+
+            // chamar função com os dados do usuario
+            $('#transitory').val(cod);
+            ajax('buscar_produto',['transitory'],'cracha');
+            controla_telas();
+        });
+        
         aplicar_estilo_form();
     });
-
     function aplicar_estilo_form(){        
         $('#painel_cadastro input[type=text], #painel_cadastro select').addClass('form-control border-input');
         $('input[type=submit]').addClass('btn btn-info btn-fill btn-wd');
-        $('#funcionarios_dataGravado__row, #delete_record__row,#funcionarios_matricula__row').hide();
-        mask_full();
-                // $('#clientes_foto_cliente__row, .w2p_fl').hide();
-    }
+        $('#produtos_dataGravado__row, #delete_record__row, #produtos_foto_produtos__row').hide();
+
+                // $('#produtos_foto_funcionários__row, .w2p_fl').hide();
+    };
     function controla_telas(){
             var largura_navegador = window.innerWidth;
             var largura_tela = screen.width;//largura da tela
             //tela do ipad
             if ((largura_tela < 770) || (largura_navegador < 990)){
-                $('.listafuncionarios, .w2p_fl, #funcionarios_foto_funcionario__row').hide();
-                $('input#funcionarios_foto_funcionario').css('width','50%');
+                $('.listaprodutos, .w2p_fl').hide();
                 $('.title_cadastro').css('font-size','large');
                 $('.btVoltar').removeClass('oculto');
-                $('.d').animate({scrollTop:110}, 'slow');
+                $('.d').animate({scrollTop:102}, 'slow');
             }else{
                $('.d').animate({scrollTop:0}, 'slow'); 
             }
@@ -80,6 +96,7 @@ div#foto {
 }
 #foto img {
     width: 46px;
+    height: 46px;
 }
 /*----------*/
     .oculto{
@@ -141,6 +158,7 @@ div#foto {
     }
     img.img-circle.img-no-padding.img-responsive {
         width: 35px;
+        height: 35px;
         display: -webkit-inline-box;
         margin: 0 5px !important;
     }
@@ -157,36 +175,27 @@ div#foto {
         position: absolute;
         top: 9px;
     }
-/*    select#clientes_operadora {
+    select#produtos_operadora {
         color: #DDDDDE;
-    }*/
-    .text-center.bt_navegar {
-    margin-bottom: 11px;
-}
-h3.tit_hist {
+    }
+    h3.tit_hist {
     margin-left: 13px;
 }
-table{
-    width: 100% !important;
+#edicao a{
+    margin-top: 13px;
 }
-td.w2p_fc {
-    padding: 0px !important;
+a#add_novo_user {
+    position: absolute;
+    right: 25px;
+    top: 19px;
 }
-.w2p_fw span {
-    display: none;
+span.cracha {
+    font-size: 0.8em;
+    background: #20DDF5;
+    color: white;
+    padding: 0 3px;
+    border-radius: 3px;
 }
-
-.w2p_fw img{
-    border-radius: 50%;    
-    width: 100px;
-    height: 100px;
-}
-/*#funcionarios_foto_funcionario__row {display:none;}*/
-div#foto img {
-    width: 50px;
-    height: 50px;
-}
-
 </style>
 <input type="text" id="transitory" name="transitory" style="display:none">
 <!-- <a href="#" id="t">AQUIIII</a> -->
@@ -197,6 +206,9 @@ div#foto img {
     <!--
         Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
         Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+
+        <div class="clearfix"></div>
+
     -->
 
     <div class="sidebar-wrapper">
@@ -224,7 +236,7 @@ div#foto img {
                     </button>
                     
                     <nav id='subMenuGeral'>
-                        <h3 class="tit_hist">Editar cadastro </h3>
+                        <h3 class="tit_hist">Lista de produtos</h3>
                     </nav>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -258,41 +270,82 @@ div#foto img {
 
 
         <div class="content">
-            <!-- container-fluid -->
+            <div class="text-center btVoltar oculto">
+                <a href="todos" class="btn btn-default btn-wd">voltar</a>
+            </div>
+              <!-- container-fluid -->
             <div class="container-fluid">
-                <div class="row">
-                    <div class="text-center bt_navegar">
-                        <a href="todos" class=" btn btn-default btn-wd">voltar</a>
-                    </div>
-                     <div class="card" id="formularioCadastro">
-                            <div class="header">
-                      <!-- ==========foto=========== -->
-                            <div id="foto">
-                                
-                        <td class="oculto">{{foto = db(db.funcionarios.id==request.vars.codigo).select('foto_funcionario')[0].foto_funcionario}}</td>
-                        <!-- ==========foto=========== -->
-                            {{if foto:}}
-                                {{=IMG(_src=URL('default','download',args=foto),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
-                            {{else:}}
-                                {{=IMG(_src=URL('static','assets/img/faces/face-0.png'),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
-                            {{pass}}
-                        <!-- ==========foto=========== -->
-                            </div>
-                      <!-- ==========foto=========== -->
-                                <h4 class="title_cadastro">Editar dados do funcionário!</h4>
+                 <div class="row">
+                        <div class="col-lg-6 col-md-6 listaprodutos">
+                            <!--card 1-->
+                            <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Lista de produtos</h4>
+                                    <a href="cadastrar" id="add_novo_user" class="btn btn-success oculto">Novo</a>
+                                </div>
+                                <div class="content table-responsive table-full-width">
+                                    <table id="minhaTabela" class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="oculto">x</th>
+                                                <th>Nome do Produto</th>
+                                                <th>Código</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
+                                    {{for produto in grid:}}
+                                        {{
+                                            nome = produto.nome_produto
+                                            cod = produto.codigo_produto
+                                        }}
+
+                                        <tr>
+                                            <td class="oculto">{{=produto.id}}</td>
+                                            <td class="avat">
+                                                 
+                                                <!-- ==========foto=========== -->
+                                                    {{if produto.foto_produto:}}
+                                                        {{=IMG(_src=URL('default','download',args=produto.foto_produto),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
+                                                    {{else:}}
+                                                        {{=IMG(_src=URL('static','assets/img/faces/noFotoo.png'),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
+                                                    {{pass}}
+                                                <!-- ==========foto=========== -->
+                                                {{=nome}}
+                                            </td>
+                                            <td>{{=cod}}</td>
+                                        </tr>
+                                    {{pass}}   
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div><!--fim do card 1-->  
+                        </div><!-- fim da coluna esqueda --> 
+                                            <!-- coluna direita -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="card card-user">
+                            <div class="image">
+                                <img src="{{=URL('static','assets/img/background.jpg')}}" alt="...">
                             </div>
-                            <div class="content">
-                                <!--painel_cadastro--> 
-                                <div id="painel_cadastro"> 
-                                    {{=form}}
-                                <!--    <div class="text-center">
-                                        <button type="text" id="btForm" class=" btn btn-default btn-fill btn-wd">+ Adcionar</button>
-                                    </div> -->
-                                </div><!--fim do painel_cadastro--> 
-                            </div>
-                        </div> 
-                                    </div><!-- fim do row -->
+                            <div id='cracha'>
+                                <div class="content">
+                                    <div class="author">
+                                      <img class="avatar border-white" src="{{=URL('static','assets/img/faces/noFotoo.png')}}" alt="...">
+                                        <div class="conteudo-1">
+                                            <h4 class="title">Novo Produto<br>
+                                                <a href="#"><small>Dados do produto</small></a>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                <hr>
+                                    <div class="col-md-12 text-center" id="edicao">
+                                        <a href="cadastrar" class="btn btn-default btn-wd">novo</a>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                    </div><!-- fim da coluna direita -->                    
+                 </div><!-- fim do row -->   
             </div><!-- container-fluid -->
     
         </div>

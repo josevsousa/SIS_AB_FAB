@@ -1,35 +1,13 @@
+@auth.requires_login()
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
+    hoje = datetime.now()
+    mesAno = hoje.strftime('%m/%Y')
+    hoje = hoje.strftime('%Y-%m')#pega apenas o ano e mes atual
 
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-      """       
-    if session.auth:
-        x = session.auth.user
-        y = SQLFORM.grid(db.auth_user,user_signature=False)
-        v = db(db.produtos.id==241).select('preco_produto_lojinha')
-        z = "%s"%v
+    # se receber datas de inicio e fim
+    if request.vars.inicial:
+        formListar = db((db.historicoVendas.dataVenda >= request.vars.inicial) & (db.historicoVendas.dataVenda <= request.vars.final)).select()      
+    else: 
+        formListar = db(db.historicoVendas.dataVenda.like(hoje+'%')).select()#busca pelo ano e mes atual   
 
-    else:
-        x = "nao ta logado"    
-    return locals()
-
-#===== CRUD ========
-#insert
-def inserir():
-	return dict(form=crud.create(db.books))
-#update
-def alterar():
-	return dict(form=crud.update(db.produtos,request.args(0)))
-#select
-def listar():
-	return dict(form=crud.select(db.books, db.books.id>0)) #db.books.id>0,['id','titulo']
-#delete
-def deletar():
-	return dict(form=crud.delete(db.produtos, request.args(0)))
-#search
-def buscar():
-	return dict(form=crud.search(db.books))
-#=== FIM DO CRUD ===
+    return dict(formListar=formListar, mesAtual=mesAno)
