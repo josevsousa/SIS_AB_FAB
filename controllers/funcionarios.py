@@ -60,7 +60,7 @@ def buscar_funcionario():
 
 	#busca avatar do funcionario
 	img = URL('default','download',args=funcionario[0].foto_funcionario)
-	if img == "/SIS_AB_FAB/default/download/":
+	if img == "/SIS_AB_FAB/default/download//":
 		img = URL('static','assets/img/faces/face-0.png')
 	else:
 		img = URL('default','download',args=funcionario[0].foto_funcionario)

@@ -47,7 +47,7 @@ def _():
     app = request.application
     ctr = request.controller
     fun = request.function
-    
+
     # MENU BARRA LATERAL
     response.barraL = UL(_class='nav')
     if ctr == 'home':
@@ -61,9 +61,9 @@ def _():
       response.barraL.append(LI(A(I(_class='ti-id-badge'),P('Produtos'),_href='../produtos/todos'))) 
     
     if ctr == 'representantes':
-      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('represent...'),_href='../representantes/todos'),_class='active'))
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('representant'),_href='../representantes/todos'),_class='active'))
     else:
-      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('represent...'),_href='../representantes/todos'))) 
+      response.barraL.append(LI(A(I(_class='ti-id-badge'),P('representant'),_href='../representantes/todos'))) 
     if ctr == 'funcionarios':
       response.barraL.append(LI(A(I(_class='ti-id-badge'),P('funcionarios'),_href='../funcionarios/todos'),_class='active'))
     else:
@@ -78,7 +78,21 @@ def _():
     else:
       response.barraL.append(LI(A(I(_class='ti-pie-chart'),P('vendas'),_href='../vendas/historico')))  
       pass
+    if ctr == 'cheques':
+      response.barraL.append(LI(A(I(_class='ti-shortcode'),P('Cheques'),_href='../cheques/aguardandoLancamento'),_class='active'))
+    else:
+      response.barraL.append(LI(A(I(_class='ti-shortcode'),P('Cheques'),_href='../cheques/aguardandoLancamento')))  
+      pass
     # FIM MENU BARRA LATERAL
+
+    # SUBMENU VENDAS
+    # response.menuVendass = UL(LI(A(P(H3('Histórico'),_class='tit_hist'),_href='../home/index')),LI(A(P('Histórico',_class='tit_def'),_href='../home/index')),_class='nav subMenu')
+    # response.menuVendas = UL(_class='nav, tit_hist')
+    # if ctr == 'historico':
+    #   response.barraL.append(LI(A(I(_class='ti-panel'),P('Histórico'),_href='../home/index'),_class='active'))
+    # else:
+    #   response.barraL.append(LI(A(I(_class='ti-panel'),P('Histórico'),_href='../home/index')))  
+    #   pass
 
 if 'auth' in globals():
     if not auth.is_logged_in():  

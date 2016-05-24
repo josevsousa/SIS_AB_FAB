@@ -117,7 +117,7 @@ div#config_produtos {
 </style>
 <!-- ok -->
 <input type="text" id="cod" name="cod">
-<div id="minhaTabela" class="animated fadeInDown">
+<div id="minhaTabela" >
 {{if auth.has_membership('admin'):}}
 	<a class="btn btn-default" href="/{{=request.application}}/produtos/cadastrarProdutos?menu=produtos"><span class="glyphicon glyphicon-plus"></span> Novo Produto</a>
 	<a class="btn btn-default config_Prod" href="#"><span class="glyphicon glyphicon-cog"></span></a>

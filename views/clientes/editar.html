@@ -32,7 +32,7 @@
             var largura_tela = screen.width;//largura da tela
             //tela do ipad
             if ((largura_tela < 770) || (largura_navegador < 990)){
-                $('.listaCLientes, .w2p_fl, #clientes_foto_cliente__row').hide();
+                $('.listaCLientes, .w2p_fl').hide();
                 $('.title_cadastro').css('font-size','large');
                 $('.btVoltar').removeClass('oculto');
                 $('.d').animate({scrollTop:110}, 'slow');
@@ -49,6 +49,10 @@ img#logo-new_theme{
     width: 101px !important;
     padding: 0px 6px !important;
     font-size: 18px !important; 
+}
+input#clientes_foto_cliente {
+    width: 214px;
+    color: white;
 }
 .sidebar .logo, .sidebar[data-background-color="white"] .logo, .off-canvas-sidebar .logo, .off-canvas-sidebar[data-background-color="white"] .logo {
     border-bottom: 1px solid rgba(102, 97, 91, 0.3) !important;

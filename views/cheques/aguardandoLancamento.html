@@ -1,0 +1,566 @@
+{{extend 'dashboard.html'}}
+
+<link rel="stylesheet" href="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.css')}}">
+<script src="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.js')}}"></script>
+<script>
+    function carregar_masck(){
+        $(".real").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
+        $(".grid_data input").datepicker({
+          altFormat: "yy-mm-dd"
+        });
+
+
+    }
+
+    $(document).ready(function(){
+
+        $('#add_venda_a_lista').on('click',function(){
+            
+            if ($('#codigo').val() == '') {
+                $('#codigo').addClass('validaCodigo');
+            } else {
+                $('#codigo').removeClass('validaCodigo');
+                $(this).text('Trabalhando');
+                ajax('addVenaLista',['codigo'],location.reload())
+
+            }
+            $('#codigo').on('keyup',function(){
+                $('#codigo').removeClass('validaCodigo');
+            })
+        })
+
+        $('#minhaTabela').DataTable({
+            // "scrollX": true,
+            // "paging": false,
+            "order": [ 0, 'desc' ],
+            "language": {
+              "url": "{{=URL('static','js/tradutorTable.json')}}"
+            }
+            
+        });
+        function inputNome(){ 
+            $('#cliente').keyup(function(){
+                var v = $(this).val();
+                $(this).val(v.toUpperCase());
+            });
+        }; 
+
+        function inputQtde(cod, valor, cliente){
+            /*
+                var time = new Date('2014-03-14T23:54:00');
+                var outraData = new Date();
+                outraData.setDate(time.getDate() + 3); 
+            */
+            var valor = valor;
+            valor = valor.replace("R$ ","");
+            valor = valor.replace(".","");
+            valor = valor.replace(",",".")
+            valor = parseFloat(valor);
+            
+            $('#qtde_parcelas').on('change',function(){
+                var qtdeP = $(this).val(); //qtde de parcelas pego do select
+                $('#transitory').val(qtdeP+";"+valor+";"+cliente);
+                $('#trModal>img').show(400);
+                ajax('gridParcelas',['transitory'],'trModal');
+                controla_telas();
+            })    
+        }
+
+        //=== BUSCAR REGISTRO
+        $('#minhaTabela').on('dblclick','tr', function(){
+            var iten = $(this)[0]
+            var codigo = iten.children[1].textContent;
+            // var representante = iten.children[2].textContent;
+            var cliente = iten.children[3].textContent;
+            var valor = iten.children[4].textContent;
+            
+            //================== MODAL ======          
+                
+               var titulo = '<small>CÓDIGO:</small> '+codigo+ ' <small> TOTAL:</small> '+valor;
+                
+                //chama o modal            
+                $('#myModal').modal('show');
+                
+                //quando o modal abrir faça
+                $('#myModal').on('shown.bs.modal', function () {
+
+                    inputQtde(codigo, valor, cliente);
+                    // $("#status").prop('selectedIndex',status);
+                    $("#myModalLabel").html(titulo);
+                })
+
+                //botao gravar do modal
+                $('#gravar').on('click',function(){
+                    //pegar os campos do modal e passar para o ajax gravar no db
+                 
+                    // gravar no python
+                    var rows = $('#tab_calculo_parcelas tbody tr');
+                    var cont = rows.length;
+                    //rows
+                    var iten = '';
+                    for (var i = 0; i < cont; i++) {
+                        if (i != 0) {
+                            iten += '@';
+                        }
+                        var row = rows[i];
+                        var parcela = row.cells[0].textContent;
+                        var numero_cheque = row.cells[1].children[0].value;
+                        var banco = row.cells[2].children[0].value;
+                        var nome = row.cells[3].children[0].value;
+                        var data = row.cells[4].children[0].value;
+                        var valor = row.cells[5].children[0].value;
+                        valor = valor.replace('R$ ','').replace('.','').replace(',','.');
+                        iten += numero_cheque+";"+nome+";"+data+";"+valor+";"+banco;
+                        console.log(iten)
+                    }
+                    // $('#tab_calculo_parcelas tbody').val('');
+                    $('#transitory').val(codigo+"|"+iten);
+                        ajax('gravarParcelas',['transitory'])
+                    $("#myModal").modal('hide');
+                })
+                
+                //quando o modal fechar
+                $('#myModal').on('hide.bs.modal', function () {
+                    location.reload();//reload na pagina pra carregar as alteracoes na tabela
+
+                })
+
+            //==== FIM MODAL ======
+
+        }); //fim do busca registro
+    
+    function controla_telas(){
+            var largura_navegador = window.innerWidth;
+            var largura_tela = screen.width;//largura da tela
+            //tela do ipad
+            if ((largura_tela < 770) || (largura_navegador < 990)){
+                // $('.listaCLientes, .w2p_fl').hide();
+                // $('.title_cadastro').css('font-size','large');
+                // $('.btVoltar').removeClass('oculto');
+                // $('.d').animate({scrollTop:110}, 'slow');
+                // $('table').css('table-layout','fixed');
+                $('.grid_cheque').hide();
+            }else{
+               $('.d').animate({scrollTop:0}, 'slow'); 
+            }
+    }         
+});//fim jquary ready
+</script>
+
+<style>
+/*new logo*/
+img#logo-new_theme{
+    width: 101px !important;
+    padding: 0px 6px !important;
+    font-size: 18px !important; 
+}
+
+.card .footer {
+    padding: 4px 12px;
+    line-height: 30px;
+}
+
+
+h3.tit_hist {
+    margin-left: 15px;
+}
+
+.sidebar .logo, .sidebar[data-background-color="white"] .logo, .off-canvas-sidebar .logo, .off-canvas-sidebar[data-background-color="white"] .logo {
+    border-bottom: 1px solid rgba(102, 97, 91, 0.3);
+    display: -webkit-box;
+    margin: 0 auto;
+    text-align: -webkit-center;
+}
+ blockquote.control-label {
+        /* display: flex; */
+        /* background: aqua; */
+        /* width: 361px; */
+        position: fixed;
+        left: 219px;
+        top: 67px;
+    }
+    .modal-body {
+        padding-bottom: 0px !important;
+    }
+    #trModal>img {
+        margin-left: 50%;
+        display: none;
+    /* font-size: 2px; */
+    }
+    .grid_data {
+        width: 17%;
+    }
+    .grid_dono {
+        width: 29%;
+    }
+    .grid_cheque {
+        width: 15%;
+    }
+    .grid_banco{
+        width: 18%;
+    }
+    .grid_parcela {
+        width: 45px;
+    }
+    input.form-control.inputGrid {
+        height: 26px;
+        font-size: 13px;
+        width: 100%;
+    }
+    div#campoNomeRepasse {
+        margin-top: 7px;
+    }
+    span#lenLancamentos{
+        background: #FF9D01;
+        font-weight: bold;
+        font-family: sans-serif;
+        font-size: inherit;
+    }
+
+    .debito{
+        color: red;
+        font-weight: 600;
+    }
+    .verde{
+        color:#0AAB2F;
+        font-weight: 600;
+    }
+    .laranja{
+        color:#FF9D00;
+        font-weight: 600;        
+    }
+    .containerRadio {
+        padding-left: 23px;
+    }
+    .containerRadio label{
+        margin: 0 !important;
+    }
+    .oculto{display:none;}
+    #minhaTabela {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .atualizar{float: right;}
+    .JpositionA{float: right;}
+    .JpositionA a{margin-right: 0px !important;}
+    .ativoo{
+        background: #E3FFF6;
+    }
+    #minhaTabela input {
+        height: 22px;
+    }
+.modal-dialog {
+    width: 90%;
+}
+select#qtde_parcelas {
+    width: 63px;
+        border: 1px solid #D2D2D2;
+}
+.validaCodigo{
+    border-color: #E91E63;
+    box-shadow: none;
+    background: #FFF1F6;
+}
+select#banco {
+    height: 26px;
+    font-size: 13px;
+    width: 100%;
+    padding-top: 4px;
+}
+.card {
+    padding: 6px;
+}
+div#minhaTabela_length, div#minhaTabela_filter{
+    margin: 15px !important;
+} 
+div#minhaTabela_wrapper {
+    font-size: 13px;
+}
+td {
+    padding: 11px 5px !important;
+}
+div#minhaTabela_paginate {
+    margin: 8px;
+}
+div#minhaTabela_info {
+    margin: 8px 14px;
+}
+
+
+input[type="search"] {
+    border: 1px solid #CCC5B9;
+    border-radius: 3px;
+    padding: 5px;
+}select {
+    background-color: #FFFCF5;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #CCC5B9;
+    margin: 0 7px;
+}
+select#qtde_parcelas {
+    width: 74px;
+}
+#tab_calculo_parcelas .form-control {
+    background: white;
+}
+table#tab_calculo_parcelas td {
+    padding: 5px 0px;
+}
+</style>
+
+<input type="text" id="transitory"  name="transitory" style='display:none'>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+            <form id="model_form">
+                    <!--  <div class="form-group">
+                        <label for="recipient-name" class="control-label">Data parcela Nº <span id="parc"></span></label>
+                        <input type="date" class="form-control" id="data" >
+                    </div>
+                     -->
+                     <div class="form-group form-inline">
+                        <div class="boxSelect">
+                        <label for="recipient-name" class="control-label">Qtde de parcelas : </label>
+                        <select class="form-control" id="qtde_parcelas">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>   
+                          <option value="4">4</option>           
+                        </select>   
+                        </div>
+                    </div> 
+                     
+
+                    <div id="trModal"class="form-group form-inline" >
+                        <img src="{{=URL('static','images/loading-2.gif')}}" alt="">
+                    </div>
+   
+                    <!-- fim repassado -->
+                </form>  
+ 
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <button type="button" id="gravar" class="btn btn-success">Atualizar</button>
+      </div>
+    </div>
+  </div>
+</div><!-- fim do Modal -->
+
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
+
+    <!--
+        Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+        Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+    -->
+
+        <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="http://www.creative-tim.com" class="simple-text">
+                    {{=response.logo.new_theme}}
+                </a>
+            </div>
+            {{=response.barraL}}
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="main-panel">
+        <div id="aviso" style='display:none' class="alert alert-warning alert-with-icon" data-notify="container"></div>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    
+                    <h3 class="tit_hist">Aguardando lançamento </h3>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                         <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="ti-bell"></i>
+                                    <p class="notification">5</p>
+                                    <p>Alertas</p>
+                                    <b class="caret"></b>
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li><a href="#">Notification 1</a></li>
+                                <li><a href="#">Notification 2</a></li>
+                                <li><a href="#">Notification 3</a></li>
+                                <li><a href="#">Notification 4</a></li>
+                                <li><a href="#">Another notification</a></li>
+                              </ul>
+                        </li>
+                        <!-- <li>
+                            <a href="#">
+                                <i class="ti-settings"></i>
+                                <p>Settings</p>
+                            </a>
+                        </li> -->
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="content">
+            <div class="container-fluid">
+<div class="row"> 
+        <form id="opcaoCheque">
+            <div class="col-md-4"> 
+                <ul class="list-group card">
+                  <li class="list-group-item">
+                    <span class="badge" id="lenLancamentos">{{=qt}}</span>
+                    <div class="containerRadio">
+                        <label class="radio laranja">
+                            <input type="radio" checked  name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
+                        </label>
+                    </div>  
+                  </li>
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Compensado
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+            </div>  
+            <div class="col-md-4"> 
+                <ul class="list-group card">
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option3"> Devolvido ao cliente
+                        </label>
+                    </div>  
+                  </li>
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option4"> Repassado
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+            </div>
+            <div class="col-md-4"> 
+                <ul class="list-group card">
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option5"> Devolvido 1-Vez
+                        </label>
+                    </div>  
+                  </li>
+                  <li class="list-group-item">
+                    <div class="containerRadio">
+                        <label class="radio">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option6"> Devolvido 2-Vez
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+            </div>     
+        </form>
+    </div> 
+    <h4>Tela de lançamento de cheques <small>Clique duas (2) vezes para lançar os cheques! ou clique aqui para add um pedido a lista </small><!-- <a class="btn btn-default del btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a> -->   </h4>
+   <!--  <div class="form-inline">
+      <div class="form-group">
+        <label for="codigo">Código :</label>
+        <input type="number" class="form-control" id="codigo" name="codigo" placeholder="000000000000">
+      </div>
+      <button type="text" id="add_venda_a_lista" class="btn btn-success">Adcionar</button>
+    </div> -->
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+            <!-- table -->
+            <table id="minhaTabela" class="table hover table-striped" cellspacing="0" width="100%" >
+            <thead>
+                <tr>
+                    <th class="oculto">id</th>
+                    <th>Código venda</th>
+                    <th>Representante</th>
+                    <th>Cliente</th>
+                    <th>Valor da venda</th>
+                </tr> 
+            </thead>                
+                <tbody>
+                    {{for i in table:}}
+                        <tr>
+                            <td class="oculto">{{=i.id}}</td>
+                            <td>{{=i.codigoVenda}}</td>
+                            <td>{{=db(db.representantes.id==i.representante).select('nome')[0].nome}}</td>
+                            <td>{{=db(db.clientes.id==i.clienteEmail).select('nome')[0].nome}}</td>
+                            <td>{{=double_real(i.valorVenda).real()}}</td>  
+                        </tr>
+                    {{pass}}
+                </tbody>
+            </table>
+            </div><!--fim do card-->
+        </div>    
+    </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul>
+
+                        <li>
+                            <a href="http://www.creative-tim.com">
+                                Creative Tim
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://blog.creative-tim.com">
+                               Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.creative-tim.com/license">
+                                Licenses
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="copyright pull-right">
+                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+</div>
+
+

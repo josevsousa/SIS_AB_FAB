@@ -63,6 +63,29 @@
     right_sidebar_enabled = globals().get('right_sidebar_enabled', False)
     }}
 
+    <script>
+        $(document).ready(function(){
+                //============ ABA CHEQUE =================
+        $('#opcaoCheque').change(function(){
+            var opcao = $("input[name='inlineRadioOptions']:checked").val();
+            if (opcao == 'option1') {
+              $(location).attr('href',"aguardandoLancamento");//redireciona a pagina
+            }else if(opcao == 'option2'){
+              $(location).attr('href',"compensado");//redireciona a pagina
+            }else if(opcao == 'option3'){
+              $(location).attr('href',"devolvidoAoCliente");//redireciona a pagina
+            }else if(opcao == 'option4'){
+              $(location).attr('href',"repassado");//redireciona a pagina
+            }else if(opcao == 'option5'){
+              $(location).attr('href',"devolvido1");//redireciona a pagina
+            }else{
+              $(location).attr('href',"devolvido2");//redireciona a pagina
+            }
+        });
+    //============= FIM ABA CHEQUE ==============
+        });
+    </script>
+
   </head>
   <body>
   
