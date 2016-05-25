@@ -3,14 +3,7 @@
 <link rel="stylesheet" href="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.css')}}">
 <script src="{{=URL('static','jquery-ui-1.11.4.custom/jquery-ui.js')}}"></script>
 <script>
-    function carregar_masck(){
-        $(".real").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
-        $(".grid_data input").datepicker({
-          altFormat: "yy-mm-dd"
-        });
 
-
-    }
 
     $(document).ready(function(){
 
@@ -74,7 +67,7 @@
             var cheque = iten.children[2].textContent;
             var cliente = iten.children[5].textContent;
             var parcela = iten.children[4].textContent;
-            var data = iten.children[7].textContent;
+            var data = iten.children[8].textContent;
 
             //================== MODAL ======          
                 var titulo = 'Cod: '+codigo;
@@ -160,7 +153,7 @@ img#logo-new_theme{
 }
 
 #len{
-    background-color: red;
+    background-color: #03A9F4;
     font-weight: bold;
     font-family: sans-serif;
     font-size: inherit;
@@ -202,7 +195,7 @@ h3.tit_hist {
     }
     input.form-control.inputGrid {
         height: 26px;
-        font-size: 13px;
+        /*font-size: 13px;*/
         width: 100%;
     }
     div#campoNomeRepasse {
@@ -248,10 +241,6 @@ h3.tit_hist {
     #minhaTabela input {
         height: 22px;
     }
-    
-table.dataTable.no-footer {
-    border-bottom: 1px solid #CCC5B9 !important;
-}
 select#qtde_parcelas {
     width: 63px;
 }
@@ -277,6 +266,10 @@ select#banco {
 }
 .card {
     padding: 6px;
+}
+
+table.dataTable.no-footer {
+    border-bottom: 1px solid #CCC5B9 !important;
 }
 div#minhaTabela_length, div#minhaTabela_filter{
     margin: 15px !important;
@@ -306,7 +299,11 @@ input[type="search"] {
 }
 select#qtde_parcelas {
     width: 74px;
+}   
+td.destaque {
+    color: #0F7698;
 }
+
 #tab_calculo_parcelas .form-control {
     background: white;
 }
@@ -319,7 +316,9 @@ table#tab_calculo_parcelas td {
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <!--U-->
   <div class="modal-dialog" role="document">
+    <!--V-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -366,18 +365,13 @@ table#tab_calculo_parcelas td {
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
         <button type="button" id="gravar" class="btn btn-success">Atualizar</button>
       </div>
-    </div>
-  </div>
+    </div><!--fim v-->
+  </div><!--fim U-->
 </div><!-- fim do Modal -->
 
+<!--x-->
 <div class="wrapper">
     <div class="sidebar" data-background-color="white" data-active-color="danger">
-
-    <!--
-        Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
-        Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-    -->
-
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="http://www.creative-tim.com" class="simple-text">
@@ -388,11 +382,7 @@ table#tab_calculo_parcelas td {
         </div>
     </div>
 
-
-
-
-
-
+    <!--z-->
     <div class="main-panel">
         <div id="aviso" style='display:none' class="alert alert-warning alert-with-icon" data-notify="container"></div>
         <nav class="navbar navbar-default">
@@ -436,113 +426,108 @@ table#tab_calculo_parcelas td {
                 </div>
             </div>
         </nav>
-
-
         <div class="content">
             <div class="container-fluid">
-<div class="row"> 
-        <form id="opcaoCheque">
-            <div class="col-md-4"> 
-                <ul class="list-group card">
-                  <li class="list-group-item">
-                    <div class="containerRadio">
-                        <label class="radio laranja">
-                            <input type="radio"  name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
-                        </label>
-                    </div>  
-                  </li>
-                  <li class="list-group-item">
-                    <div class="containerRadio">
-                        <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Compensado
-                        </label>
-                    </div>
-                  </li>
-                </ul>
-            </div>  
-            <div class="col-md-4"> 
-                <ul class="list-group card">
-                  <li class="list-group-item">
-                    <span class="badge" id="len">{{=qt}}</span>
-                    <div class="containerRadio">
-                        <label class="radio">
-                            <input type="radio" checked name="inlineRadioOptions" id="inlineRadio5" value="option3"> Devolvido ao cliente
-                        </label>
-                    </div>  
-                  </li>
-                  <li class="list-group-item">
-                    <div class="containerRadio">
-                        <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option4"> Repassado
-                        </label>
-                    </div>
-                  </li>
-                </ul>
-            </div>
-            <div class="col-md-4"> 
-                <ul class="list-group card">
-                  <li class="list-group-item">
-                    <div class="containerRadio">
-                        <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option5"> Devolvido 1-Vez
-                        </label>
-                    </div>  
-                  </li>
-                  <li class="list-group-item">
-                    <div class="containerRadio">
-                        <label class="radio">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option6"> Devolvido 2-Vez
-                        </label>
-                    </div>
-                  </li>
-                </ul>
-            </div>     
-        </form>
-    </div> 
+                <div class="row"> 
+                    <form id="opcaoCheque">
+                        <div class="col-md-4"> 
+                            <ul class="list-group card">
+                              <li class="list-group-item">
+                                <div class="containerRadio">
+                                    <label class="radio laranja">
+                                        <input type="radio"  name="inlineRadioOptions" id="inlineRadio1" value="option1"> Aguardando lançamento
+                                    </label>
+                                </div>  
+                              </li>
+                              <li class="list-group-item">
+                                <div class="containerRadio">
+                                    <label class="radio">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Compensado
+                                    </label>
+                                </div>
+                              </li>
+                            </ul>
+                        </div>  
+                        <div class="col-md-4"> 
+                            <ul class="list-group card">
+                              <li class="list-group-item">
+                                <div class="containerRadio">
+                                    <label class="radio">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option3"> Devolvido ao cliente
+                                    </label>
+                                </div>  
+                              </li>
+                              <li class="list-group-item">
+                                <span class="badge" id="len">{{=qt}}</span>
+                                <div class="containerRadio">
+                                    <label class="radio">
+                                        <input type="radio" checked name="inlineRadioOptions" id="inlineRadio6" value="option4"> Repassado
+                                    </label>
+                                </div>
+                              </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4"> 
+                            <ul class="list-group card">
+                              <li class="list-group-item">
+                                <div class="containerRadio">
+                                    <label class="radio">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option5"> Devolvido 1-Vez
+                                    </label>
+                                </div>  
+                              </li>
+                              <li class="list-group-item">
+                                <div class="containerRadio">
+                                    <label class="radio">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option6"> Devolvido 2-Vez
+                                    </label>
+                                </div>
+                              </li>
+                            </ul>
+                        </div>     
+                    </form>
+                </div> 
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-   <!-- table -->
-                                    <table id="minhaTabela" class="table hover table-striped table-condensed" cellspacing="0" width="100%" >
-                                    <thead>
-                <tr>
-                    <th class="oculto">id</th>
-                    <th>Código venda</th>
-                    <th>Nº do Cheque</th>
-                    <th>Banco</th>
-                    <th>Parcela</th>
-                    <th>Emitente do Cheque</th>
-                    <th>Valor</th>   
-                    <th>Data do Vencimento</th>   
-                    <th>Data da devolução</th>
-                </tr> 
-                                    </thead>
-                                        <tbody>
-                 {{for i in table:}}
-                        <tr>
-                            <td class="oculto">{{=i.id}}</td>
-                            <td>{{=i.codigo_venda}}</td>
-                            <td>{{=i.numero_cheque}}</td>
-                            <td>{{=i.banco}}</td>
-                            <td>{{=i.parcela}}</td>
-                            <td>{{=i.proprietario}}</td>
-                            <td>{{=double_real(i.valor).real()}}</td>
-                            <td>{{=(i.data_vencimento).strftime("%Y-%m-%d")}}</td>
-                            <td>{{=i.created_on}}</td>
-                        </tr>
-                    {{pass}}         
-                                        </tbody>
-
-                                    </table>
-
-
-            <!-- table -->
-            <!-- table -->
-      
-            </div><!--fim do card-->
-        </div>    
-    </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                        <!-- table -->
+                        <table id="minhaTabela" class="table" width="100%" >
+                            <thead>
+                            <tr>
+                                <th class="oculto">id</th>
+                                <th>Código venda</th>
+                                <th>Nº do Cheque</th>
+                                <th>Banco</th>
+                                <th>Parcela</th>
+                                <th>Emitente</th>
+                                <th>Receptor</th>
+                                <th>Valor</th>   
+                                <th>Vencimento</th>
+                                <th>Repasse</th>     
+                            </tr> 
+                            </thead>
+                            <tbody>
+                                {{for i in table:}}
+                                    <tr>
+                                        <td class="oculto">{{=i.id}}</td>
+                                        <td>{{=i.codigo_venda}}</td>
+                                        <td>{{=i.numero_cheque}}</td>
+                                        <td>{{=i.banco}}</td>
+                                        <td>{{=i.parcela}}</td>
+                                        <td>{{=i.proprietario}}</td>
+                                        <td class="destaque">{{=i.receptor}}</td>
+                                        <td>{{=double_real(i.valor).real()}}</td>
+                                        <td>{{=(i.data_vencimento).strftime("%Y-%m-%d")}}</td>
+                                        <td>{{=i.modified_on}}</td>
+                                    </tr>
+                                {{pass}}
+                            </tbody>
+                        </table>
+                        <!-- table -->
+                        </div> <!--fim do card-->
+                    </div>    
+                </div>
             </div>
         </div>
 
@@ -573,9 +558,6 @@ table#tab_calculo_parcelas td {
                 </div>
             </div>
         </footer>
-
-
-    </div>
-</div>
-
+    </div><!--fim do z-->
+</div><!--fim x-->
 
