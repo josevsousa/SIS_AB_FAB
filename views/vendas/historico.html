@@ -3,7 +3,7 @@
     $(document).ready(function(){
         $('#minhaTabela').DataTable({
             // "scrollX": true,
-            "order": [ 5, 'desc' ],
+            "order": [ 4, 'desc' ],
             "language": {
               "url": "{{=URL('static','js/tradutorTable.json')}}"
             }
@@ -242,10 +242,9 @@ a#caixa {
                                         <tr>
                                             <th>Codigo</th>
                                             <th>Representante</th>
-                                            <th>Tipo</th>
-                                            <th style="display:none">Valor pago</th>
                                             <!-- <th>Desconto</th> -->
                                             <th>Cliente</th>
+                                            <th>Valor</th>
                                             <th>Data Venda</th>
                                             <th></th>
                                         </tr> 
@@ -256,10 +255,9 @@ a#caixa {
                                                     <tr>
                                                         <td>{{=venda.codigoVenda}}</td>
                                                         <td>{{=db(db.representantes.id == venda.representante ).select('nome')[0].nome }}</td>
-                                                        <td>{{=venda.tipoVenda}}</td>
-                                                        <td style="display:none">{{=double_real(venda.valorVenda).real()}}</td>
-                                                        <!-- <td>{{#=double_real(venda.valorDesconto).real()}}</td> -->
+                                                        <!-- <td>{{#=venda.tipoVenda}}</td> -->
                                                         <td>{{=db(Clientes.id == venda.clienteEmail).select('nome')[0].nome}}</td>
+                                                        <td>{{=double_real(venda.valorVenda).real()}}</td>
                                                         <td>{{=venda.dataVenda}}</td>
                                                     {{if auth.has_membership('admin'):}}    
                                                         <td class="td-actions text-right" style="">

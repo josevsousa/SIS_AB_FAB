@@ -269,3 +269,38 @@ def enviar_email(codigo):
         response.flash = 'Unable to send the email : email parameters not defined' 
      
 
+
+def cancelarVenda():  
+    # limpar itens do db
+    db(Itens.codigoVenda == session.codigo_venda).delete()
+    # session.venda
+    session.__delitem__('codigo_venda')
+    session.__delitem__('cliente')
+    session.__delitem__('representante')
+    #redirect(URL('etapa_1?menu=caixa')) 
+    #session.flash = 'Pedido Cancelado!'
+
+def excluirVendaRegistrada():
+    codigo = request.vars.transitory
+    db(db.historicoVendas.codigoVenda == codigo).update(deletado=True)
+    db(db.pendentes.codigo == codigo).update(status='Finalizado')
+    db(db.parcelados.codigo == codigo).update(excluido=True)
+    return ''
+
+
+def parcelado():
+    index = request.vars.transitory
+    index = index.split('!')
+    tabela = index[0].split('@')
+    tipoVenda = index[1];
+    
+    codigoVenda = session.codigo_venda
+    for t in tabela:
+        linha = t.split(',')
+        parcela = linha[0] 
+        data = linha[1]
+        valorParcela = linha[2]
+        proprietario = linha[3]
+        dataParcela = "%s 01:01:01"%data
+        Parcelando.insert(parcela=parcela,codigo_venda=codigoVenda,tipo='boleto', status='pendente',data_vencimento=dataParcela,proprietario=linha[3],valor=valorParcela)
+        pass    
