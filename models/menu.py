@@ -83,6 +83,11 @@ def _():
     else:
       response.barraL.append(LI(A(I(_class='ti-shortcode'),P('Cheques'),_href='../cheques/aguardandoLancamento')))  
       pass
+    if ctr == 'operacional':
+      response.barraL.append(LI(A(I(_class='ti-settings'),P('Operacional'),_href='../operacional/separar'),_class='active'))
+    else:
+      response.barraL.append(LI(A(I(_class='ti-settings'),P('Operacional'),_href='../operacional/separar')))  
+      pass
     # FIM MENU BARRA LATERAL
 
     # SUBMENU VENDAS
@@ -102,17 +107,17 @@ if 'auth' in globals():
             auth.settings.expiration = 864000 #10 dias de sessao aberta 
             response.menu += [
                 
-                  # (T('Home'), False, URL('default', 'index?menu=principal'), []),
-                  (T('Vendas'),False, None, [
-                    (T('Caixa'), False, URL('caixa', 'etapa_1?menu=caixa'), []),
-                    (T('historico'), False, URL('caixa', 'historico?menu=caixa'), []),
-                    #(T('Controle Cheque'), False, URL('caixa', 'historico?menu=caixa'), []),
-                    (T('Controle Cheque'), False, URL('caixa', 'aguardaLancamento?menu=caixa'), []),
-                  ]),
-                  (T('Clientes'), False, URL('clientes', 'listarClientes?menu=clientes'), []),
-                  (T('Funcionários'), False, URL('funcionarios', 'listarFuncionarios?menu=funcionarios'), []),
-                  (T('Produtos'), False, URL('produtos', 'listarProdutos?menu=produtos'), []),
-                  (T('Representantes'), False, URL('representantes', 'listarRepresentantes?menu=representantes'), []),
+                  (T('Home'), False, URL('vendas', 'historico'), []),
+                  # (T('Vendas'),False, None, [
+                  #   (T('Caixa'), False, URL('caixa', 'etapa_1?menu=caixa'), []),
+                  #   (T('historico'), False, URL('caixa', 'historico?menu=caixa'), []),
+                  #   #(T('Controle Cheque'), False, URL('caixa', 'historico?menu=caixa'), []),
+                  #   (T('Controle Cheque'), False, URL('caixa', 'aguardaLancamento?menu=caixa'), []),
+                  # ]),
+                  # (T('Clientes'), False, URL('clientes', 'listarClientes?menu=clientes'), []),
+                  # (T('Funcionários'), False, URL('funcionarios', 'listarFuncionarios?menu=funcionarios'), []),
+                  # (T('Produtos'), False, URL('produtos', 'listarProdutos?menu=produtos'), []),
+                  # (T('Representantes'), False, URL('representantes', 'listarRepresentantes?menu=representantes'), []),
                   
                   (T('Operacional'),False, None, [
                     (T('Separar itens venda'), False, URL('pedidos', 'abertos?menu=operacional'), [])

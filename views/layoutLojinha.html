@@ -61,18 +61,10 @@
     {{if auth.has_membership('operacional_A'):}}
         $("#navHeader>li:nth-child(1)").addClass("ativo")
      {{else:}}
-        {{if request.vars.menu == "caixa":}}  
+        {{if request.vars.menu == "principal":}}  
           $("#navHeader>li:nth-child(1)").addClass("ativo")
-        {{elif request.vars.menu == "clientes":}}  
-          $("#navHeader>li:nth-child(2)").addClass("ativo")
-        {{elif request.vars.menu == "funcionarios":}}  
-          $("#navHeader>li:nth-child(3)").addClass("ativo")
-        {{elif request.vars.menu == "produtos":}}  
-          $("#navHeader>li:nth-child(4)").addClass("ativo")
-        {{elif request.vars.menu == "representantes":}}  
-          $("#navHeader>li:nth-child(5)").addClass("ativo")
         {{elif request.vars.menu == "operacional":}}  
-          $("#navHeader>li:nth-child(6)").addClass("ativo")
+          $("#navHeader>li:nth-child(2)").addClass("ativo")
         {{pass}}
      {{pass}}   
     })
