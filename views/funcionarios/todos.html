@@ -294,13 +294,6 @@ span.cracha {
                                     </thead>
                                     <tbody>
                                     {{for funcionario in grid:}}
-                                        {{
-                                            nome = funcionario.nome
-                                            nome = nome.split(' ')
-                                            nome = "%s"%(nome[0]) 
-                                            cod = funcionario.matricula
-                                        }}
-
                                         <tr>
                                             <td class="oculto">{{=funcionario.id}}</td>
                                             <td class="avat">
@@ -312,9 +305,9 @@ span.cracha {
                                 {{=IMG(_src=URL('static','assets/img/faces/face-0.png'),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
                             {{pass}}
                         <!-- ==========foto=========== -->
-                                                {{=nome}}
+                                                {{=funcionario.nome}}
                                             </td>
-                                            <td>{{=cod}}</td>
+                                            <td>{{=funcionario.matricula}}</td>
                                         </tr>
                                     {{pass}}   
                                     </tbody>

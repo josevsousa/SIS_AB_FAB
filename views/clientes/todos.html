@@ -287,12 +287,6 @@ a#add_novo_user {
                                     </thead>
                                     <tbody>
                                     {{for cliente in grid:}}
-                                        {{
-                                            nome = cliente.nome
-                                            nome = nome.split(' ')
-                                            nome = "%s"%(nome[0]) 
-                                        }}
-
                                         <tr>
                                             <td class="oculto">{{=cliente.id}}</td>
                                             <td class="avat">
@@ -304,7 +298,7 @@ a#add_novo_user {
                                 {{=IMG(_src=URL('static','assets/img/faces/face-0.png'),_class="img-circle img-no-padding img-responsive",_alt="Circle Image")}}
                             {{pass}}
                         <!-- ==========foto=========== -->
-                                                {{=nome}}
+                                                {{=cliente.nome}}
                                             </td>
                                         </tr>
                                     {{pass}}   

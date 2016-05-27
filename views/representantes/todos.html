@@ -296,13 +296,6 @@ span.matricula {
                                     </thead>
                                     <tbody>
                                     {{for representante in grid:}}
-                                        {{
-                                            nome = representante.nome
-                                            cod = representante.matricula
-                                            nome = nome.split(' ')
-                                            nome = "%s"%(nome[0]) 
-                                        }}
-
                                         <tr>
                                             <td class="oculto">{{=representante.id}}</td>
                                             <td class="avat">
@@ -315,10 +308,10 @@ span.matricula {
                             {{pass}}
                         <!-- ==========foto=========== -->
                                                 <!-- nome -->
-                                                {{=nome}}
+                                                {{=representante.nome}}
                                             </td>
                                             <td>
-                                                {{=cod}}
+                                                {{=representante.matricula}}
                                             </td>   
                                         </tr>
                                     {{pass}}   
