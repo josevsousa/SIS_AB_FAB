@@ -139,7 +139,7 @@ a#caixa {
     margin: 0px 14px;
     padding: 5px 36px;
 }
-#th_bt{width: 63px;}
+#th_bt{width: 77px;}
 
 </style>
 <input type="text" id="transitory" name="transitory" style="display:none">
@@ -269,11 +269,15 @@ a#caixa {
                                                             </a>
                                                         </td>
                                                     {{else:}}
-                                                        <td class="td-actions text-right" id="th_bt" style="">
-                                                        <a rel="tooltip" title="" class="btn btn-success btn-simple btn-xs print" data-original-title="Visualizar">
-                                                            <a rel="tooltip" disabled title="" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)" data-original-title="Remove"><i class="fa fa-remove"></i>
-                                                            </a>
-                                                        </td>
+<td class="td-actions text-right" id="th_bt" style="">
+<a rel="tooltip" title="" class="btn btn-success btn-simple btn-xs print" data-original-title="Visualizar">
+        <i class="fa fa-edit"></i>
+    </a>
+<a rel="tooltip" disabled title="" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)" data-original-title="Remove"><i class="fa fa-remove"></i>
+</a>
+</td>
+
+
                                                     {{pass}}    
                                                     
                                                     </tr>
