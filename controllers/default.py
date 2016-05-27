@@ -15,7 +15,7 @@ def index():
     if auth.has_membership('operacional_A'):
         redirect(URL('pedidos','abertos?menu=operacional')) 
     if auth.has_membership('admin'):
-        redirect(URL('caixa','etapa_1?menu=caixa')) 
+        redirect(URL('vendas','historico')) 
     # response.flash = T("Seja bem vindo!  %s !"%(hoje.strftime('%d/%m/%Y')))
     grid = 'jose'
     return locals()

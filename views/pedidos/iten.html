@@ -6,16 +6,29 @@
             statusAtual = $(this).attr('class');//status do check 
             cod  = $(this).parent().parent().children()[0];//id do row do check
             cod = cod.textContent;
+            obs = $(this).parent().parent().children()[5];
+            obs = obs.children[0];
             if (statusAtual == "check_True") {
                 //mudar par check_False
                 $(this).removeClass('check_True').addClass('check_False');
                 //passar o False para o Itens.status
                 updateStatus(cod,'False');
+                obs.disabled = false;
+                // grava o valor da obs 
+                $('#transitory').val(cod+";"+(obs.value));
+				ajax('update_ItenObs',['transitory'])
             }else{
                 //mudar para check_True
                 $(this).removeClass('check_False').addClass('check_True');
+
+                obs.value = '';
+                obs.disabled = true;
                 //passar o True para o Itens.status
                 updateStatus(cod,'True');
+
+                // grava o valor vazio da obs
+				$('#transitory').val(cod+";"+'');
+				ajax('update_ItenObs',['transitory'])
             };
         });
 

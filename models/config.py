@@ -59,3 +59,4 @@ class cnpj_cpf_formt(object):
         #formatado = value
         return formatado    
 
+        

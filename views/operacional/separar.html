@@ -9,6 +9,14 @@
     // $('.form_etapa-1 form input[type=submit]').removeClass('btn-primary').addClass('btn-success').val('Adicione os Itens');
     // $('.form_etapa-1').delay(100).fadeIn(300) //esconder a transicao no form
 
+        $('#dataTable2').DataTable({
+            // "scrollX": true,
+            "order": [ 0, 'dec' ],
+            "language": {
+              "url": "{{=URL('static','js/tradutorTable.json')}}"
+            }
+            //"lengthMenu": [[25, 50, -1], [25, 50, "All"]] 
+        });
 
         $('.cadastroFull').on('click', function(){
             var cod = $(this).parent().parent().children('td')[1].textContent
@@ -23,6 +31,17 @@
 
 
 <style>
+input[type="search"] {
+    border: 1px solid #CCC5B9;
+    border-radius: 3px;
+    padding: 5px;
+}select {
+    background-color: #FFFCF5;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #CCC5B9;
+    margin: 0 7px;
+}
 /*new logo*/
 img#logo-new_theme{
     width: 101px !important;
@@ -73,10 +92,19 @@ div.tab-pane {
     .icon-container {
     width: 0px !important;
 }
-td {
+
+
+#dataTable_1 td {
     padding: 4px 12px !important;
 }
+#dataTable2 td {
+    padding: 12px 12px !important;
+}
 .listar{cursor: pointer;}
+span.ti-angle-double-right {
+    margin: 0px 0px 0px 13px;
+    color: #4CAF50;
+}
 </style>
 
 <input type="text" id="transitory" name="transitory" style="display:none">
@@ -152,33 +180,44 @@ td {
 
         <div class="content">
             <div class="container-fluid">
-
                 <div class="row">
 <!-- ==================================================================== -->
-  <div class="col-lg-12 col-md-12">
+<div class="col-lg-12 col-md-12">
+    <!-- card -->
     <div class="card">
         <div class="header">
-            <!-- <h4 class="title">Tabs &amp; Icons</h4> -->
-            <h4 class="title">Status dos pedidos</h4>
-            <p class="category">Lista com o estado atual dos pedidos separados.</p>
+            <h4 class="title">Pedidos tratados no operacional</h4>
+            <p class="category">Pedidos em processo de separação dos itens</p>
         </div>
+        <!-- content X-->
         <div class="content content-full-width">
-          <table class="table">
+            <ul role="tablist" class="nav nav-tabs">
+                <li role="presentation" class="active">
+                    <a href="#icon-info" data-toggle="tab"><i class="fa fa-info"></i> Pendentes</a>
+                </li>
+                <li>
+                    <a href="#icon-account" data-toggle="tab"><i class="fa fa-user"></i> Separado &amp; Embalado</a>
+                </li>
+            </ul>
+            <!-- fim tabContent A -->
+            <div class="tab-content">
+                <div id="icon-info" class="tab-pane active">
+                    <table id="dataTable_1" class="table first">
                       <thead>
-                        <tr>
-                            <th style="display:none"></th>
-                            <th>Codigo Pedido</th>
-                            <th>CLiente</th>
-                            <th>Data Solicitaçao</th>
-                            <th>Status Itens</th>
-                            <th>Pacotes</th>
-                            <th></th>
-                        </tr>
+                            <tr>
+                                <th style="display:none"></th>
+                                <th>Codigo Pedido</th>
+                                <th>CLiente</th>
+                                <th>Data Solicitaçao</th>
+                                <th>Status Itens</th>
+                                <th>Pacotes</th>
+                                <th></th>
+                            </tr>
                       </thead>
                       <tbody>
-    {{from datetime import date}}
-                                {{for pedido in pedidos:}}<!--FOR PEDIDOS-->
-                                    {{if (pedido.deletado != True):}}<!-- IF PEDIDOS.DELETADOS-->
+                            {{from datetime import date}}
+                                {{for pedido in pedidos:}}
+                                    {{if (pedido.deletado != True):}}
                                         {{if (pedido.status_venda != 'OK') or ((pedido.volume == 0) or (pedido.volume == None)):}}  
                                             {{if pedido.status_venda != 'OK':}}   
                                                 {{venda =  (pedido.dataVenda).strftime('%Y,%m,%d')
@@ -192,7 +231,7 @@ td {
                                                     pass    
                                                 atrazo = XML(atrazo) }}
                                             {{else:}}   
-                                            {{atrazo = XML("<span class='glyphicon glyphicon-ok'></span>")}}
+                                            {{atrazo = XML("<span class='ti-angle-double-right'></span>")}}
                                             {{pass}}    
                                             
                                             <tr>
@@ -212,19 +251,62 @@ td {
                                                     </td>
                                                 {{pass}}
                                                 
-                                                <td><div class="icon-container listar cadastroFull">
-                                        <span class="ti-angle-right"></span><span class="icon-name"></span>
-                                    </div></td>
+                                                <td>
+                                                    <div class="icon-container listar cadastroFull">
+                                                        <span class="ti-angle-right"></span><span class="icon-name"></span>
+                                                    </div>
+                                                </td>
                                             </tr>       
                                         {{pass}}
 
+                                {{pass}}                 
+                            {{pass}}<!--FIM FOR PEDIDOS-->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- separados -->                    
+                <div id="icon-account" class="tab-pane">
+                    <table id="dataTable2" class="table table-striped hover" cellspacing="0" width="100%" >
+                        <thead>
+                            <tr>
+                                <th style="display:none"></th>
+                                <th>Codigo Pedido</th>
+                                <th>CLiente</th>
+                                <th>Data Solicitaçao</th>
+                                <th>Pacotes</th>
+                            </tr>
+                            <tbody>
+                                {{from datetime import date}}
+                                {{for pedido in pedidos:}}<!--FOR PEDIDOS-->
+                                    {{if (pedido.deletado != True):}}<!-- IF PEDIDOS.DELETADOS-->
+                                        {{if (pedido.status_venda == 'OK') and ((pedido.volume != 0) and (pedido.volume != None)):}}  
+                                            
+                                            <tr>
+                                                <td style="display:none">{{=pedido.id}}</td>
+                                                <td>{{=pedido.codigoVenda}}</td>
+                                                <td>{{=db(Clientes.id == pedido.clienteEmail).select('nome')[0].nome}}</td>
+                                                <td>{{=(pedido.dataVenda).strftime('%d/%m/%Y as %H:%M:%S')}}</td>
+                                                {{if (pedido.volume != None) and (pedido.volume != 0):}}
+                                                    <td id="volumePendente">
+                                                        <span class="at atrazo_verde">{{=pedido.volume}}</span>
+                                                    </td>
+                                                {{else:}}
+                                                    <td id="volumePendente">
+                                                        <span class="at qtdePendente">0</span>
+                                                    </td>
+                                                {{pass}}
+                                            </tr>       
+                                        {{pass}}
                                     {{pass}}<!--FIM IF PEDIDOS.DELETADOS-->                 
                                 {{pass}}<!--FIM FOR PEDIDOS-->
-                      </tbody>
-                    </table>
-        </div>
-    </div>
-</div>    
+                            </tbody>
+                        </thead>
+                    </table><!-- FIM TABELA PENDENTE -->
+                </div><!-- fim separados -->
+            </div><!-- fim tabContent A -->
+        </div><!-- fim do content X-->
+    </div><!-- fim do card -->
+</div><!--fim do col-12-->    
 <!-- ==================================================================== -->
                 </div>
             </div>
