@@ -16,7 +16,6 @@ def historico():
 
 def excluirVendaRegistrada():
     codigo = request.vars.transitory
-    print codigo
     db(db.historicoVendas.codigoVenda == codigo).update(deletado=True)
     db(db.pendentes.codigo == codigo).update(status='Finalizado')
     db(db.parcelados.codigo == codigo).update(excluido=True)
@@ -65,8 +64,10 @@ def etapa_1():
             Field('Representante',default=representante , requires = IS_IN_DB(db, Representantes.nome, error_message = 'Escolha um representante'))
         )
     if form.process().accepted:
-        session.cliente = form.vars.Cliente
-        session.idCliente = db(db.clientes.nome == form.vars.Cliente).select('id')[0].id
+        nomeCliente = form.vars.Cliente
+        nomeCliente = nomeCliente.strip()#tira os espaços vazios do fim e do começo da string
+        session.cliente = nomeCliente
+        session.idCliente = db(db.clientes.nome == nomeCliente).select('id')[0].id
         session.representante = db(db.representantes.nome == form.vars.Representante ).select('id')[0].id
         #cria codigo da venda  
         if not session.codigo_venda:

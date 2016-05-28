@@ -225,7 +225,8 @@ Funcionarios = db.define_table('funcionarios',
     )
 
 # db.funcionarios.email.requires = IS_EMAIL(error_message='Email inválido!!')
-db.funcionarios.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.funcionarios.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
+# db.funcionarios.cnpj_cpf.requires = IS_CPF_OR_CNPJ(), IS_NOT_IN_DB(db, db.funcionarios.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
+db.funcionarios.cnpj_cpf.requires = IS_NOT_IN_DB(db, db.funcionarios.cnpj_cpf, error_message="CNPJ/ ou CPF já existe")
 db.funcionarios.nome.requires = IS_NOT_IN_DB(db, db.funcionarios.nome, error_message = 'Usuario invalido')
 db.funcionarios.uf.requires = IS_IN_SET(UF, error_message="UF invalido!!!")
 db.funcionarios.operadora.requires = IS_IN_SET(OPERADORA, error_message="Operadora invalida!!!")

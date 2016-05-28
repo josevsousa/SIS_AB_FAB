@@ -50,11 +50,11 @@ def _():
 
     # MENU BARRA LATERAL
     response.barraL = UL(_class='nav')
-    if ctr == 'home':
-      response.barraL.append(LI(A(I(_class='ti-panel'),P('controle'),_href='../home/index'),_class='active'))
-    else:
-      response.barraL.append(LI(A(I(_class='ti-panel'),P('controle'),_href='../home/index')))  
-      pass
+    # if ctr == 'home':
+    #   response.barraL.append(LI(A(I(_class='ti-panel'),P('controle'),_href='../home/index'),_class='active'))
+    # else:
+    #   response.barraL.append(LI(A(I(_class='ti-panel'),P('controle'),_href='../home/index')))  
+    #   pass
     if ctr == 'produtos':
       response.barraL.append(LI(A(I(_class='ti-id-badge'),P('Produtos'),_href='../produtos/todos'),_class='active'))
     else:
