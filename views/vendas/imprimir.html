@@ -17,14 +17,14 @@
       /*  body * { display: none !important; }
         body:after { content: "Don't waste paper!"; }*/
         td, th, .headerPrint {
-            
+            padding: 2px 10px !important;
+            border: 1px solid #3C3B3B !important;
         }
         .btFecharJanela, .btPrint, #nav_home, .btVolt, .alert-dismissable, .footer, #socialdrawer,#enviarEmail {display:none !important;}
         .logoP {display:block !important;} 
-        .end{display:block !important;}
-        td, th, .headerPrint{
-            padding: 2px 8px !important;
-            /*border: 1px solid #000 !important;*/
+        .end, .dataVenda{display:block !important;}
+        table.table{
+            font-size: 0.8em;
         }
     }
 
@@ -122,7 +122,7 @@ body {
                 <h2>Artesanal baby</h2>
                 <h3>www.artesanalbaby.com.br</h3>
                 <h4>artesanalbaby@hotmail.com</h4>
-                <h5>RUA BASILIO SILVA, 86 - ESTAÇÃO - SOUSA-PB - (83) 3522-2107</h5>
+                <h6><b>RUA BASILIO SILVA, 86 - ESTAÇÃO - SOUSA-PB - (83) 3522-2107</b></h6>
             </div>
                 
         </div>
@@ -251,6 +251,7 @@ body {
             desconto = historico_venda[0].valorDesconto
             sTotal = (float(desconto)+float(total))
             tipoVenda = historico_venda[0].tipoVenda
+            dataVenda = historico_venda[0].dataVenda
             if tipoVenda == 'cheque' or tipoVenda == 'boleto':
         }}
         <table class='table cal table-bordered table-condensed'>
@@ -283,9 +284,10 @@ body {
         
     </div>
     <hr>
+    <h5 class="dataVenda" style='display:none'>Data venda: {{=dataVenda}}</h5>
     <a href='javascript:window.print()' class='btn btn-info btPrint'>imprimir</a>
     <a href='javascript:window.close()' class='btn btn-default btFecharJanela'>fechar janela</a>
-   
+    <div class='end' style='display:none'><h4>www.artesanalbaby.com.br</h4></div>
 </div><!-- fim do container -->
-<div class='end' style='display:none'><h4>www.artesanalbaby.com.br</h4></div>
+
 <br>

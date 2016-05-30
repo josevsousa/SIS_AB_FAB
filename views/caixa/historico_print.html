@@ -252,6 +252,7 @@
 			desconto = historico_venda[0].valorDesconto
 			sTotal = (float(desconto)+float(total))
 			tipoVenda = historico_venda[0].tipoVenda
+			dataVenda = historico_venda[0].dataVenda
 			if tipoVenda == 'cheque' or tipoVenda == 'boleto':
 		}}
 		<table class='table cal table-bordered table-condensed'>
@@ -283,7 +284,6 @@
 		</table>
 		
 	</div>
-	<h5>Data venda: {{=dataVenda}}</h5>
 	<hr>
 	<a href='historico?menu=caixa' class='btn btn-default btVolt'>Voltar</a>
 	<a href='javascript:window.print()' class='btn btn-info btPrint'>imprimir</a>
@@ -292,6 +292,8 @@
 	</a>
 
 </div><!-- fim do container -->
+
+<h5>Data venda: {{=dataVenda}}</h5>
 <div class='end' style='display:none'><h4>www.artesanalbaby.com.br</h4></div>
 <br>
 
