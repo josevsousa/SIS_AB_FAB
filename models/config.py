@@ -9,12 +9,13 @@
 
 from datetime import datetime, timedelta
 
+# converte str, int, float no formato Real 'R$ 1.000,00'
+# double_real(session.sTotal).real()
 class double_real(object):
     def __init__(self, valor):
         self.valor = valor
 
     # BR R$    
-    # double_real(session.sTotal).real()
     def real(self):
         valor = '%.2f'%(float(self.valor)) #converte o valor em string e completa a casa decimal em 2
         valor = valor.replace('.','') # tira a virgula da string
@@ -39,9 +40,6 @@ class double_real(object):
 
         return rValor 
 
-
-    # US $
-        #aqui
 
 class cnpj_cpf_formt(object):
 

@@ -62,7 +62,7 @@ def atualizarParcelados():
 def gridParcelas():
     index = request.vars.transitory
     index = index.split(';')
-
+    print '========= ',index[0]
     # dados recebidos
     qtde_parc = int(index[0]) # quantidade de parcelas
     valor = "%.2f"%(float(index[1])/qtde_parc)
